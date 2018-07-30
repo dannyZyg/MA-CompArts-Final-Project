@@ -12,6 +12,8 @@ void ofApp::setup(){
 	// This should be done before mapper.setup().
     piMapper.registerFboSource(stones_1_4);
     piMapper.registerFboSource(environmentOne);
+    piMapper.registerFboSource(environmentTwo);
+    piMapper.registerFboSource(environmentThree);
 //    piMapper.registerFboSource(stones_5_8);
 //    piMapper.registerFboSource(type1);
 
@@ -33,6 +35,7 @@ void ofApp::update(){
 
 void ofApp::draw(){
  
+    
     ofBackground(0);
     
     // a template circle for making a perfect 'circle' and not an ellipse
@@ -70,6 +73,7 @@ void ofApp::keyPressed(int key){
     
     //display the circle
     if(key == 'w') displayCircleTemplate = !displayCircleTemplate;
+//    if(key == )
     
 }
 

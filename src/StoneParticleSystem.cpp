@@ -48,14 +48,14 @@ void StoneParticleSystem::setup(int width, int height, int k) {
 
 
 void StoneParticleSystem::setupColours(){
-    ofColor team1Base = ofColor(27,125, 204);
+    ofColor team1Base = ofColor(47,191, 57);
     
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
 
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], 175);
+        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }

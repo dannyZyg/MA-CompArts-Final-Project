@@ -21,13 +21,13 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 500;
+    kParticles = 1000;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        StoneParticle particle = StoneParticle(x, y, 0, 0);
+        EnvironmentTwoParticle particle = EnvironmentTwoParticle(x, y, 0, 0);
         
         particles.push_back(particle);
         
@@ -48,7 +48,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
 
 
 void EnvironmentTwoSystem::setupColours(){
-    ofColor team1Base = ofColor(27,125, 204);
+    ofColor team1Base = ofColor(145,49, 191);
     
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
@@ -67,7 +67,7 @@ void EnvironmentTwoSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
-void EnvironmentTwoSystem::add(StoneParticle particle) {
+void EnvironmentTwoSystem::add(EnvironmentTwoParticle particle) {
 	particles.push_back(particle);
 }
 
@@ -75,26 +75,26 @@ unsigned EnvironmentTwoSystem::size() const {
 	return particles.size();
 }
 
-StoneParticle& EnvironmentTwoSystem::operator[](unsigned i) {
+EnvironmentTwoParticle& EnvironmentTwoSystem::operator[](unsigned i) {
 	return particles[i];
 }
 
-vector<StoneParticle*> EnvironmentTwoSystem::getNeighbors(StoneParticle& particle, float radius) {
+vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getNeighbors(EnvironmentTwoParticle& particle, float radius) {
 	return getNeighbors(particle.x, particle.y, radius);
 }
 
-vector<StoneParticle*> EnvironmentTwoSystem::getNeighbors(float x, float y, float radius) {
-	vector<StoneParticle*> region = getRegion(
+vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getNeighbors(float x, float y, float radius) {
+	vector<EnvironmentTwoParticle*> region = getRegion(
 		(int) (x - radius),
 		(int) (y - radius),
 		(int) (x + radius),
 		(int) (y + radius));
-	vector<StoneParticle*> neighbors;
+	vector<EnvironmentTwoParticle*> neighbors;
 	int n = region.size();
 	float xd, yd, rsq, maxrsq;
 	maxrsq = radius * radius;
 	for(int i = 0; i < n; i++) {
-		StoneParticle& cur = *region[i];
+		EnvironmentTwoParticle& cur = *region[i];
 		xd = cur.x - x;
 		yd = cur.y - y;
 		rsq = xd * xd + yd * yd;
@@ -104,9 +104,9 @@ vector<StoneParticle*> EnvironmentTwoSystem::getNeighbors(float x, float y, floa
 	return neighbors;
 }
 
-vector<StoneParticle*> EnvironmentTwoSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
-	vector<StoneParticle*> region;
-	back_insert_iterator< vector<StoneParticle*> > back = back_inserter(region);
+vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
+	vector<EnvironmentTwoParticle*> region;
+	back_insert_iterator< vector<EnvironmentTwoParticle*> > back = back_inserter(region);
 	unsigned minXBin = minX >> k;
 	unsigned maxXBin = maxX >> k;
 	unsigned minYBin = minY >> k;
@@ -119,7 +119,7 @@ vector<StoneParticle*> EnvironmentTwoSystem::getRegion(unsigned minX, unsigned m
 		maxYBin = yBins;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<StoneParticle*>& cur = bins[y * xBins + x];
+			vector<EnvironmentTwoParticle*>& cur = bins[y * xBins + x];
 			copy(cur.begin(), cur.end(), back);
 		}
 	}
@@ -134,7 +134,7 @@ void EnvironmentTwoSystem::setupForces() {
 	n = particles.size();
 	unsigned xBin, yBin, bin;
 	for(int i = 0; i < n; i++) {
-		StoneParticle& cur = particles[i];
+		EnvironmentTwoParticle& cur = particles[i];
 		cur.resetForce();
 		xBin = ((unsigned) cur.x) >> k;
 		yBin = ((unsigned) cur.y) >> k;
@@ -144,7 +144,7 @@ void EnvironmentTwoSystem::setupForces() {
 	}
 }
 
-void EnvironmentTwoSystem::addRepulsionForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addRepulsionForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
 	addRepulsionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -152,7 +152,7 @@ void EnvironmentTwoSystem::addRepulsionForce(float x, float y, float radius, flo
 	addForce(x, y, radius, scale);
 }
 
-void EnvironmentTwoSystem::addAttractionForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addAttractionForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
 	addAttractionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -160,7 +160,7 @@ void EnvironmentTwoSystem::addAttractionForce(float x, float y, float radius, fl
 	addForce(x, y, radius, -scale);
 }
 
-void EnvironmentTwoSystem::addForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
 	addForce(particle.x, particle.y, radius, -scale);
 }
 
@@ -193,10 +193,10 @@ void EnvironmentTwoSystem::addForce(float targetX, float targetY, float radius, 
 	maxrsq = radius * radius;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<StoneParticle*>& curBin = bins[y * xBins + x];
+			vector<EnvironmentTwoParticle*>& curBin = bins[y * xBins + x];
 			int n = curBin.size();
 			for(int i = 0; i < n; i++) {
-				StoneParticle& curBinnedParticle = *(curBin[i]);
+				EnvironmentTwoParticle& curBinnedParticle = *(curBin[i]);
 				xd = curBinnedParticle.x - targetX;
 				yd = curBinnedParticle.y - targetY;
 				length = xd * xd + yd * yd;
@@ -247,6 +247,9 @@ void EnvironmentTwoSystem::update(float lastTimeStep) {
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition(curTimeStep);
 	}
+    
+    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
+    centerAttraction = ofMap(sin(ofGetFrameNum() * 0.02), -1, 1, 0.2, 1);
 
 }
 
@@ -285,7 +288,7 @@ void EnvironmentTwoSystem::display(){
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     for(int i = 0; i < particles.size(); i++) {
-        StoneParticle& cur = particles[i];
+        EnvironmentTwoParticle& cur = particles[i];
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle

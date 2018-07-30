@@ -1,17 +1,17 @@
-#pragma once
-
-#include "StoneParticle.h"
+#include "EnvironmentThreeParticle.h"
 #include "ofxColorPalette.h"
 
 #define DRAW_FORCES
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
+#pragma once
+
 class EnvironmentThreeSystem {
 protected:
 	float timeStep;
-	vector<StoneParticle> particles;
-	vector< vector<StoneParticle*> > bins;
+	vector<EnvironmentThreeParticle> particles;
+	vector< vector<EnvironmentThreeParticle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
 
 public:
@@ -20,19 +20,19 @@ public:
 	void setup(int width, int height, int k);
 	void setTimeStep(float timeStep);
 
-	void add(StoneParticle particle);
-	vector<StoneParticle*> getNeighbors(StoneParticle& particle, float radius);
-	vector<StoneParticle*> getNeighbors(float x, float y, float radius);
-	vector<StoneParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
+	void add(EnvironmentThreeParticle particle);
+	vector<EnvironmentThreeParticle*> getNeighbors(EnvironmentThreeParticle& particle, float radius);
+	vector<EnvironmentThreeParticle*> getNeighbors(float x, float y, float radius);
+	vector<EnvironmentThreeParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
 	unsigned size() const;
-	StoneParticle& operator[](unsigned i);
+	EnvironmentThreeParticle& operator[](unsigned i);
 
 	void setupForces();
-	void addRepulsionForce(const StoneParticle& particle, float radius, float scale);
+	void addRepulsionForce(const EnvironmentThreeParticle& particle, float radius, float scale);
 	void addRepulsionForce(float x, float y, float radius, float scale);
-	void addAttractionForce(const StoneParticle& particle, float radius, float scale);
+	void addAttractionForce(const EnvironmentThreeParticle& particle, float radius, float scale);
 	void addAttractionForce(float x, float y, float radius, float scale);
-	void addForce(const StoneParticle& particle, float radius, float scale);
+	void addForce(const EnvironmentThreeParticle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
 	void update(float lastTimeStep);
 
@@ -65,20 +65,25 @@ public:
     ofVec2f origin;
     float externalRad;
     
+
+    inline float InvSqrt(float x){
+        float xhalf = 0.5f * x;
+        int i = *(int*)&x; // store floating-point bits in integer
+        i = 0x5f3759d5 - (i >> 1); // initial guess for Newton's method
+        x = *(float*)&i; // convert new bits into float
+        x = x*(1.5f - xhalf*x*x); // One round of Newton's method
+        return x;
+    }
+    
+    inline float smoothForce(float x) {
+        const static float sharpness = 1;
+        return 1. / (1. + expf((x - .5) * sharpness * -12));
+    }
+    
     
     
 };
 
-inline float InvSqrt(float x){
-	float xhalf = 0.5f * x;
-	int i = *(int*)&x; // store floating-point bits in integer
-	i = 0x5f3759d5 - (i >> 1); // initial guess for Newton's method
-	x = *(float*)&i; // convert new bits into float
-	x = x*(1.5f - xhalf*x*x); // One round of Newton's method
-	return x;
-}
 
-inline float smoothForce(float x) {
-	const static float sharpness = 1;
-	return 1. / (1. + expf((x - .5) * sharpness * -12));
-}
+
+

@@ -15,14 +15,14 @@ SteppingStone_1_4::SteppingStone_1_4(){
     width = 800;
     height = 800;
     allocate(width, height);
-    ofBackground(0);
+    
     
 }
 
 
 void SteppingStone_1_4::setup(){
     
-
+    ofBackground(255);
     gs = width/2;
     numCells = fbo->getHeight()/gs;
     rad = gs/2;
@@ -71,7 +71,7 @@ void SteppingStone_1_4::update(){
 void SteppingStone_1_4::draw(){
     
 
-    ofClear(0);
+    ofBackground(0);
     
 
     

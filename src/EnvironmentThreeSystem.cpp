@@ -21,13 +21,13 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 500;
+    kParticles = 1000;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        StoneParticle particle = StoneParticle(x, y, 0, 0);
+        EnvironmentThreeParticle particle = EnvironmentThreeParticle(x, y, 0, 0);
         
         particles.push_back(particle);
         
@@ -48,14 +48,27 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
 
 
 void EnvironmentThreeSystem::setupColours(){
-    ofColor team1Base = ofColor(27,125, 204);
+    ofColor team1Base = ofColor(52,167, 173);
+    ofColor team2Base = ofColor(101,211, 91);
+
     
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
+    
+    team2Col.setBaseColor(team2Base);
+    team2Col.generateAnalogous();
 
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], 175);
+        
+        if(particles[i].team == 0){
+            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+        }
+        else if (particles[i].team == 1){
+            particles[i].col = ofColor(team2Col[ofRandom(team2Col.size())]);
+            
+        }
+            
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
@@ -67,7 +80,7 @@ void EnvironmentThreeSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
-void EnvironmentThreeSystem::add(StoneParticle particle) {
+void EnvironmentThreeSystem::add(EnvironmentThreeParticle particle) {
 	particles.push_back(particle);
 }
 
@@ -75,26 +88,26 @@ unsigned EnvironmentThreeSystem::size() const {
 	return particles.size();
 }
 
-StoneParticle& EnvironmentThreeSystem::operator[](unsigned i) {
+EnvironmentThreeParticle& EnvironmentThreeSystem::operator[](unsigned i) {
 	return particles[i];
 }
 
-vector<StoneParticle*> EnvironmentThreeSystem::getNeighbors(StoneParticle& particle, float radius) {
+vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getNeighbors(EnvironmentThreeParticle& particle, float radius) {
 	return getNeighbors(particle.x, particle.y, radius);
 }
 
-vector<StoneParticle*> EnvironmentThreeSystem::getNeighbors(float x, float y, float radius) {
-	vector<StoneParticle*> region = getRegion(
+vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getNeighbors(float x, float y, float radius) {
+	vector<EnvironmentThreeParticle*> region = getRegion(
 		(int) (x - radius),
 		(int) (y - radius),
 		(int) (x + radius),
 		(int) (y + radius));
-	vector<StoneParticle*> neighbors;
+	vector<EnvironmentThreeParticle*> neighbors;
 	int n = region.size();
 	float xd, yd, rsq, maxrsq;
 	maxrsq = radius * radius;
 	for(int i = 0; i < n; i++) {
-		StoneParticle& cur = *region[i];
+		EnvironmentThreeParticle& cur = *region[i];
 		xd = cur.x - x;
 		yd = cur.y - y;
 		rsq = xd * xd + yd * yd;
@@ -104,9 +117,9 @@ vector<StoneParticle*> EnvironmentThreeSystem::getNeighbors(float x, float y, fl
 	return neighbors;
 }
 
-vector<StoneParticle*> EnvironmentThreeSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
-	vector<StoneParticle*> region;
-	back_insert_iterator< vector<StoneParticle*> > back = back_inserter(region);
+vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
+	vector<EnvironmentThreeParticle*> region;
+	back_insert_iterator< vector<EnvironmentThreeParticle*> > back = back_inserter(region);
 	unsigned minXBin = minX >> k;
 	unsigned maxXBin = maxX >> k;
 	unsigned minYBin = minY >> k;
@@ -119,7 +132,7 @@ vector<StoneParticle*> EnvironmentThreeSystem::getRegion(unsigned minX, unsigned
 		maxYBin = yBins;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<StoneParticle*>& cur = bins[y * xBins + x];
+			vector<EnvironmentThreeParticle*>& cur = bins[y * xBins + x];
 			copy(cur.begin(), cur.end(), back);
 		}
 	}
@@ -134,7 +147,7 @@ void EnvironmentThreeSystem::setupForces() {
 	n = particles.size();
 	unsigned xBin, yBin, bin;
 	for(int i = 0; i < n; i++) {
-		StoneParticle& cur = particles[i];
+		EnvironmentThreeParticle& cur = particles[i];
 		cur.resetForce();
 		xBin = ((unsigned) cur.x) >> k;
 		yBin = ((unsigned) cur.y) >> k;
@@ -144,7 +157,7 @@ void EnvironmentThreeSystem::setupForces() {
 	}
 }
 
-void EnvironmentThreeSystem::addRepulsionForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addRepulsionForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
 	addRepulsionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -152,7 +165,7 @@ void EnvironmentThreeSystem::addRepulsionForce(float x, float y, float radius, f
 	addForce(x, y, radius, scale);
 }
 
-void EnvironmentThreeSystem::addAttractionForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addAttractionForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
 	addAttractionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -160,7 +173,7 @@ void EnvironmentThreeSystem::addAttractionForce(float x, float y, float radius, 
 	addForce(x, y, radius, -scale);
 }
 
-void EnvironmentThreeSystem::addForce(const StoneParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
 	addForce(particle.x, particle.y, radius, -scale);
 }
 
@@ -193,10 +206,10 @@ void EnvironmentThreeSystem::addForce(float targetX, float targetY, float radius
 	maxrsq = radius * radius;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<StoneParticle*>& curBin = bins[y * xBins + x];
+			vector<EnvironmentThreeParticle*>& curBin = bins[y * xBins + x];
 			int n = curBin.size();
 			for(int i = 0; i < n; i++) {
-				StoneParticle& curBinnedParticle = *(curBin[i]);
+				EnvironmentThreeParticle& curBinnedParticle = *(curBin[i]);
 				xd = curBinnedParticle.x - targetX;
 				yd = curBinnedParticle.y - targetY;
 				length = xd * xd + yd * yd;
@@ -247,6 +260,8 @@ void EnvironmentThreeSystem::update(float lastTimeStep) {
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition(curTimeStep);
 	}
+    
+    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
 
 }
 
@@ -285,9 +300,20 @@ void EnvironmentThreeSystem::display(){
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     for(int i = 0; i < particles.size(); i++) {
-        StoneParticle& cur = particles[i];
+        EnvironmentThreeParticle& cur = particles[i];
         // global force on other particles
+        
+        
+        
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+        
+        
+//        if(cur.team != )
+        
+            
+//            addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+        
+        
         // forces on this particle
         cur.bounceOffWalls();
         cur.addDampingForce();

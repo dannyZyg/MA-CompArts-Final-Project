@@ -5,6 +5,10 @@
 
 #include "SteppingStone_1_4.hpp"
 #include "EnvironmentOneSource.hpp"
+#include "EnvironmentTwoSource.hpp"
+#include "EnvironmentThreeSource.hpp"
+
+
 //#include "SteppingStone_5_8.hpp"
 //#include "SteppingStoneType1.hpp"
 
@@ -34,6 +38,8 @@ public:
 
     SteppingStone_1_4 stones_1_4;
     EnvironmentOneSource environmentOne;
+    EnvironmentTwoSource environmentTwo;
+    EnvironmentThreeSource environmentThree;
 //    SteppingStone_5_8 stones_5_8;
 //    SteppingStoneType1 type1;
     
