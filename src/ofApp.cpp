@@ -6,7 +6,7 @@ void ofApp::setup(){
     displayCircleTemplate = false;
 	ofBackground(0);
     ofSetCircleResolution(100);
-
+    debug = false;
 
 	// Register our sources.
 	// This should be done before mapper.setup().
@@ -23,8 +23,10 @@ void ofApp::setup(){
 	#ifdef TARGET_RASPBERRY_PI
 		ofSetFullscreen(true);
 	#endif
-
+    
+    layout.load("layout.png");
    
+    drawTemplate = false;
     
 }
 
@@ -37,6 +39,8 @@ void ofApp::draw(){
  
     
     ofBackground(0);
+    
+    if(drawTemplate) layout.draw(0, 0);
     
     // a template circle for making a perfect 'circle' and not an ellipse
     if(displayCircleTemplate){
@@ -73,7 +77,25 @@ void ofApp::keyPressed(int key){
     
     //display the circle
     if(key == 'w') displayCircleTemplate = !displayCircleTemplate;
-//    if(key == )
+//    if(key == )\
+    
+    if(key == '/') drawTemplate = !drawTemplate;
+    
+    if(key == 'd') {
+        debug = !debug;
+        
+        environmentOne.debug = !debug;
+        environmentTwo.debug = !debug;
+        environmentThree.debug = !debug;
+        stones_1_4.debug = ! debug;
+        
+        cout << "DEBUG = " << debug << endl;
+        
+        
+        
+        
+        
+    }
     
 }
 

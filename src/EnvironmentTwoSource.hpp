@@ -32,6 +32,6 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     
     EnvironmentTwoSystem enviro;
     
-    
+    bool debug;
     
 };

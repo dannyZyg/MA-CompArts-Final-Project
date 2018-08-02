@@ -7,7 +7,7 @@ StoneParticle::StoneParticle(float x, float y, float xv, float yv) :
 	xv(xv), yv(yv) {
         
 //        r = 3;
-        r = ofRandom (2, 7);
+        r = ofRandom (5, 15);
 //        col = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
         
         
@@ -56,7 +56,7 @@ void StoneParticle::bounceOffWalls(float damping) {
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
-        ret = ret.normalize();
+//        ret = ret.normalize();
 //        ret *= 0;
         
         x += ret.x;

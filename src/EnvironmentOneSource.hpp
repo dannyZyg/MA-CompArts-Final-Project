@@ -32,6 +32,6 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     
     EnvironmentOneSystem enviro;
     
-    
+    bool debug;
     
 };

@@ -32,7 +32,7 @@ void EnvironmentOneSource::setup(){
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
     
-
+    debug = false;
 }
 
 void EnvironmentOneSource::update(){
@@ -52,6 +52,21 @@ void EnvironmentOneSource::draw(){
     ofPopStyle();
     
     enviro.display();
+    
+    
+    if(debug){
+        ofPushStyle();
+        ofFill();
+        ofSetLineWidth(5);
+        ofSetColor(255);
+        ofDrawCircle(origin, rad);
+        ofSetColor(0);
+        ofDrawBitmapString("Enviro 1", origin.x, origin.y);
+        ofPopStyle();
+        
+        
+    }
+    
     
 }
 

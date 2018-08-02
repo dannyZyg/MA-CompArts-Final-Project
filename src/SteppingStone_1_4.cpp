@@ -21,7 +21,7 @@ SteppingStone_1_4::SteppingStone_1_4(){
 
 
 void SteppingStone_1_4::setup(){
-    
+    debug = false;
     ofBackground(255);
     gs = width/2;
     numCells = fbo->getHeight()/gs;
@@ -49,8 +49,8 @@ void SteppingStone_1_4::setup(){
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
-        stones[i].centerAttraction = ofRandom(0.1, 2);
-        stones[i].particleRepulsion = ofRandom(0.1, 1);
+//        stones[i].centerAttraction = ofRandom(0.1, 2);
+//        stones[i].particleRepulsion = ofRandom(0.4, 2);
         
     }
 }
@@ -71,7 +71,7 @@ void SteppingStone_1_4::update(){
 void SteppingStone_1_4::draw(){
     
 
-    ofBackground(0);
+    ofBackground(255);
     
 
     
@@ -94,6 +94,8 @@ void SteppingStone_1_4::draw(){
 
         stones[i].display();
     }
+    
+    if(debug) debugMode();
     
     
 }
@@ -148,6 +150,26 @@ void SteppingStone_1_4::reset(){
 ////        stones[i].reset();
 //    }
     
+}
+
+
+void SteppingStone_1_4::debugMode(){
+    
+
+    
+    for(int i = 0; i < stones.size(); i ++){
+        ofPushMatrix();
+        ofPushStyle();
+        ofFill();
+        ofSetColor(255);
+        ofDrawCircle(origins[i], rad);
+        ofTranslate( origins[i].x, origins[i].y);
+//        ofScale(10, 10);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(i + 1),0, 0);
+        ofPopStyle();
+        ofPopMatrix();
+    }
 }
 
 

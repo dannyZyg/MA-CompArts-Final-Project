@@ -2,20 +2,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>258.862854004</x>
-                <y>328.709960938</y>
+                <x>701.862854004</x>
+                <y>465.709960938</y>
             </vertex>
             <vertex>
-                <x>258.802551270</x>
-                <y>405.703369141</y>
+                <x>701.802551270</x>
+                <y>542.703369141</y>
             </vertex>
             <vertex>
-                <x>335.197479248</x>
-                <y>405.450378418</y>
+                <x>778.197509766</x>
+                <y>542.450378418</y>
             </vertex>
             <vertex>
-                <x>334.944427490</x>
-                <y>328.296600342</y>
+                <x>777.944458008</x>
+                <y>465.296600342</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -47,65 +47,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>193.881408691</x>
-                <y>297.000976562</y>
+                <x>481.351562500</x>
+                <y>16.229583740</y>
             </vertex>
             <vertex>
-                <x>193.817687988</x>
-                <y>346.491302490</y>
+                <x>481.215881348</x>
+                <y>87.548828125</y>
             </vertex>
             <vertex>
-                <x>243.388916016</x>
-                <y>346.326568604</y>
+                <x>552.784057617</x>
+                <y>87.784027100</y>
             </vertex>
             <vertex>
-                <x>243.410949707</x>
-                <y>297.054901123</y>
-            </vertex>
-        </vertices>
-        <texCoords>
-            <texCoord>
-                <x>-0.001250000</x>
-                <y>0.501250029</y>
-            </texCoord>
-            <texCoord>
-                <x>0.500000000</x>
-                <y>0.501250029</y>
-            </texCoord>
-            <texCoord>
-                <x>0.500000000</x>
-                <y>1.002500057</y>
-            </texCoord>
-            <texCoord>
-                <x>-0.001250000</x>
-                <y>1.002500057</y>
-            </texCoord>
-        </texCoords>
-        <source>
-            <source-type>fbo</source-type>
-            <source-name>1-4</source-name>
-        </source>
-        <properties>
-            <perspectiveWarping>1</perspectiveWarping>
-        </properties>
-    </surface>
-    <surface type="5">
-        <vertices>
-            <vertex>
-                <x>365.351531982</x>
-                <y>328.229583740</y>
-            </vertex>
-            <vertex>
-                <x>365.215881348</x>
-                <y>399.548828125</y>
-            </vertex>
-            <vertex>
-                <x>436.784027100</x>
-                <y>399.784027100</y>
-            </vertex>
-            <vertex>
-                <x>435.842407227</x>
-                <y>328.215911865</y>
+                <x>551.842407227</x>
+                <y>16.215911865</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -137,20 +92,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>239.591888428</x>
-                <y>431.714538574</y>
+                <x>589.591918945</x>
+                <y>51.714538574</y>
             </vertex>
             <vertex>
-                <x>239.555877686</x>
-                <y>483.677825928</y>
+                <x>589.555908203</x>
+                <y>103.677825928</y>
             </vertex>
             <vertex>
-                <x>291.444061279</x>
-                <y>483.850219727</y>
+                <x>641.444091797</x>
+                <y>103.850219727</y>
             </vertex>
             <vertex>
-                <x>291.099334717</x>
-                <y>431.789550781</y>
+                <x>641.099365234</x>
+                <y>51.789550781</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -182,20 +137,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>16.789237976</x>
-                <y>354.422943115</y>
+                <x>757.112304688</x>
+                <y>-2.061325073</y>
             </vertex>
             <vertex>
-                <x>17.418022156</x>
-                <y>559.594177246</y>
+                <x>757.921508789</x>
+                <y>262.083251953</y>
             </vertex>
             <vertex>
-                <x>223.285247803</x>
-                <y>558.914428711</y>
+                <x>1022.962280273</x>
+                <y>261.208038330</y>
             </vertex>
             <vertex>
-                <x>221.926361084</x>
-                <y>354.406219482</y>
+                <x>1021.213012695</x>
+                <y>-2.082855225</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -227,20 +182,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>701.000000000</x>
-                <y>248.000000000</y>
+                <x>321.000000000</x>
+                <y>267.000000000</y>
             </vertex>
             <vertex>
-                <x>698.000000000</x>
-                <y>554.000000000</y>
+                <x>318.000000000</x>
+                <y>573.000000000</y>
             </vertex>
             <vertex>
-                <x>1002.000000000</x>
-                <y>552.000000000</y>
+                <x>622.000000000</x>
+                <y>571.000000000</y>
             </vertex>
             <vertex>
-                <x>1002.000000000</x>
-                <y>252.000000000</y>
+                <x>622.000000000</x>
+                <y>271.000000000</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -272,20 +227,20 @@
     <surface type="5">
         <vertices>
             <vertex>
-                <x>338.524047852</x>
-                <y>4.232299805</y>
+                <x>13.388381958</x>
+                <y>3.991928101</y>
             </vertex>
             <vertex>
-                <x>332.000000000</x>
-                <y>306.000000000</y>
+                <x>6.725158691</x>
+                <y>312.197631836</y>
             </vertex>
             <vertex>
-                <x>638.000000000</x>
-                <y>308.000000000</y>
+                <x>319.253479004</x>
+                <y>314.240325928</y>
             </vertex>
             <vertex>
-                <x>639.000000000</x>
-                <y>6.000000000</y>
+                <x>320.274841309</x>
+                <y>5.797348022</y>
             </vertex>
         </vertices>
         <texCoords>
@@ -309,6 +264,51 @@
         <source>
             <source-type>fbo</source-type>
             <source-name>Environment Three</source-name>
+        </source>
+        <properties>
+            <perspectiveWarping>1</perspectiveWarping>
+        </properties>
+    </surface>
+    <surface type="5">
+        <vertices>
+            <vertex>
+                <x>717.581359863</x>
+                <y>202.699844360</y>
+            </vertex>
+            <vertex>
+                <x>717.511718750</x>
+                <y>256.792449951</y>
+            </vertex>
+            <vertex>
+                <x>771.692810059</x>
+                <y>256.612396240</y>
+            </vertex>
+            <vertex>
+                <x>771.716918945</x>
+                <y>202.758789062</y>
+            </vertex>
+        </vertices>
+        <texCoords>
+            <texCoord>
+                <x>-0.001250000</x>
+                <y>0.501250029</y>
+            </texCoord>
+            <texCoord>
+                <x>0.500000000</x>
+                <y>0.501250029</y>
+            </texCoord>
+            <texCoord>
+                <x>0.500000000</x>
+                <y>1.002500057</y>
+            </texCoord>
+            <texCoord>
+                <x>-0.001250000</x>
+                <y>1.002500057</y>
+            </texCoord>
+        </texCoords>
+        <source>
+            <source-type>fbo</source-type>
+            <source-name>1-4</source-name>
         </source>
         <properties>
             <perspectiveWarping>1</perspectiveWarping>

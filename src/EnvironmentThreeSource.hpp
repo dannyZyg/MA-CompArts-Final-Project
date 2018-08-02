@@ -31,7 +31,7 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     float rad;
     
     EnvironmentThreeSystem enviro;
-    
+    bool debug;
     
     
 };

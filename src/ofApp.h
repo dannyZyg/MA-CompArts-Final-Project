@@ -48,10 +48,12 @@ public:
     
     ofTrueTypeFont        font;
     
-
-    
+    bool drawTemplate;
+    ofImage layout;
   
     bool displayCircleTemplate;
+    
+    bool debug;
    
 
 };

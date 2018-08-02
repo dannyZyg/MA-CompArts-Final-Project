@@ -28,7 +28,7 @@ public:
     void sequence1();
     void sequence2();
     void reset();
-
+    void debugMode();
     
     vector <ofVec2f> origins;
     vector <StoneParticleSystem> stones;
@@ -42,6 +42,8 @@ public:
     float width, height;
     
     int binPower;
+    
+    bool debug;
     
 };
 

@@ -21,7 +21,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 500;
+    kParticles = 100;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -40,7 +40,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 0.3;
+    particleRepulsion = 0.1;
     centerAttraction = 0;
     drawBalls = true;
     
