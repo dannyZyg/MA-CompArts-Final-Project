@@ -21,7 +21,7 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 1000;
+    kParticles = 150;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -39,9 +39,9 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     timeStep = 100;
     isMousePressed = false;
     slowMotion = true;
-    particleNeighborhood = 32;
-    particleRepulsion = 0.5;
-    centerAttraction = 0.6;
+    particleNeighborhood = 64;
+    particleRepulsion = 0.3;
+    centerAttraction = 0;
     drawBalls = true;
     
 }
@@ -49,7 +49,10 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
 
 void EnvironmentThreeSystem::setupColours(){
     ofColor team1Base = ofColor(52,167, 173);
-    ofColor team2Base = ofColor(101,211, 91);
+    ofColor team2Base = ofColor(255,211, 91);
+    
+//        ofColor team1Base = ofColor(255,0, 0);
+//        ofColor team2Base = ofColor(0,0, 255);
 
     
     team1Col.setBaseColor(team1Base);
@@ -63,10 +66,12 @@ void EnvironmentThreeSystem::setupColours(){
         
         if(particles[i].team == 0){
             particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+//            particles[i].col = ofColor(team1Base);
+
         }
         else if (particles[i].team == 1){
             particles[i].col = ofColor(team2Col[ofRandom(team2Col.size())]);
-            
+//            particles[i].col = ofColor(team2Base);
         }
             
         particles[i].origin = origin;
@@ -261,7 +266,7 @@ void EnvironmentThreeSystem::update(float lastTimeStep) {
 		particles[i].updatePosition(curTimeStep);
 	}
     
-    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
+//    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
 
 }
 
@@ -299,19 +304,34 @@ void EnvironmentThreeSystem::display(){
         ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
+    
+    float tempRad = 50;
+    
     for(int i = 0; i < particles.size(); i++) {
         EnvironmentThreeParticle& cur = particles[i];
         // global force on other particles
         
         
         
-        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+//        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         
         
-//        if(cur.team != )
+        vector<EnvironmentThreeParticle*> nei = getNeighbors(cur.x, cur.y, tempRad);
+        
+//        cout<< nei.size() << endl;
+        
+        for(int j = 0; j < nei.size(); j ++){
+
+            
+            if(cur.team != nei[j] -> team){
+                ofSetColor(0);
+                ofDrawLine(cur.x, cur.y, nei[j] -> x, nei[j] -> y);
+                addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+            }
+        }
+        
         
             
-//            addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         
         
         // forces on this particle
@@ -342,6 +362,8 @@ void EnvironmentThreeSystem::display(){
             //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
             
             particles[i].displayParticle();
+//            ofNoFill();
+//            ofDrawCircle(particles[i].x, particles[i].y, tempRad);
         }
     }
     

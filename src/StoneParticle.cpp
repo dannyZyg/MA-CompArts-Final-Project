@@ -16,6 +16,8 @@ StoneParticle::StoneParticle(float x, float y, float xv, float yv) :
         if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         
         team = ofRandom(2);
+        
+        life = ofRandom(255);
 
 }
 
@@ -40,6 +42,10 @@ void StoneParticle::updatePosition(float timeStep) {
 //    x += vel.x;
 //    y += vel.y;
 //
+    
+//    life -= 0.1;
+    
+    
 }
 
 void StoneParticle::resetForce() {
@@ -56,7 +62,7 @@ void StoneParticle::bounceOffWalls(float damping) {
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
-//        ret = ret.normalize();
+        ret = ret.normalize();
 //        ret *= 0;
         
         x += ret.x;

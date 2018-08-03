@@ -4,6 +4,8 @@
 #include "ofxPiMapper.h"
 
 #include "SteppingStone_1_4.hpp"
+#include "SteppingStone_Large.hpp"
+#include "SteppingStone_Med.hpp"
 #include "EnvironmentOneSource.hpp"
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
@@ -30,6 +32,8 @@ public:
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
     void mouseDragged(int x, int y, int button);
+    
+    void scheduler();
 
     ofxPiMapper piMapper;
 
@@ -37,6 +41,8 @@ public:
     // you will be able to see the source listed in sources editor
 
     SteppingStone_1_4 stones_1_4;
+    SteppingStone_Large large_stones;
+    SteppingStone_Med med_stones;
     EnvironmentOneSource environmentOne;
     EnvironmentTwoSource environmentTwo;
     EnvironmentThreeSource environmentThree;
@@ -54,6 +60,7 @@ public:
     bool displayCircleTemplate;
     
     bool debug;
+    
    
 
 };

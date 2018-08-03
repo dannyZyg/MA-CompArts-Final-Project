@@ -21,7 +21,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 1000;
+    kParticles = 800;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);

@@ -26,6 +26,8 @@ public:
     ofColor col;
     
     int team;
+    
+    float life;
 
     
 };

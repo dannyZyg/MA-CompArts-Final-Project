@@ -1,6 +1,10 @@
 #include "ofApp.h"
 
 void ofApp::setup(){
+    
+    
+    
+    
     ofSetCircleResolution(100);
 //    ofSetFullscreen(true);
     displayCircleTemplate = false;
@@ -11,6 +15,9 @@ void ofApp::setup(){
 	// Register our sources.
 	// This should be done before mapper.setup().
     piMapper.registerFboSource(stones_1_4);
+    piMapper.registerFboSource(large_stones);
+    piMapper.registerFboSource(med_stones);
+
     piMapper.registerFboSource(environmentOne);
     piMapper.registerFboSource(environmentTwo);
     piMapper.registerFboSource(environmentThree);
@@ -32,6 +39,7 @@ void ofApp::setup(){
 
 void ofApp::update(){
 	piMapper.update();
+    scheduler();
     
 }
 
@@ -63,8 +71,6 @@ void ofApp::draw(){
  
     ofSetColor(255);
     ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 52);
-
-    
     
 }
 
@@ -114,3 +120,13 @@ void ofApp::mouseReleased(int x, int y, int button){
 void ofApp::mouseDragged(int x, int y, int button){
 	piMapper.mouseDragged(x, y, button);
 }
+
+
+
+void ofApp::scheduler(){
+    
+    
+    
+}
+
+

@@ -22,7 +22,7 @@ public:
 	void setup(int width, int height, int k);
 	void setTimeStep(float timeStep);
 
-	void add(StoneParticle particle);
+	void addParticle();
 	vector<StoneParticle*> getNeighbors(StoneParticle& particle, float radius);
 	vector<StoneParticle*> getNeighbors(float x, float y, float radius);
 	vector<StoneParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
@@ -63,10 +63,16 @@ public:
     bool drawBalls;
     
     void display();
+    void reset();
     
     ofVec2f origin;
     float externalRad;
     
+    
+    bool active;
+    
+    
+    ofColor baseColour;
     
     
 };

@@ -37,8 +37,8 @@ void EnvironmentThreeParticle::updatePosition(float timeStep) {
 //    vel.x += xf;
 //    vel.y += yf;
 //
-//    x += vel.x;
-//    y += vel.y;
+    x += vel.x;
+    y += vel.y;
 //
 }
 
@@ -66,6 +66,9 @@ void EnvironmentThreeParticle::bounceOffWalls(float damping) {
         xv *= -1;
         yv *= -1;
 
+        vel.x *= -1;
+        vel.y *= -1;
+        
         
         collision = true;
         

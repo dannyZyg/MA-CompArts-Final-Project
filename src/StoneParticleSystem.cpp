@@ -30,10 +30,9 @@ void StoneParticleSystem::setup(int width, int height, int k) {
         StoneParticle particle = StoneParticle(x, y, 0, 0);
         
         particles.push_back(particle);
-        
-//        particleSystem.add(particle);
-        setupColours();
     }
+    
+    setupColours();
     
     padding = 128;
     timeStep = 100;
@@ -44,13 +43,16 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     centerAttraction = 0;
     drawBalls = true;
     
+    active = true;
+    
+    
 }
 
 
 void StoneParticleSystem::setupColours(){
-    ofColor team1Base = ofColor(47,191, 57);
     
-    team1Col.setBaseColor(team1Base);
+    
+    team1Col.setBaseColor(baseColour);
     team1Col.generateAnalogous();
 
     
@@ -67,8 +69,14 @@ void StoneParticleSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
-void StoneParticleSystem::add(StoneParticle particle) {
-	particles.push_back(particle);
+void StoneParticleSystem::addParticle() {
+    
+    float x = ofRandom(origin.x, origin.x);
+    float y = ofRandom(origin.y, origin.y);;
+    
+    StoneParticle particle = StoneParticle(x, y, 0, 0);
+    
+    particles.push_back(particle);
 }
 
 unsigned StoneParticleSystem::size() const {
@@ -247,6 +255,8 @@ void StoneParticleSystem::update(float lastTimeStep) {
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition(curTimeStep);
 	}
+    
+    
 
 }
 
@@ -325,18 +335,16 @@ void StoneParticleSystem::display(){
     }
     
     
-//    particleSystem.display();
     ofPopStyle();
     ofPopMatrix();
 
-    
+//    addParticle();
 }
 
 
-//void StoneParticleSystem::receiveGeometry(ofVec2f origin_, float externalRad_){
-//    
-//    origin = origin_;
-//    externalRad = externalRad_;
-//    
-//}
 
+void StoneParticleSystem::reset(){
+    
+    particles.clear();
+    
+}

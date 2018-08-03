@@ -1,17 +1,17 @@
 //
-//  SteppingStone_1_4.cpp
+//  SteppingStone_Med.cpp
 //  sketchClassTest
 //
 //  Created by Danny on 17/7/18.
 //
 
-#include "SteppingStone_1_4.hpp"
+#include "SteppingStone_Med.hpp"
 
 
 
-SteppingStone_1_4::SteppingStone_1_4(){
+SteppingStone_Med::SteppingStone_Med(){
     
-    name = "1-4";
+    name = "Medium Stones";
     width = 800;
     height = 800;
     allocate(width, height);
@@ -20,7 +20,7 @@ SteppingStone_1_4::SteppingStone_1_4(){
 }
 
 
-void SteppingStone_1_4::setup(){
+void SteppingStone_Med::setup(){
     debug = false;
     ofBackground(255);
     gs = width/2;
@@ -46,14 +46,12 @@ void SteppingStone_1_4::setup(){
     }
     
     for(int i = 0; i < stones.size(); i ++){
-        stones[i].baseColour = ofColor(47,191, 57);
+        stones[i].baseColour = ofColor (200, 100, 30);
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
 //        stones[i].centerAttraction = ofRandom(0.1, 2);
 //        stones[i].particleRepulsion = ofRandom(0.4, 2);
-        
-        
         
     }
 }
@@ -61,7 +59,7 @@ void SteppingStone_1_4::setup(){
 
 
 
-void SteppingStone_1_4::update(){
+void SteppingStone_Med::update(){
     
     
 //    sequence2();
@@ -76,7 +74,7 @@ void SteppingStone_1_4::update(){
 }
 
 
-void SteppingStone_1_4::draw(){
+void SteppingStone_Med::draw(){
     
 
     ofBackground(255);
@@ -110,7 +108,7 @@ void SteppingStone_1_4::draw(){
 
 
 
-void SteppingStone_1_4::sequence1(){
+void SteppingStone_Med::sequence1(){
     
 //    // instructions for the illumination of particular stepping stones in order and in a timed sequence
 //
@@ -131,33 +129,30 @@ void SteppingStone_1_4::sequence1(){
 }
 
 
-void SteppingStone_1_4::sequence2(){
+void SteppingStone_Med::sequence2(){
     
     // instructions for the illumination of particular stepping stones in order and in a timed sequence
     
     
     stones[3].active = true;
     
-    stones[3].addParticle();
 
     if (ofGetElapsedTimeMillis() - startTime > 3000){
 
         stones[1].active = true;
-        stones[1].addParticle();
     }
     if (ofGetElapsedTimeMillis() - startTime > 6000){
 
         stones[2].active = true;
-        stones[2].addParticle();
     }
     if (ofGetElapsedTimeMillis() - startTime > 9000){
 
         stones[0].active = true;
-        stones[0].addParticle();
+     
     }
 }
 
-void SteppingStone_1_4::reset(){
+void SteppingStone_Med::reset(){
     
 //    for(int i = 0; i < stones.size(); i ++){
 //
@@ -168,7 +163,7 @@ void SteppingStone_1_4::reset(){
 }
 
 
-void SteppingStone_1_4::debugMode(){
+void SteppingStone_Med::debugMode(){
     
 
     

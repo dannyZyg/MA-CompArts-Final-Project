@@ -24,6 +24,9 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
 
 void EnvironmentThreeSource::setup(){
     
+    blur.setup(width,height, 10, .2, 4);
+
+    
     
     origin = ofVec2f(width/2, height/2);
     rad = width/2;
@@ -36,7 +39,8 @@ void EnvironmentThreeSource::setup(){
 }
 
 void EnvironmentThreeSource::update(){
-    
+    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
+    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
 }
 
@@ -51,8 +55,12 @@ void EnvironmentThreeSource::draw(){
     ofDrawCircle(origin, rad);
     ofPopStyle();
     
-    enviro.display();
     
+    blur.begin();
+    
+    enviro.display();
+    blur.end();
+    blur.draw();
     
     if(debug){
         ofPushStyle();
