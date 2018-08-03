@@ -21,7 +21,8 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
 
 void EnvironmentTwoSource::setup(){
     
-    
+    blur.setup(width,height, 10, .1, 2);
+
     origin = ofVec2f(width/2, height/2);
     rad = width/2;
     
@@ -35,12 +36,17 @@ void EnvironmentTwoSource::setup(){
 
 void EnvironmentTwoSource::update(){
     
-    
+    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
+    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
 }
 
 void EnvironmentTwoSource::draw(){
    
+    
     ofBackground(255);
+    blur.begin();
+
+    
     
     ofPushStyle();
     ofNoFill();
@@ -49,7 +55,13 @@ void EnvironmentTwoSource::draw(){
     ofDrawCircle(origin, rad);
     ofPopStyle();
     
+    
+   
     enviro.display();
+    
+    
+    blur.end();
+    blur.draw();
     
     if(debug){
         ofPushStyle();

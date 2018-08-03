@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "FboSource.h"
 #include "EnvironmentTwoSystem.h"
+#include "ofxBlur.h"
 
 #endif /* EnvironmentTwoSource_hpp */
 
@@ -33,5 +34,9 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     EnvironmentTwoSystem enviro;
     
     bool debug;
+    
+    ofxBlur blur;
+
+    
     
 };

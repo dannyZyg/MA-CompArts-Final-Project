@@ -7,7 +7,7 @@ EnvironmentThreeParticle::EnvironmentThreeParticle(float x, float y, float xv, f
 	xv(xv), yv(yv) {
         
 //        r = 3;
-        r = ofRandom (4, 10);
+        r = ofRandom (4, 12);
 //        col = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
         
         

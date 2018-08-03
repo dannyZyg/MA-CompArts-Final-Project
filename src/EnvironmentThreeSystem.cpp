@@ -21,7 +21,7 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 150;
+    kParticles = 80;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -324,7 +324,7 @@ void EnvironmentThreeSystem::display(){
 
             
             if(cur.team != nei[j] -> team){
-                ofSetColor(0);
+                ofSetColor(255);
                 ofDrawLine(cur.x, cur.y, nei[j] -> x, nei[j] -> y);
                 addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
             }
