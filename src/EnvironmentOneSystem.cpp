@@ -55,7 +55,7 @@ void EnvironmentOneSystem::setupColours(){
 
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], 175);
+        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }

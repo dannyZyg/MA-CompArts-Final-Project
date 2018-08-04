@@ -78,7 +78,7 @@ void EnvironmentThreeSource::draw(){
 
     
     
-    gpuBlur.beginDrawScene();
+//    gpuBlur.beginDrawScene();
     
     
     ofBackground(0);
@@ -91,18 +91,18 @@ void EnvironmentThreeSource::draw(){
 //    blur.end();
 //    blur.draw();
     
-    gpuBlur.endDrawScene();
-    //calc the fbo blurring, no drawing on screen yet
-    gpuBlur.performBlur();
-
-    //draw the "clean" scene on screen
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-    gpuBlur.drawSceneFBO();
-
-    //overlay the blurred fbo on top of the previously drawn clean scene
-    ofEnableBlendMode(OF_BLENDMODE_ADD);
-    gpuBlur.drawBlurFbo();
-    
+//    gpuBlur.endDrawScene();
+//    //calc the fbo blurring, no drawing on screen yet
+//    gpuBlur.performBlur();
+//
+//    //draw the "clean" scene on screen
+//    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//    gpuBlur.drawSceneFBO();
+//
+//    //overlay the blurred fbo on top of the previously drawn clean scene
+//    ofEnableBlendMode(OF_BLENDMODE_ADD);
+//    gpuBlur.drawBlurFbo();
+//    
     if(debug){
         
         ofPushStyle();

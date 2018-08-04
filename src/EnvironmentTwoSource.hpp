@@ -12,6 +12,7 @@
 #include "FboSource.h"
 #include "EnvironmentTwoSystem.h"
 #include "ofxBlur.h"
+#include "ofxFboBlur.h"
 
 #endif /* EnvironmentTwoSource_hpp */
 
@@ -33,10 +34,17 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     
     EnvironmentTwoSystem enviro;
     
+    
+    vector <float> cells;
+    vector <float> noiseSeed;
+    
+    
     bool debug;
     
     ofxBlur blur;
 
-    
+    ofxFboBlur gpuBlur;
+    //choose your fbo settings
+    ofFbo::Settings s;
     
 };

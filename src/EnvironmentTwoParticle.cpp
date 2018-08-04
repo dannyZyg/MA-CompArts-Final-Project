@@ -16,6 +16,7 @@ EnvironmentTwoParticle::EnvironmentTwoParticle(float x, float y, float xv, float
         if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         
         team = ofRandom(2);
+        
 
 }
 
@@ -57,53 +58,43 @@ void EnvironmentTwoParticle::bounceOffWalls(float damping) {
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
         ret = ret.normalize();
-//        ret *= 0;
         
         x += ret.x;
         y += ret.y;
 
+        xv *= -1;
+        yv *= -1;
+        
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        collision = true;
+    }
+}
+
+
+void EnvironmentTwoParticle::bounceOffCells(float damping, float outer, float inner){
+    bool collision = false;
+    
+    ofVec2f cent = ofVec2f(328, 328);
+    int d = ofDist(x, y, origin.x, origin.y);
+    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f ret = origin - out;
+        ret = ret.normalize();
+        
+        x += ret.x;
+        y += ret.y;
         
         xv *= -1;
         yv *= -1;
-
+        
+        vel.x *= -1;
+        vel.y *= -1;
         
         collision = true;
-        
-        
     }
-
-    
-    
-//    if(d > 200) ofSetColor(255, 0, 0);
-//    else{
-//        ofSetColor(255);
-//    }
-    
-    
-//    if (x > right){
-//        x = right;
-//        xv *= -1;
-//        collision = true;
-//    } else if (x < left){
-//        x = left;
-//        xv *= -1;
-//        collision = true;
-//    }
-//
-//    if (y > bottom){
-//        y = bottom;
-//        yv *= -1;
-//        collision = true;
-//    } else if (y < top){
-//        y = top;
-//        yv *= -1;
-//        collision = true;
-//    }
-//
-//    if (collision == true){
-//        xv *= damping;
-//        yv *= damping;
-//    }
 }
 
 void EnvironmentTwoParticle::addDampingForce(float damping) {

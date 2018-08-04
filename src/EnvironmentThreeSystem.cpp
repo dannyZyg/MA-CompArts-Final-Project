@@ -323,11 +323,20 @@ void EnvironmentThreeSystem::display(){
         for(int j = 0; j < nei.size(); j ++){
 
             
+            addRepulsionForce(cur, particleNeighborhood, 0.04);
+
+            
             if(cur.team != nei[j] -> team){
                 ofSetColor(255);
                 ofDrawLine(cur.x, cur.y, nei[j] -> x, nei[j] -> y);
                 addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
             }
+            
+            if(cur.team == nei[j] -> team){
+                
+                addAttractionForce(cur, particleNeighborhood, 0.06);
+            }
+            
         }
         
         

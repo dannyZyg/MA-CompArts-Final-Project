@@ -31,6 +31,9 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         
         particles.push_back(particle);
         
+        
+
+        
 //        particleSystem.add(particle);
         setupColours();
     }
@@ -40,25 +43,61 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 0.5;
-    centerAttraction = 0.6;
+    particleRepulsion = 0.3;
+    centerAttraction = 0;
     drawBalls = true;
     
 }
 
 
 void EnvironmentTwoSystem::setupColours(){
-    ofColor team1Base = ofColor(145,49, 191);
+    ofColor cell1Base = ofColor(145,49, 191);
+    cell1Col.setBaseColor(cell1Base);
+    cell1Col.generateAnalogous();
     
-    team1Col.setBaseColor(team1Base);
-    team1Col.generateAnalogous();
+    ofColor cell2Base = ofColor(255,49, 191);
+    cell2Col.setBaseColor(cell2Base);
+    cell2Col.generateAnalogous();
+    
+    ofColor cell3Base = ofColor(0,49, 220);
+    cell3Col.setBaseColor(cell3Base);
+    cell3Col.generateAnalogous();
 
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], 175);
+        
+        particles[i].colIndex = ofRandom(cell1Col.size());
+        
+        particles[i].col = ofColor(cell1Col[ofRandom(cell1Col.size())]);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
+}
+
+void EnvironmentTwoSystem::updateColours(){
+    
+    
+    for(int i = 0; i < particles.size(); i ++){
+        
+        float d = ofDist(particles[i].x, particles[i].y, origin.x, origin.y);
+        
+        if(d > 0 && d < cells[1]){
+            particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
+            }
+        else if(d > cells[1] && d < cells[2]){
+            particles[i].col = ofColor(cell2Col[particles[i].colIndex]);
+        }
+        else if(d > cells[2] && d < externalRad){
+            particles[i].col = ofColor(cell3Col[particles[i].colIndex]);
+        }
+        
+        else{
+//            particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
+        }
+        
+        
+    }
+    
     
 }
 
@@ -248,9 +287,12 @@ void EnvironmentTwoSystem::update(float lastTimeStep) {
 		particles[i].updatePosition(curTimeStep);
 	}
     
-    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
-    centerAttraction = ofMap(sin(ofGetFrameNum() * 0.02), -1, 1, 0.2, 1);
+//    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
+//    centerAttraction = ofMap(sin(ofGetFrameNum() * 0.02), -1, 1, 0.2, 1);
 
+    updateColours();
+
+    
 }
 
 void EnvironmentTwoSystem::draw() {
@@ -292,8 +334,19 @@ void EnvironmentTwoSystem::display(){
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
-        cur.bounceOffWalls();
+//        cur.bounceOffWalls();
+        cur.bounceOffCells();
         cur.addDampingForce();
+        
+        
+        
+        if(i > 0 && i < 700){
+            particles[i].bounceOffCells(0.3, cells[1], 0);
+            
+            
+        }
+        
+        
         
         
         
@@ -336,4 +389,16 @@ void EnvironmentTwoSystem::display(){
 //    externalRad = externalRad_;
 //    
 //}
+
+void EnvironmentTwoSystem::receiveCells(vector <float> cells_){
+    cells = cells_;
+}
+
+//void EnvironmentTwoSystem::bounceOffCells(){
+//    if(
+//
+//
+//}
+
+
 

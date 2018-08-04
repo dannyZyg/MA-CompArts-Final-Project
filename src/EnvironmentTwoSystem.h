@@ -38,13 +38,18 @@ public:
 
 	void draw();
     void setupColours();
+    void updateColours();
+    void bounceOffCells();
 	
 	int getWidth() const;
 	int getHeight() const;
     
     
-    ofxColorPalette team1Col;
-    ofxColorPalette team2Col;
+    ofxColorPalette cell1Col;
+    ofxColorPalette cell2Col;
+    ofxColorPalette cell3Col;
+    
+
     
     ofxColorPalette::ColorChannel mode;
     float brightness;
@@ -65,6 +70,9 @@ public:
     ofVec2f origin;
     float externalRad;
     
+    vector <float> cells;
+    void receiveCells(vector <float> cells_);
+    
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
@@ -80,6 +88,8 @@ public:
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
     
+    
+ 
     
     
 };

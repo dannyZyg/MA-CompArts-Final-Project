@@ -18,6 +18,7 @@ public:
 	void updatePosition(float timeStep);
 	void resetForce();
 	void bounceOffWalls(float damping = .3);
+    void bounceOffCells(float damping = .3, float outer = 0, float inner = 0);
 	void addDampingForce(float damping = .01);
 	void draw();
     
@@ -26,6 +27,8 @@ public:
     ofColor col;
     
     int team;
+    
+    int colIndex;
 
     
 };
