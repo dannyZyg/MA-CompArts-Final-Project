@@ -15,19 +15,16 @@ EnvironmentTwoParticle::EnvironmentTwoParticle(float x, float y, float xv, float
          vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         
-        team = ofRandom(2);
-        
+        cellState = ofRandom(3);
+        damping = .3;
+        randomOffset = ofRandom(-5, 10);
 
 }
 
 void EnvironmentTwoParticle::updatePosition(float timeStep) {
 //     f = ma, m = 1, f = a, v = int(a)
    
-//    ofSetColor(255, 0, 0);
-//    ofSetColor(col);
-    
-    
-//    ofSetColor(col);
+
 
     
     xv += xf;// * timeStep;
@@ -38,8 +35,8 @@ void EnvironmentTwoParticle::updatePosition(float timeStep) {
 //    vel.x += xf;
 //    vel.y += yf;
 //
-//    x += vel.x;
-//    y += vel.y;
+    x += vel.x;
+    y += vel.y;
 //
 }
 
@@ -48,12 +45,12 @@ void EnvironmentTwoParticle::resetForce() {
 	yf = 0;
 }
 
-void EnvironmentTwoParticle::bounceOffWalls(float damping) {
+void EnvironmentTwoParticle::bounceOffWalls() {
 	bool collision = false;
 
     ofVec2f cent = ofVec2f(328, 328);
     int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
+    if( (d > externalRad - r )){
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
@@ -72,16 +69,40 @@ void EnvironmentTwoParticle::bounceOffWalls(float damping) {
     }
 }
 
-
-void EnvironmentTwoParticle::bounceOffCells(float damping, float outer, float inner){
+// Function that reverses velocity when hitting an outer cell wall
+void EnvironmentTwoParticle::bounceOffOuterCell(float outer){
     bool collision = false;
     
-    ofVec2f cent = ofVec2f(328, 328);
-    int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
+    float d = ofDist(x, y, origin.x, origin.y);
+    if( (d > outer - r)){
         
-        ofVec2f out = ofVec2f(x, y);
-        ofVec2f ret = origin - out;
+        ofVec2f posAtEdge = ofVec2f(x, y);
+        ofVec2f ret = origin - posAtEdge;
+        ret = ret.normalize();
+
+        x += ret.x;
+        y += ret.y;
+
+        xv *= -1;
+        yv *= -1;
+
+        vel.x *= -1;
+        vel.y *= -1;
+
+        collision = true;
+    }
+}
+
+// Function that reverses velocity when hitting an inner cell wall
+void EnvironmentTwoParticle::bounceOffInnerCell(float inner){
+    bool collision = false;
+    
+    float d = ofDist(x, y, origin.x, origin.y);
+    if( (d < inner + r)){
+        
+        ofVec2f posAtEdge = ofVec2f(x, y);
+        ofVec2f ret = origin - posAtEdge;
+        ret *= -1;
         ret = ret.normalize();
         
         x += ret.x;
@@ -96,8 +117,11 @@ void EnvironmentTwoParticle::bounceOffCells(float damping, float outer, float in
         collision = true;
     }
 }
+    
 
-void EnvironmentTwoParticle::addDampingForce(float damping) {
+
+
+void EnvironmentTwoParticle::addDampingForce() {
 	xf -= xv * damping;
 	yf -= yv * damping;
 }
@@ -109,16 +133,10 @@ void EnvironmentTwoParticle::draw() {
 
 
 void EnvironmentTwoParticle::displayParticle(){
-//    ofNoFill();
     ofSetColor(col);
     ofDrawCircle(x, y, r);
-    
-    
 }
 
-
-//void EnvironmentTwoParticle::receiveGeometry(ofVec2f origin_, float externalRad_){
-//    origin = origin_;
-//    externalRad = externalRad_;
-//    
-//}
+void EnvironmentTwoParticle::receiveCells(vector <float> cells_){
+    cells = cells_;
+}

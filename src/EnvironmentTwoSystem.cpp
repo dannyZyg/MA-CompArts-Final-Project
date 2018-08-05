@@ -21,7 +21,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 1000;
+    kParticles = 500;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -43,7 +43,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 0.3;
+    particleRepulsion = 0.5;
     centerAttraction = 0;
     drawBalls = true;
     
@@ -55,11 +55,11 @@ void EnvironmentTwoSystem::setupColours(){
     cell1Col.setBaseColor(cell1Base);
     cell1Col.generateAnalogous();
     
-    ofColor cell2Base = ofColor(255,49, 191);
+    ofColor cell2Base = ofColor(0,49, 220);
     cell2Col.setBaseColor(cell2Base);
     cell2Col.generateAnalogous();
     
-    ofColor cell3Base = ofColor(0,49, 220);
+    ofColor cell3Base = ofColor(255,49, 191);
     cell3Col.setBaseColor(cell3Base);
     cell3Col.generateAnalogous();
 
@@ -285,6 +285,7 @@ void EnvironmentTwoSystem::update(float lastTimeStep) {
 	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition(curTimeStep);
+        particles[i].receiveCells(cells);
 	}
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
@@ -335,21 +336,33 @@ void EnvironmentTwoSystem::display(){
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
 //        cur.bounceOffWalls();
-        cur.bounceOffCells();
+        
+        
+        
+        
+        
+        
+        
         cur.addDampingForce();
         
+// if statements telling the particles to stay within their allocated cell walls
         
+        if(particles[i].cellState == 0){
+            cur.bounceOffOuterCell(cells[1]);
+        }
         
-        if(i > 0 && i < 700){
-            particles[i].bounceOffCells(0.3, cells[1], 0);
-            
+        else if(particles[i].cellState == 1){
+            cur.bounceOffInnerCell(cells[1]);
+            cur.bounceOffOuterCell(cells[2]);
             
         }
         
+        else if(particles[i].cellState == 2){
+            cur.bounceOffInnerCell(cells[2]);
+            cur.bounceOffWalls();
+        }
         
-        
-        
-        
+
         
     }
     if(!drawBalls) {

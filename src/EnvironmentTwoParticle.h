@@ -12,23 +12,29 @@ public:
     ofVec2f origin;
     float externalRad;
     
-    
+    float damping;
     
 	EnvironmentTwoParticle(float x = 0, float y = 0, float xv = 0, float yv = 0);
 	void updatePosition(float timeStep);
 	void resetForce();
-	void bounceOffWalls(float damping = .3);
-    void bounceOffCells(float damping = .3, float outer = 0, float inner = 0);
-	void addDampingForce(float damping = .01);
+	void bounceOffWalls();
+    void bounceOffOuterCell(float outer);
+    void bounceOffInnerCell(float inner);
+
+	void addDampingForce();
 	void draw();
     
     void displayParticle();
     ofVec2f vel;
     ofColor col;
     
-    int team;
+    int cellState;
+    float randomOffset;
     
     int colIndex;
+    
+    vector <float> cells;
+    void receiveCells(vector <float> cells_);
 
     
 };
