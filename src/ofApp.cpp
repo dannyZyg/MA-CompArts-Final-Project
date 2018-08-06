@@ -2,7 +2,7 @@
 
 void ofApp::setup(){
     
-    verdana30.load("verdana.ttf", 50, true, true);
+    verdana30.load("verdana.ttf", 80, true, true);
     verdana30.setLineHeight(34.0f);
     verdana30.setLetterSpacing(1.035);
     
@@ -20,16 +20,27 @@ void ofApp::setup(){
     piMapper.registerFboSource(environmentOne);
     piMapper.registerFboSource(environmentTwo);
     piMapper.registerFboSource(environmentThree);
-    piMapper.registerFboSource(stones_1_4);
+    piMapper.registerFboSource(small_stones_1_4);
+    piMapper.registerFboSource(small_stones_5_8);
+    piMapper.registerFboSource(small_stones_9_12);
+    piMapper.registerFboSource(small_stones_13_16);
+    piMapper.registerFboSource(med_stones_1_4);
+    piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
-    piMapper.registerFboSource(med_stones);
+    
 
 
 //Send large font to all FBO sources
     environmentOne.font = verdana30;
     environmentTwo.font = verdana30;
     environmentThree.font = verdana30;
-    stones_1_4.font = verdana30;
+    small_stones_1_4.font = verdana30;
+    small_stones_5_8.font = verdana30;
+    small_stones_9_12.font = verdana30;
+    small_stones_13_16.font = verdana30;
+    med_stones_1_4.font = verdana30;
+    med_stones_5_8.font = verdana30;
+    large_stones.font = verdana30;
     
 // setup piMapper
 	piMapper.setup();
@@ -78,7 +89,7 @@ void ofApp::draw(){
     }
  
     ofSetColor(255);
-    ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 52);
+    ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 20);
     
 }
 
@@ -101,7 +112,14 @@ void ofApp::keyPressed(int key){
         environmentOne.debug = !debug;
         environmentTwo.debug = !debug;
         environmentThree.debug = !debug;
-        stones_1_4.debug = ! debug;
+        small_stones_1_4.debug = ! debug;
+        small_stones_5_8.debug = ! debug;
+        small_stones_9_12.debug = ! debug;
+        small_stones_13_16.debug = ! debug;
+        med_stones_1_4.debug = ! debug;
+        med_stones_5_8.debug = ! debug;
+        large_stones.debug = ! debug;
+
         
         
         

@@ -51,4 +51,6 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     // debug font
     ofTrueTypeFont font;
     
+    void drawCellDebug();
+    
 };

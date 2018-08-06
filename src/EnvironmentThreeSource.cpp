@@ -112,7 +112,7 @@ void EnvironmentThreeSource::draw(){
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        font.drawString("Enviro 3", origin.x, origin.y);
+        font.drawString("Enviro 3", origin.x - 200, origin.y);
         ofPopStyle();
         
     }

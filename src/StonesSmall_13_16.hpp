@@ -1,27 +1,26 @@
 //
-//  SteppingStone_Large.hpp
+//  StonesSmall_13_16.hpp
 //  sketchClassTest
 //
 //  Created by Danny on 17/7/18.
 //
 
-#ifndef SteppingStone_Large_hpp
-#define SteppingStone_Large_hpp
+#ifndef StonesSmall_13_16_hpp
+#define StonesSmall_13_16_hpp
 
 #include <stdio.h>
 #include "ofMain.h"
-//#include "SteppingStoneType1.hpp"
 #include "StoneParticleSystem.h"
 #include "FboSource.h"
 
-#endif /* SteppingStone_Large_hpp */
+#endif /* StonesSmall_13_16_hpp */
 
 
-class SteppingStone_Large : public ofx::piMapper::FboSource{
+class StonesSmall_13_16 : public ofx::piMapper::FboSource{
     
 public:
     
-    SteppingStone_Large();
+    StonesSmall_13_16();
     void setup();
     void update();
     void draw();
@@ -44,6 +43,10 @@ public:
     int binPower;
     
     bool debug;
+    
+    
+    // debug font
+    ofTrueTypeFont font;
     
 };
 

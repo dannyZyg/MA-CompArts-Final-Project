@@ -1,27 +1,26 @@
 //
-//  SteppingStone_1_4.hpp
+//  StonesMed_5_8.hpp
 //  sketchClassTest
 //
 //  Created by Danny on 17/7/18.
 //
 
-#ifndef SteppingStone_1_4_hpp
-#define SteppingStone_1_4_hpp
+#ifndef StonesMed_5_8_hpp
+#define StonesMed_5_8_hpp
 
 #include <stdio.h>
 #include "ofMain.h"
-//#include "SteppingStoneType1.hpp"
 #include "StoneParticleSystem.h"
 #include "FboSource.h"
 
-#endif /* SteppingStone_1_4_hpp */
+#endif /* StonesMed_5_8_hpp */
 
 
-class SteppingStone_1_4 : public ofx::piMapper::FboSource{
+class StonesMed_5_8 : public ofx::piMapper::FboSource{
     
 public:
     
-    SteppingStone_1_4();
+    StonesMed_5_8();
     void setup();
     void update();
     void draw();
@@ -44,7 +43,6 @@ public:
     int binPower;
     
     bool debug;
-    
     
     // debug font
     ofTrueTypeFont font;

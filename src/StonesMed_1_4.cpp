@@ -1,32 +1,32 @@
 //
-//  SteppingStone_Large.cpp
+//  StonesMed_1_4.cpp
 //  sketchClassTest
 //
 //  Created by Danny on 17/7/18.
 //
 
-#include "SteppingStone_Large.hpp"
+#include "StonesMed_1_4.hpp"
 
 
 
-SteppingStone_Large::SteppingStone_Large(){
-
-    name = "Large Stones";
+StonesMed_1_4::StonesMed_1_4(){
+    
+    name = "Medium Stones 1-4";
     width = 800;
     height = 800;
     allocate(width, height);
-
-
+    
+    
 }
 
 
-void SteppingStone_Large::setup(){
+void StonesMed_1_4::setup(){
     debug = false;
     ofBackground(255);
     gs = width/2;
     numCells = fbo->getHeight()/gs;
     rad = gs/2;
-
+    
     binPower = 5;
 
     for(int i = 0; i < numCells; i++){
@@ -44,7 +44,7 @@ void SteppingStone_Large::setup(){
 
 
     }
-
+    
     for(int i = 0; i < stones.size(); i ++){
         stones[i].baseColour = ofColor (200, 100, 30);
         stones[i].origin = origins[i];
@@ -52,64 +52,61 @@ void SteppingStone_Large::setup(){
         stones[i].setup(width, height, binPower);
 //        stones[i].centerAttraction = ofRandom(0.1, 2);
 //        stones[i].particleRepulsion = ofRandom(0.4, 2);
-
+        
     }
 }
 
 
 
 
-void SteppingStone_Large::update(){
-
-
+void StonesMed_1_4::update(){
+    
+    
 //    sequence2();
-
+    
     for(int i = 0; i < stones.size(); i ++){
 //        stones[i].update();
-
+        
     }
-
+    
 //    cout<<stones.size()<<endl;
-
+    
 }
 
 
-void SteppingStone_Large::draw(){
+void StonesMed_1_4::draw(){
+    
 
-
-    ofBackground(0);
-
-
-
-
+    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
+    ofBackground(255);
+    
+    //refresh background circle colour every frame, for all stepping stones in the fbo source
+    
     for(int i = 0; i < origins.size(); i ++){
-
         ofPushStyle();
+        ofSetColor(0);
         ofNoFill();
-        ofSetColor(255, 0, 0);
-        ofDrawCircle(origins[i], rad);
-        ofSetColor(255);
-        ofNoFill();
+        ofDrawRectangle(origins[i], gs, gs);
+        ofFill();
         ofDrawCircle(origins[i], rad);
         ofPopStyle();
-
     }
 
 
     for(int i = 0; i < stones.size(); i ++){
-
+        
         if(stones[i].active) stones[i].display();
     }
-
+    
     if(debug) debugMode();
-
-
+    
+    
 }
 
 
 
-void SteppingStone_Large::sequence1(){
-
+void StonesMed_1_4::sequence1(){
+    
 //    // instructions for the illumination of particular stepping stones in order and in a timed sequence
 //
 //    stones[0].active = true;
@@ -129,13 +126,13 @@ void SteppingStone_Large::sequence1(){
 }
 
 
-void SteppingStone_Large::sequence2(){
-
+void StonesMed_1_4::sequence2(){
+    
     // instructions for the illumination of particular stepping stones in order and in a timed sequence
-
-
+    
+    
     stones[3].active = true;
-
+    
 
     if (ofGetElapsedTimeMillis() - startTime > 3000){
 
@@ -148,38 +145,34 @@ void SteppingStone_Large::sequence2(){
     if (ofGetElapsedTimeMillis() - startTime > 9000){
 
         stones[0].active = true;
+     
     }
 }
 
-void SteppingStone_Large::reset(){
-
+void StonesMed_1_4::reset(){
+    
 //    for(int i = 0; i < stones.size(); i ++){
 //
 //        startTime = ofGetElapsedTimeMillis();
 ////        stones[i].reset();
 //    }
-
+    
 }
 
 
-void SteppingStone_Large::debugMode(){
-
-
-
-
+void StonesMed_1_4::debugMode(){
+    
+    // Draw white circles over all stepping stones and display their position numbers
+    
     for(int i = 0; i < stones.size(); i ++){
-        ofPushMatrix();
         ofPushStyle();
         ofFill();
         ofSetColor(255);
         ofDrawCircle(origins[i], rad);
-        ofTranslate( origins[i].x, origins[i].y);
-//        ofScale(10, 10);
         ofSetColor(0);
-        ofDrawBitmapString(ofToString(i + 1),0, 0);
+        font.drawString("M" + ofToString(i + 1),origins[i].x - 100, origins[i].y);
         ofPopStyle();
-        ofPopMatrix();
-
+        
     }
 }
 

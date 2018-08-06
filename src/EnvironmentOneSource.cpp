@@ -67,7 +67,7 @@ void EnvironmentOneSource::draw(){
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        font.drawString("Enviro 1", origin.x, origin.y);
+        font.drawString("Enviro 1", origin.x - 200, origin.y);
         ofPopStyle();
         
         

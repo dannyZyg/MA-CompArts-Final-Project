@@ -21,12 +21,6 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
 
 void EnvironmentTwoSource::setup(){
     
-    
-    
-    
-
-    
-    
     blur.setup(width,height, 3, 0.1, 4);
 
     origin = ofVec2f(width/2, height/2);
@@ -74,13 +68,10 @@ void EnvironmentTwoSource::update(){
     gpuBlur.blurOverlayGain = 255;
     
     
-    
+    // for all cell boundaries, contract and expand with perlin noise
     for(int i = 0; i < cells.size(); i ++){
-        
         float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;
-        
         cells[i] += noise;
-
     }
     
     enviro.receiveCells(cells);
@@ -137,29 +128,29 @@ void EnvironmentTwoSource::draw(){
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        font.drawString("Enviro 2", origin.x, origin.y);
+        font.drawString("Enviro 2", origin.x - 200, origin.y);
         ofPopStyle();
     }
-    
-    
-    //draw the noisy circle guide
-    
-//    for(int i = 0; i < cells.size(); i ++){
-//        ofSetColor(255);
-//        ofNoFill();
-//        ofDrawCircle(origin, cells[i]);
-//        ofDrawBitmapString(ofToString(i), origin.x + cells[i], origin.y);
-////        ofSetLineWidth(5);
-
-////        ofSetColor(0);
-//    }
     
     ofSetColor(255);
     ofNoFill();
     ofDrawCircle(origin, rad);
     
+//    drawCellDebug();
     
     
+    
+}
+
+void EnvironmentTwoSource::drawCellDebug(){
+  //  draw the noisy circle guide
+    
+        for(int i = 0; i < cells.size(); i ++){
+            ofSetColor(255);
+            ofNoFill();
+            ofDrawCircle(origin, cells[i]);
+            ofDrawBitmapString(ofToString(i), origin.x + cells[i], origin.y);
+            }
     
 }
 

@@ -62,8 +62,11 @@ void StoneParticle::bounceOffWalls(float damping) {
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
-        ret = ret.normalize();
+//        ret = ret.normalize();
+        
 //        ret *= 0;
+        
+        addDampingForce();
         
         x += ret.x;
         y += ret.y;
