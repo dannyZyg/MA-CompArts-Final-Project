@@ -64,16 +64,21 @@ public:
     
     void display();
     void reset();
+    void fadeParticles();
+
     
     ofVec2f origin;
     float externalRad;
     
     
     bool active;
-    
-    
     ofColor baseColour;
     
+    int numToDisplay;
+    bool timeIntervalPassed;
+    unsigned int timer;
+    
+    int showParticleSpacing;
     
 };
 

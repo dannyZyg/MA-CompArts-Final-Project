@@ -5,6 +5,8 @@
 //  Created by Danny on 28/7/18.
 //
 
+#pragma once
+
 #ifndef EnvironmentOneSource_hpp
 #define EnvironmentOneSource_hpp
 

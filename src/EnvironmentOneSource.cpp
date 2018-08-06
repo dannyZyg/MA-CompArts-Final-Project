@@ -31,8 +31,6 @@ void EnvironmentOneSource::setup(){
     enviro.origin = origin;
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
-    
-    debug = false;
 }
 
 void EnvironmentOneSource::update(){

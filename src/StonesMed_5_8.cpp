@@ -94,7 +94,7 @@ void StonesMed_5_8::draw(){
 
     for(int i = 0; i < stones.size(); i ++){
         
-        if(stones[i].active) stones[i].display();
+        stones[i].display();
     }
     
     if(debug) debugMode();

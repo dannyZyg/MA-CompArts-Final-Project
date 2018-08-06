@@ -1,3 +1,5 @@
+#pragma once
+
 #include "EnvironmentTwoParticle.h"
 #include "ofxColorPalette.h"
 
@@ -5,7 +7,7 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-#pragma once
+
 
 class EnvironmentTwoSystem {
 protected:

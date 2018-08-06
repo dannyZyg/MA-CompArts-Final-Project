@@ -4,6 +4,7 @@
 //
 //  Created by Danny on 28/7/18.
 //
+#pragma once
 
 #ifndef EnvironmentThreeSource_hpp
 #define EnvironmentThreeSource_hpp

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxPiMapper.h"
+#include "StoneParticleSystem.h"
 
 #include "StonesSmall_1_4.hpp"
 #include "StonesSmall_5_8.hpp"
@@ -57,6 +58,10 @@ public:
     bool debug;
     
     void debugDisplay();
-   ofTrueTypeFont verdana30;
+    ofTrueTypeFont verdana30;
+    
+    float startTime;
+    int timeSpacing;
+
 
 };

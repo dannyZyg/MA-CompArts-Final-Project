@@ -318,7 +318,6 @@ void EnvironmentThreeSystem::display(){
         
         vector<EnvironmentThreeParticle*> nei = getNeighbors(cur.x, cur.y, tempRad);
         
-//        cout<< nei.size() << endl;
         
         for(int j = 0; j < nei.size(); j ++){
 

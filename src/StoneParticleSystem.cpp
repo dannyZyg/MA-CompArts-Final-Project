@@ -20,15 +20,17 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     brightness = 200;
     saturation = 200;
     
+    showParticleSpacing = 5;
     
+    numToDisplay = 0;
     kParticles = 30;
     for(int i = 0; i < kParticles; i++) {
-        
+
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
-        
+
         StoneParticle particle = StoneParticle(x, y, 0, 0);
-        
+
         particles.push_back(particle);
     }
     
@@ -43,8 +45,9 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     centerAttraction = 0;
     drawBalls = true;
     
-    active = true;
-    
+    active = false;
+    timer = 0;
+    timeIntervalPassed = 0;
     
 }
 
@@ -261,11 +264,15 @@ void StoneParticleSystem::update(float lastTimeStep) {
 }
 
 void StoneParticleSystem::draw() {
-	int n = particles.size();
-	glBegin(GL_POINTS);
-	for(int i = 0; i < n; i++)
-        particles[i].draw();
-	glEnd();
+    
+    if(active){
+        int n = particles.size();
+        glBegin(GL_POINTS);
+        for(int i = 0; i < n; i++)
+            particles[i].draw();
+        glEnd();
+    
+    }
     
     
 }
@@ -281,11 +288,10 @@ int StoneParticleSystem::getHeight() const {
 
 void StoneParticleSystem::display(){
     
+    fadeParticles();
+    
     ofPushStyle();
     ofPushMatrix();
-    
-//    ofBackground(255);
-    
     
     setTimeStep(timeStep);
     // do this once per frame
@@ -328,17 +334,22 @@ void StoneParticleSystem::display(){
     // draw all the particles
     if(drawBalls) {
         for(int i = 0; i < particles.size(); i++) {
-            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            
-            particles[i].displayParticle();
+           
+//            particles[i].displayParticle();
         }
     }
-    
+   
+
     
     ofPopStyle();
     ofPopMatrix();
 
 //    addParticle();
+    
+//    timer ++;
+    
+    
+//    if(timer > 50000)timer = 0;
 }
 
 
@@ -346,5 +357,35 @@ void StoneParticleSystem::display(){
 void StoneParticleSystem::reset(){
     
     particles.clear();
+}
+
+
+void StoneParticleSystem::fadeParticles(){
+    
+    for(int i = 0; i < numToDisplay; i++) {
+        particles[i].displayParticle();
+    }
+    
+    if(active){
+        if(timer % showParticleSpacing == 0){
+            numToDisplay ++;
+            if(numToDisplay >= kParticles){
+                numToDisplay = kParticles;
+            }
+        }
+    }
+    
+    if(!active){
+          if(timer % showParticleSpacing == 0){
+              numToDisplay --;
+              if(numToDisplay <= 0){
+                  numToDisplay = 0;
+              }
+          }
+    }
     
 }
+
+
+
+

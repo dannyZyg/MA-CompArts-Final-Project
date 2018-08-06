@@ -27,8 +27,6 @@ void ofApp::setup(){
     piMapper.registerFboSource(med_stones_1_4);
     piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
-    
-
 
 //Send large font to all FBO sources
     environmentOne.font = verdana30;
@@ -54,6 +52,8 @@ void ofApp::setup(){
    
     drawTemplate = false;
     
+    timeSpacing = 1000;
+    
 }
 
 void ofApp::update(){
@@ -64,7 +64,6 @@ void ofApp::update(){
 
 void ofApp::draw(){
  
-    
     ofBackground(0);
     
     if(drawTemplate) layout.draw(0, 0);
@@ -119,16 +118,8 @@ void ofApp::keyPressed(int key){
         med_stones_1_4.debug = ! debug;
         med_stones_5_8.debug = ! debug;
         large_stones.debug = ! debug;
-
-        
-        
         
         cout << "DEBUG = " << debug << endl;
-        
-        
-        
-        
-        
     }
     
 }
@@ -140,7 +131,8 @@ void ofApp::keyReleased(int key){
 void ofApp::mousePressed(int x, int y, int button){
 	piMapper.mousePressed(x, y, button);
     
-    
+//    small_stones_1_4.stones[2].numToDisplay ++;
+//    cout<< small_stones_1_4.stones[2].numToDisplay <<endl;
     
     
 }
@@ -151,14 +143,6 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 void ofApp::mouseDragged(int x, int y, int button){
 	piMapper.mouseDragged(x, y, button);
-}
-
-
-
-void ofApp::scheduler(){
-    
-    
-    
 }
 
 
@@ -175,4 +159,44 @@ void ofApp::debugDisplay(){
 }
 
 
+void ofApp::scheduler(){
+
+//    for(int i = 0; i < small_stones_1_4.stones.size(); i ++){
+//        small_stones_1_4.stones[i].active = false;        
+//    }
+    
+    
+//    large_stones.stones[0].active = true;
+
+// instructions for the illumination of particular stepping stones in order and in a timed sequence
+    large_stones.stones[0].active = true;
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing){
+        med_stones_1_4.stones[0].active = true;
+    }
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 2 ){
+        small_stones_1_4.stones[2].active = true;
+        small_stones_5_8.stones[0].active = true;
+    }
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 3){
+        small_stones_1_4.stones[3].active = true;
+    }
+
+
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 5){
+        large_stones.stones[0].active = false;
+    }
+
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 6){
+        med_stones_1_4.stones[0].active = false;
+    }
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 7 ){
+        small_stones_1_4.stones[2].active = false;
+        small_stones_5_8.stones[0].active = false;
+    }
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 8){
+        small_stones_1_4.stones[3].active = false;
+    }
+
+    
+}
 

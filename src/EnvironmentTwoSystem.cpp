@@ -281,19 +281,15 @@ void EnvironmentTwoSystem::addForce(float targetX, float targetY, float radius, 
 }
 
 void EnvironmentTwoSystem::update(float lastTimeStep) {
-	int n = particles.size();
-	float curTimeStep = lastTimeStep * timeStep;
-	for(int i = 0; i < n; i++) {
-		particles[i].updatePosition(curTimeStep);
+    int n = particles.size();
+    float curTimeStep = lastTimeStep * timeStep;
+    for(int i = 0; i < n; i++) {
+        particles[i].updatePosition(curTimeStep);
         particles[i].receiveCells(cells);
-	}
-    
+    }
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
 //    centerAttraction = ofMap(sin(ofGetFrameNum() * 0.02), -1, 1, 0.2, 1);
-
     updateColours();
-
-    
 }
 
 void EnvironmentTwoSystem::draw() {

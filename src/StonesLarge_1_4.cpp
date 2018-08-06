@@ -68,7 +68,8 @@ void StonesLarge_1_4::update(){
 
     }
 
-//    cout<<stones.size()<<endl;
+//    cout<<stones[1].timeIntervalPassed<<endl;
+//    cout<<stones[1].timer<<endl;
 
 }
 
@@ -95,7 +96,7 @@ void StonesLarge_1_4::draw(){
 
     for(int i = 0; i < stones.size(); i ++){
 
-        if(stones[i].active) stones[i].display();
+       stones[i].display();
     }
 
     if(debug) debugMode();

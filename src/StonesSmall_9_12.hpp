@@ -4,6 +4,7 @@
 //
 //  Created by Danny on 17/7/18.
 //
+#pragma once
 
 #ifndef StonesSmall_9_12_hpp
 #define StonesSmall_9_12_hpp

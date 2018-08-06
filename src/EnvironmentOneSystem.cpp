@@ -44,6 +44,8 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     centerAttraction = 0.6;
     drawBalls = true;
     
+
+    
 }
 
 

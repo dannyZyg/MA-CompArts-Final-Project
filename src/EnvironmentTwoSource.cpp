@@ -75,7 +75,7 @@ void EnvironmentTwoSource::update(){
     }
     
     enviro.receiveCells(cells);
-    enviro.update(100);
+//    enviro.update(100);
 
     
 }

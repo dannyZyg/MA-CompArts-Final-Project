@@ -4,6 +4,7 @@
 //
 //  Created by Danny on 17/7/18.
 //
+#pragma once
 
 #ifndef StonesMed_5_8_hpp
 #define StonesMed_5_8_hpp
