@@ -21,6 +21,12 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
 
 void EnvironmentTwoSource::setup(){
     
+    
+    
+    
+
+    
+    
     blur.setup(width,height, 3, 0.1, 4);
 
     origin = ofVec2f(width/2, height/2);
@@ -71,7 +77,7 @@ void EnvironmentTwoSource::update(){
     
     for(int i = 0; i < cells.size(); i ++){
         
-        float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]);
+        float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;
         
         cells[i] += noise;
 
@@ -84,26 +90,19 @@ void EnvironmentTwoSource::update(){
 }
 
 void EnvironmentTwoSource::draw(){
-   
     
-
+    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
+    ofBackground(255);
     
-
-    
-//
-    
-//    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-   
-    
+    //refresh background circle colour every frame
     ofPushStyle();
-    ofNoFill();
+    ofFill();
     ofSetLineWidth(5);
-    ofSetColor(255, 0, 0);
+    ofSetColor(0);
     ofDrawCircle(origin, rad);
     ofPopStyle();
     
 //     gpuBlur.beginDrawScene();
-    ofBackground(0);
 //    ofClear(255);
 //    blur.begin();
 
@@ -129,16 +128,17 @@ void EnvironmentTwoSource::draw(){
 //    blur.draw();
     
     if(debug){
+        
+        // Draw white circle over environment and display fbo position label
+
         ofPushStyle();
         ofFill();
         ofSetLineWidth(5);
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        ofDrawBitmapString("Enviro 2", origin.x, origin.y);
+        font.drawString("Enviro 2", origin.x, origin.y);
         ofPopStyle();
-        
-        
     }
     
     
@@ -150,10 +150,16 @@ void EnvironmentTwoSource::draw(){
 //        ofDrawCircle(origin, cells[i]);
 //        ofDrawBitmapString(ofToString(i), origin.x + cells[i], origin.y);
 ////        ofSetLineWidth(5);
-//        ofSetColor(255);
-//        ofDrawCircle(origin, rad);
+
 ////        ofSetColor(0);
 //    }
+    
+    ofSetColor(255);
+    ofNoFill();
+    ofDrawCircle(origin, rad);
+    
+    
+    
     
 }
 

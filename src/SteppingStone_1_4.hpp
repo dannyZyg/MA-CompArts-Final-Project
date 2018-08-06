@@ -45,6 +45,10 @@ public:
     
     bool debug;
     
+    
+    // debug font
+    ofTrueTypeFont font;
+    
 };
 
 

@@ -78,23 +78,20 @@ void SteppingStone_1_4::update(){
 
 void SteppingStone_1_4::draw(){
     
-
+    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
     ofBackground(255);
     
+    
+    //refresh background circle colour every frame, for all stepping stones in the fbo source
 
-    
-    
     for(int i = 0; i < origins.size(); i ++){
-
         ofPushStyle();
+        ofSetColor(0);
         ofNoFill();
-        ofSetColor(255, 0, 0);
-        ofDrawCircle(origins[i], rad);
-        ofSetColor(255);
-        ofNoFill();
+        ofDrawRectangle(origins[i], gs, gs);
+        ofFill();
         ofDrawCircle(origins[i], rad);
         ofPopStyle();
-
     }
 
 
@@ -170,22 +167,16 @@ void SteppingStone_1_4::reset(){
 
 void SteppingStone_1_4::debugMode(){
     
-
-    
+// Draw white circles over all stepping stones and display their position numbers
     
     for(int i = 0; i < stones.size(); i ++){
-        ofPushMatrix();
         ofPushStyle();
         ofFill();
         ofSetColor(255);
         ofDrawCircle(origins[i], rad);
-        ofTranslate( origins[i].x, origins[i].y);
-//        ofScale(10, 10);
         ofSetColor(0);
-        ofDrawBitmapString(ofToString(i + 1),0, 0);
+        font.drawString(ofToString(i + 1),origins[i].x, origins[i].y);
         ofPopStyle();
-        ofPopMatrix();
-        
     }
 }
 

@@ -42,12 +42,14 @@ void EnvironmentOneSource::update(){
 
 void EnvironmentOneSource::draw(){
    
+    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
     ofBackground(255);
     
+    //refresh background circle colour every frame
     ofPushStyle();
-    ofNoFill();
+    ofFill();
     ofSetLineWidth(5);
-    ofSetColor(255, 0, 0);
+    ofSetColor(0);
     ofDrawCircle(origin, rad);
     ofPopStyle();
     
@@ -55,13 +57,17 @@ void EnvironmentOneSource::draw(){
     
     
     if(debug){
+        
+        // Draw white circle over environment and display fbo position label
+
+        
         ofPushStyle();
         ofFill();
         ofSetLineWidth(5);
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        ofDrawBitmapString("Enviro 1", origin.x, origin.y);
+        font.drawString("Enviro 1", origin.x, origin.y);
         ofPopStyle();
         
         

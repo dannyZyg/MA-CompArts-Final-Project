@@ -63,31 +63,28 @@ void EnvironmentThreeSource::update(){
     
     
     
-    cout<< gpuBlur.blurPasses<<endl;
+//    cout<< gpuBlur.blurPasses<<endl;
     
     
 }
 
 void EnvironmentThreeSource::draw(){
    
+    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
+    ofBackground(255);
     
+    //refresh background circle colour every frame
     ofPushStyle();
-    ofNoFill();
+    ofFill();
     ofSetLineWidth(5);
-    ofSetColor(255, 0, 0);
+    ofSetColor(0);
     ofDrawCircle(origin, rad);
     ofPopStyle();
 
     
     
 //    gpuBlur.beginDrawScene();
-//    
-//    blur.begin();
-    ofBackground(0);
-    
-    
-    
-
+    //    blur.begin();
     
     enviro.display();
 //    blur.end();
@@ -107,15 +104,16 @@ void EnvironmentThreeSource::draw(){
 //
     if(debug){
         
+        // Draw white circle over environment and display fbo position label
+        
         ofPushStyle();
         ofFill();
         ofSetLineWidth(5);
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
-        ofDrawBitmapString("Enviro 3", origin.x, origin.y);
+        font.drawString("Enviro 3", origin.x, origin.y);
         ofPopStyle();
-//        enviro.addRepulsionForce(origin.x, origin.y, rad*2, 10);
         
     }
 

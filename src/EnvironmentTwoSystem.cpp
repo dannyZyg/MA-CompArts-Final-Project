@@ -21,7 +21,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 500;
+    kParticles = 300;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -43,7 +43,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 0.5;
+    particleRepulsion = 1;
     centerAttraction = 0;
     drawBalls = true;
     
@@ -337,34 +337,21 @@ void EnvironmentTwoSystem::display(){
         // forces on this particle
 //        cur.bounceOffWalls();
         
-        
-        
-        
-        
-        
-        
         cur.addDampingForce();
-        
-// if statements telling the particles to stay within their allocated cell walls
-        
-        if(particles[i].cellState == 0){
-            cur.bounceOffOuterCell(cells[1]);
-        }
-        
-        else if(particles[i].cellState == 1){
-            cur.bounceOffInnerCell(cells[1]);
-            cur.bounceOffOuterCell(cells[2]);
+    
+//        if(ofGetElapsedTimeMillis() % 1000 == 0) state = !state;
+//        cout<<state<<endl;
+        if(state){
+            allocateCellState(cur);
+            cellWallRebound(cur);
+            }
+        if(!state){
+            cur.bounceOffWalls();
             
         }
         
-        else if(particles[i].cellState == 2){
-            cur.bounceOffInnerCell(cells[2]);
-            cur.bounceOffWalls();
-        }
-        
-
-        
     }
+        
     if(!drawBalls) {
         glEnd();
     }
@@ -396,22 +383,45 @@ void EnvironmentTwoSystem::display(){
 }
 
 
-//void EnvironmentTwoSystem::receiveGeometry(ofVec2f origin_, float externalRad_){
-//    
-//    origin = origin_;
-//    externalRad = externalRad_;
-//    
-//}
-
 void EnvironmentTwoSystem::receiveCells(vector <float> cells_){
     cells = cells_;
 }
 
-//void EnvironmentTwoSystem::bounceOffCells(){
-//    if(
-//
-//
-//}
 
+void EnvironmentTwoSystem::cellWallRebound(EnvironmentTwoParticle& particle){
+    
+    // if statements telling the particles to stay within their allocated cell walls
+    
+    if(particle.cellState == 0){
+        particle.bounceOffOuterCell(cells[1]);
+    }
+    
+    else if(particle.cellState == 1){
+        particle.bounceOffInnerCell(cells[1]);
+        particle.bounceOffOuterCell(cells[2]);
+    }
+    else if(particle.cellState == 2){
+        particle.bounceOffInnerCell(cells[2]);
+        particle.bounceOffWalls();
+    }
+    
+}
+
+void EnvironmentTwoSystem::allocateCellState(EnvironmentTwoParticle& particle){
+    
+    float d = ofDist(particle.x, particle.y, origin.x, origin.y);
+    if(d > 0 && d < cells[1]){
+        particle.cellState = 0;
+    }
+    else if(d > cells[1] && d < cells[2]){
+        particle.cellState = 1;
+
+    }
+    else if(d > cells[2] && d < externalRad){
+        particle.cellState = 2;
+
+        
+    }
+}
 
 

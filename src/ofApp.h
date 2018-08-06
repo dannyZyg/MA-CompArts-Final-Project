@@ -61,6 +61,7 @@ public:
     
     bool debug;
     
-   
+    void debugDisplay();
+   ofTrueTypeFont verdana30;
 
 };

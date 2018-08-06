@@ -34,4 +34,7 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     
     bool debug;
     
+    // debug font
+    ofTrueTypeFont font;
+    
 };

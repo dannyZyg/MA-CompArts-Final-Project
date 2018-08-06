@@ -42,4 +42,7 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     //choose your fbo settings
     ofFbo::Settings s;
     
+    // debug font
+    ofTrueTypeFont font;
+
 };

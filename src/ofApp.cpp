@@ -2,10 +2,13 @@
 
 void ofApp::setup(){
     
-    
+    verdana30.load("verdana.ttf", 50, true, true);
+    verdana30.setLineHeight(34.0f);
+    verdana30.setLetterSpacing(1.035);
     
     
     ofSetCircleResolution(100);
+    ofSetRectMode(OF_RECTMODE_CENTER);
 //    ofSetFullscreen(true);
     displayCircleTemplate = false;
 	ofBackground(0);
@@ -14,16 +17,21 @@ void ofApp::setup(){
 
 	// Register our sources.
 	// This should be done before mapper.setup().
+    piMapper.registerFboSource(environmentOne);
+    piMapper.registerFboSource(environmentTwo);
+    piMapper.registerFboSource(environmentThree);
     piMapper.registerFboSource(stones_1_4);
     piMapper.registerFboSource(large_stones);
     piMapper.registerFboSource(med_stones);
 
-    piMapper.registerFboSource(environmentOne);
-    piMapper.registerFboSource(environmentTwo);
-    piMapper.registerFboSource(environmentThree);
-//    piMapper.registerFboSource(stones_5_8);
-//    piMapper.registerFboSource(type1);
 
+//Send large font to all FBO sources
+    environmentOne.font = verdana30;
+    environmentTwo.font = verdana30;
+    environmentThree.font = verdana30;
+    stones_1_4.font = verdana30;
+    
+// setup piMapper
 	piMapper.setup();
 
 	// This will set the app fullscreen if compiled on Raspberry Pi.
@@ -95,6 +103,8 @@ void ofApp::keyPressed(int key){
         environmentThree.debug = !debug;
         stones_1_4.debug = ! debug;
         
+        
+        
         cout << "DEBUG = " << debug << endl;
         
         
@@ -132,5 +142,19 @@ void ofApp::scheduler(){
     
     
 }
+
+
+void ofApp::debugDisplay(){
+    
+    ofPushStyle();
+    ofFill();
+    ofSetColor(255);
+    ofDrawCircle(environmentOne.origin.x, environmentOne.origin.y, environmentOne.rad);
+    verdana30.drawString("Env 1", environmentOne.origin.x, environmentOne.origin.y);
+    ofPopStyle();
+    
+    
+}
+
 
 

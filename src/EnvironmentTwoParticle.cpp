@@ -12,10 +12,10 @@ EnvironmentTwoParticle::EnvironmentTwoParticle(float x, float y, float xv, float
         
         
 //        xv = 1;
-         vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+         vel = ofVec2f(ofRandom(-1, 1), ofRandom(-1, 1));
         if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         
-        cellState = ofRandom(3);
+//        cellState = ofRandom(3);
         damping = .3;
         randomOffset = ofRandom(-5, 10);
 

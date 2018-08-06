@@ -27,6 +27,10 @@ public:
 	unsigned size() const;
 	EnvironmentTwoParticle& operator[](unsigned i);
 
+    void cellWallRebound(EnvironmentTwoParticle& particle);
+    
+    void allocateCellState(EnvironmentTwoParticle& particle);
+    
 	void setupForces();
 	void addRepulsionForce(const EnvironmentTwoParticle& particle, float radius, float scale);
 	void addRepulsionForce(float x, float y, float radius, float scale);
@@ -35,6 +39,8 @@ public:
 	void addForce(const EnvironmentTwoParticle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
 	void update(float lastTimeStep);
+    
+    
 
 	void draw();
     void setupColours();
@@ -72,6 +78,8 @@ public:
     
     vector <float> cells;
     void receiveCells(vector <float> cells_);
+    
+    bool state;
     
 
     inline float InvSqrt(float x){
