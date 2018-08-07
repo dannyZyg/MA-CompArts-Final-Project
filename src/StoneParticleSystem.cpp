@@ -23,7 +23,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     showParticleSpacing = 5;
     
     numToDisplay = 0;
-    kParticles = 30;
+    kParticles = 100;
     for(int i = 0; i < kParticles; i++) {
 
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -346,10 +346,10 @@ void StoneParticleSystem::display(){
 
 //    addParticle();
     
-//    timer ++;
+    timer ++;
     
     
-//    if(timer > 50000)timer = 0;
+    if(timer > 50000)timer = 0;
 }
 
 

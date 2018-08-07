@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 void ofApp::setup(){
-    
+    serialSetup();
     verdana30.load("verdana.ttf", 80, true, true);
     verdana30.setLineHeight(34.0f);
     verdana30.setLetterSpacing(1.035);
@@ -59,6 +59,7 @@ void ofApp::setup(){
 void ofApp::update(){
 	piMapper.update();
     scheduler();
+    serialUpdate();
     
 }
 
@@ -88,7 +89,9 @@ void ofApp::draw(){
     }
  
     ofSetColor(255);
-    ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 20);
+    ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 25);
+    ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
+
     
 }
 
@@ -161,14 +164,63 @@ void ofApp::debugDisplay(){
 
 void ofApp::scheduler(){
 
-//    for(int i = 0; i < small_stones_1_4.stones.size(); i ++){
-//        small_stones_1_4.stones[i].active = false;        
-//    }
+    sequence1();
     
     
-//    large_stones.stones[0].active = true;
+}
 
-// instructions for the illumination of particular stepping stones in order and in a timed sequence
+
+//--------------------------------------------------------------
+void ofApp::serialSetup(){
+    
+    // code from Joshua Noble's "Programming Interactivity: A Designer's Guide to Processing, Arduino & openFrameworks"
+    
+    countCycles = 0;                                                 // reset the cycle counter
+    bSendSerialMessage = true;                                       // send a message to arduino to say oF is ready to receive serial information
+    int baud = 115200;                                               // this is the rate the proximity sensor operates at
+    serial.setup(0, baud);                                           // open the first device and talk to it at rate of int baud
+    
+    serial.listDevices();
+    vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList(); // list the devices/ports available for serial communication
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::serialUpdate(){
+    
+    // code from Joshua Noble's "Programming Interactivity: A Designer's Guide to Processing, Arduino & openFrameworks"
+    
+    // serial information is sent as bytes, which need to be converted back into usable values
+    
+    if(bSendSerialMessage){
+        serial.writeByte('x');                                  //send a handshake to the arduino
+        
+        // make sure there's something to write all the data to
+        unsigned char bytesReturned[NUM_BYTES];
+        memset(bytesReturned, 0, NUM_BYTES);
+        
+        // keep reading until there are no bytes left to read
+        while(serial.readBytes(bytesReturned, NUM_BYTES) > 0){
+            val = bytesReturned[0];
+            val <<= 8;                                          // shift values into correct range
+            val += bytesReturned[1];
+            
+            bSendSerialMessage = false;                         // get ready to wait a few frames before asking again
+        }
+    }
+    countCycles++;
+    if(countCycles == 1){
+        bSendSerialMessage = true;                              // send a message to the arduino to tell it oF is ready for more readings
+        countCycles = 0;
+    }
+    
+//    cout<<val<<endl;
+}
+
+
+void ofApp::sequence1(){
+    
+    // instructions for the illumination of particular stepping stones in order and in a timed sequence
     large_stones.stones[0].active = true;
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing){
         med_stones_1_4.stones[0].active = true;
@@ -180,12 +232,11 @@ void ofApp::scheduler(){
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 3){
         small_stones_1_4.stones[3].active = true;
     }
-
-
+    
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 5){
         large_stones.stones[0].active = false;
     }
-
+    
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 6){
         med_stones_1_4.stones[0].active = false;
     }
@@ -196,7 +247,7 @@ void ofApp::scheduler(){
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 8){
         small_stones_1_4.stones[3].active = false;
     }
-
+    
     
 }
 
