@@ -161,7 +161,7 @@ void ofApp::debugDisplay(){
 
 void ofApp::scheduler(){
 
-    E3_to_E2(0);
+    E3_to_E2(1);
     
     
 }
@@ -238,6 +238,13 @@ void ofApp::E3_to_E2(int variation){
     }
     
     if(variation == 1){
+        triggerStone(small_stones_5_8.stones[1], 0);
+        triggerStone(med_stones_1_4.stones[2], 1);
+        triggerStone(med_stones_1_4.stones[3], 2);
+        triggerStone(large_stones.stones[1], 3);
+        triggerStone(med_stones_5_8.stones[0], 4);
+        triggerStone(med_stones_5_8.stones[1], 5);
+        triggerStone(small_stones_5_8.stones[2], 6);
     }
     if(variation == 2){
     }
