@@ -25,6 +25,8 @@ EnvironmentOneSource::EnvironmentOneSource(){
 void EnvironmentOneSource::setup(){
     
     
+   
+    
     origin = ofVec2f(width/2, height/2);
     rad = width/2;
     
@@ -39,6 +41,8 @@ void EnvironmentOneSource::update(){
 }
 
 void EnvironmentOneSource::draw(){
+    
+    
    
     //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
     ofBackground(255);
@@ -70,7 +74,7 @@ void EnvironmentOneSource::draw(){
         
         
     }
-    
+   
     
 }
 

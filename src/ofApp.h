@@ -15,6 +15,9 @@
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
 
+
+
+
 #define NUM_BYTES 2
 
 class ofApp : public ofBaseApp{
@@ -64,7 +67,9 @@ public:
     int timeSpacing;
     
     
-    void sequence1();
+    void E3_to_E2(int variation);
+    void sequence2();
+
     
     // Serial conversion code from Joshua Noble's "Programming Interactivity:
     // A Designer's Guide to Proccessing, Arduino and openFrameworks" (p. 229-232, 2012)
@@ -84,5 +89,15 @@ public:
     int                     avg;
     ofSerial                serial;
 
+    
+    void fillMapWithStones();
+    // a map where the keys are integers and the values are strings
+    std::map<int, std::string> stoneIndex;
+    
+//    std::vector<shared_ptr<StoneParticleSystem> > systems;
+    
+    vector<StoneParticleSystem*> systems;
+    
+    void triggerStone(StoneParticleSystem& stone, int timing);
 
 };

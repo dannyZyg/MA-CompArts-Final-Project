@@ -53,13 +53,14 @@ void ofApp::setup(){
     drawTemplate = false;
     
     timeSpacing = 1000;
-    
 }
 
 void ofApp::update(){
 	piMapper.update();
     scheduler();
     serialUpdate();
+    
+    
     
 }
 
@@ -91,7 +92,7 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 25);
     ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
-
+    
     
 }
 
@@ -134,10 +135,6 @@ void ofApp::keyReleased(int key){
 void ofApp::mousePressed(int x, int y, int button){
 	piMapper.mousePressed(x, y, button);
     
-//    small_stones_1_4.stones[2].numToDisplay ++;
-//    cout<< small_stones_1_4.stones[2].numToDisplay <<endl;
-    
-    
 }
 
 void ofApp::mouseReleased(int x, int y, int button){
@@ -164,7 +161,7 @@ void ofApp::debugDisplay(){
 
 void ofApp::scheduler(){
 
-    sequence1();
+    E3_to_E2(0);
     
     
 }
@@ -213,41 +210,44 @@ void ofApp::serialUpdate(){
         bSendSerialMessage = true;                              // send a message to the arduino to tell it oF is ready for more readings
         countCycles = 0;
     }
+}
+
+void ofApp::triggerStone(StoneParticleSystem& stone, int timing){
+    //turn on the stone
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
+        stone.active = true;
+    }
+    //turn off the stone
+    if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + 5000){
+        stone.active = false;
+    }
+}
+
+// instructions for the illumination of particular stepping stones in order and in a timed sequence
+
+void ofApp::E3_to_E2(int variation){
+
+    if(variation == 0){
+        triggerStone(small_stones_1_4.stones[0], 0);
+        triggerStone(small_stones_1_4.stones[1], 1);
+        triggerStone(large_stones.stones[0], 2);
+        triggerStone(med_stones_1_4.stones[0], 3);
+        triggerStone(small_stones_5_8.stones[0], 4);
+        triggerStone(small_stones_1_4.stones[2], 4);
+        triggerStone(small_stones_1_4.stones[3], 5);
+    }
     
-//    cout<<val<<endl;
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
 }
 
 
-void ofApp::sequence1(){
     
-    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-    large_stones.stones[0].active = true;
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing){
-        med_stones_1_4.stones[0].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 2 ){
-        small_stones_1_4.stones[2].active = true;
-        small_stones_5_8.stones[0].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 3){
-        small_stones_1_4.stones[3].active = true;
-    }
-    
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 5){
-        large_stones.stones[0].active = false;
-    }
-    
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 6){
-        med_stones_1_4.stones[0].active = false;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 7 ){
-        small_stones_1_4.stones[2].active = false;
-        small_stones_5_8.stones[0].active = false;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 8){
-        small_stones_1_4.stones[3].active = false;
-    }
-    
-    
-}
+
+
+
+
+
 
