@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include "FboSource.h"
 #include "EnvironmentOneSystem.h"
+#include "ofxFboBlur.h"
+#include "ofxBlur.h"
 
 #endif /* EnvironmentOneSource_hpp */
 
@@ -38,8 +40,16 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     
     // debug font
     ofTrueTypeFont font;
-    
-    
+    bool blur1, blur2;
 
+    ofxBlur blur;
+    
+    ofxFboBlur gpuBlur;
+    //choose your fbo settings
+    ofFbo::Settings s;
+
+    
+    float startTime;
+    bool active;
     
 };

@@ -67,7 +67,15 @@ public:
     int timeSpacing;
     
     
+    void E1_to_E2(int variation);
+    void E1_to_E3(int variation);
+    void E2_to_E1(int variation);
+    void E2_to_E3(int variation);
+    void E3_to_E1(int variation);
     void E3_to_E2(int variation);
+    
+    void sensorToSystem(int variation);
+
     void sequence2();
 
     
@@ -96,8 +104,23 @@ public:
     
 //    std::vector<shared_ptr<StoneParticleSystem> > systems;
     
-    vector<StoneParticleSystem*> systems;
+//    vector<StoneParticleSystem&> systems;
     
     void triggerStone(StoneParticleSystem& stone, int timing);
 
+    int count;
+    
+    
+    
+    void triggerEnviro1(int timing);
+    void triggerEnviro2(int timing);
+    void triggerEnviro3(int timing);
+
+    
+    bool sensorTrigger;
+    
+    bool sequenceActive;
+    float timer;
+    void resetTimer();
+    
 };

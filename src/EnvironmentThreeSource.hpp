@@ -37,6 +37,7 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     bool debug;
     
     ofxBlur blur;
+    bool blur1, blur2;
     
     
     ofxFboBlur gpuBlur;

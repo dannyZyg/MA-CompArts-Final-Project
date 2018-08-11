@@ -100,7 +100,7 @@ public:
     
     
  
-    
+    bool impact;
     
 };
 

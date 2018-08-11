@@ -80,6 +80,7 @@ public:
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
     
+    bool impact;
     
     
 };

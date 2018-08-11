@@ -47,10 +47,12 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     //choose your fbo settings
     ofFbo::Settings s;
     
-    
+       bool blur1, blur2;
     // debug font
     ofTrueTypeFont font;
     
     void drawCellDebug();
+    
+    bool active;
     
 };

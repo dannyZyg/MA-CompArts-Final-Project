@@ -318,6 +318,14 @@ void EnvironmentTwoSystem::display(){
     // do this once per frame
     setupForces();
     
+    ofVec2f target;
+    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
+     target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
+    
+    if(impact){
+        addRepulsionForce(target.x, target.y, 500, 1);
+    }
+    
     ofPushMatrix();
     
     // apply per-particle forces

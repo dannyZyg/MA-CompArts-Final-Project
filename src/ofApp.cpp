@@ -8,7 +8,7 @@ void ofApp::setup(){
     
     
     ofSetCircleResolution(100);
-    ofSetRectMode(OF_RECTMODE_CENTER);
+//    ofSetRectMode(OF_RECTMODE_CENTER);
 //    ofSetFullscreen(true);
     displayCircleTemplate = false;
 	ofBackground(0);
@@ -53,6 +53,7 @@ void ofApp::setup(){
     drawTemplate = false;
     
     timeSpacing = 1000;
+    sensorTrigger = false;
 }
 
 void ofApp::update(){
@@ -61,7 +62,13 @@ void ofApp::update(){
     serialUpdate();
     
     
+//    if(ofGetElapsedTimeMillis() > 2000){
     
+        
+//    }
+
+    timer = ofGetElapsedTimeMillis() - startTime;
+
 }
 
 void ofApp::draw(){
@@ -135,10 +142,14 @@ void ofApp::keyReleased(int key){
 void ofApp::mousePressed(int x, int y, int button){
 	piMapper.mousePressed(x, y, button);
     
+    
 }
 
 void ofApp::mouseReleased(int x, int y, int button){
 	piMapper.mouseReleased(x, y, button);
+    
+    count++;
+    if(count > 2) count =0;
 }
 
 void ofApp::mouseDragged(int x, int y, int button){
@@ -161,8 +172,19 @@ void ofApp::debugDisplay(){
 
 void ofApp::scheduler(){
 
-    E3_to_E2(1);
+//    E3_to_E2(1);
+//    E2_to_E3(0);
     
+    if(ofGetElapsedTimeMillis() > 3000 && val < 250 && !sensorTrigger){
+      sensorTrigger = true;
+        resetTimer();
+    }
+    
+    if(sensorTrigger == true){
+        sensorToSystem(1);
+    }
+    
+
     
 }
 
@@ -223,9 +245,97 @@ void ofApp::triggerStone(StoneParticleSystem& stone, int timing){
     }
 }
 
+void ofApp::triggerEnviro1(int timing){
+    //turn on the stone
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
+        environmentOne.active = true;
+    }
+    //turn off the stone
+    if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + 5000){
+        environmentOne.active = false;
+        sequenceActive = false;
+        sensorTrigger = false;
+    }
+}
+
+void ofApp::triggerEnviro2(int timing){
+    //turn on the stone
+    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
+        environmentTwo.active = true;
+    }
+    //turn off the stone
+    if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + 5000){
+        environmentTwo.active = false;
+        sequenceActive = false;
+        sensorTrigger = false;
+    }
+}
+
+
 // instructions for the illumination of particular stepping stones in order and in a timed sequence
 
+void ofApp::E1_to_E2(int variation){
+    
+    if(variation == 0){
+    }
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
+            
+    
+    
+}
+void ofApp::E1_to_E3(int variation){
+    if(variation == 0){
+        
+        
+    }
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
+    
+}
+
+void ofApp::E2_to_E1(int variation){
+    if(variation == 0){
+    }
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
+    
+}
+void ofApp::E2_to_E3(int variation){
+    if(variation == 0){
+        triggerStone(small_stones_1_4.stones[3], 0);
+        triggerStone(small_stones_5_8.stones[0], 1);
+        triggerStone(small_stones_1_4.stones[2], 2);
+        triggerStone(med_stones_1_4.stones[0], 3);
+        triggerStone(large_stones.stones[0], 4);
+        triggerStone(small_stones_1_4.stones[1], 5);
+        triggerStone(small_stones_1_4.stones[0], 6);
+    }
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
+    
+}
+
+void ofApp::E3_to_E1(int variation){
+    if(variation == 0){
+    }
+    if(variation == 1){
+    }
+    if(variation == 2){
+    }
+    
+}
+
 void ofApp::E3_to_E2(int variation){
+    
 
     if(variation == 0){
         triggerStone(small_stones_1_4.stones[0], 0);
@@ -235,6 +345,7 @@ void ofApp::E3_to_E2(int variation){
         triggerStone(small_stones_5_8.stones[0], 4);
         triggerStone(small_stones_1_4.stones[2], 4);
         triggerStone(small_stones_1_4.stones[3], 5);
+        triggerEnviro1(6);
     }
     
     if(variation == 1){
@@ -245,16 +356,58 @@ void ofApp::E3_to_E2(int variation){
         triggerStone(med_stones_5_8.stones[0], 4);
         triggerStone(med_stones_5_8.stones[1], 5);
         triggerStone(small_stones_5_8.stones[2], 6);
+        triggerEnviro1(7);
+
     }
     if(variation == 2){
+        triggerStone(med_stones_1_4.stones[1], 0);
+        triggerStone(small_stones_1_4.stones[2], 1);
+        triggerStone(med_stones_1_4.stones[0], 2);
+        triggerStone(small_stones_5_8.stones[0], 3);
+        triggerStone(small_stones_1_4.stones[3], 4);
+        triggerEnviro1(5);
     }
 }
 
 
+void ofApp::sensorToSystem(int variation){
     
+    sequenceActive = true;
+    
+    
+    
+    if(variation == 0){
+        
+        triggerStone(small_stones_13_16.stones[1], 0);
+        triggerStone(small_stones_13_16.stones[0], 1);
+        triggerStone(med_stones_5_8.stones[3], 2);
+        triggerStone(large_stones.stones[3], 3);
+        triggerStone(small_stones_13_16.stones[2], 4);
+        triggerEnviro2(5);
+        
 
 
 
+        
+        
+        
+        
+    }
+    if(variation == 1){
+        triggerStone(small_stones_13_16.stones[1], 0);
+        triggerStone(small_stones_13_16.stones[0], 1);
+        triggerStone(small_stones_9_12.stones[2], 2);
+        triggerStone(small_stones_9_12.stones[3], 3);
+        triggerStone(small_stones_9_12.stones[1], 4);
+        triggerEnviro1(5);
+    }
+    
+    
+}
 
-
+void ofApp::resetTimer(){
+    startTime = ofGetElapsedTimeMillis();
+    
+    
+}
 

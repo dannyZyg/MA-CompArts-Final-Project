@@ -14,6 +14,8 @@
 //#include "SteppingStoneType1.hpp"
 #include "StoneParticleSystem.h"
 #include "FboSource.h"
+#include "ofxBlur.h"
+#include "ofxFboBlur.h"
 
 #endif /* StonesLarge_1_4_hpp */
 
@@ -48,6 +50,13 @@ public:
     
     // debug font
     ofTrueTypeFont font;
+    
+    
+    ofxBlur blur;
+    
+    ofxFboBlur gpuBlur;
+    //choose your fbo settings
+    ofFbo::Settings s;
     
 };
 

@@ -17,28 +17,12 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
     name = "Environment Three";
     allocate(600, 600);
     
-    width = fbo-> getWidth();
-    height = fbo -> getHeight();
+    width =  600;//fbo-> getWidth();
+    height = 600;//fbo -> getHeight();
     
 }
 
 void EnvironmentThreeSource::setup(){
-    
-    blur.setup(width,height, 8, 0.01, 4);
-    
-    
-    s.width = width;
-    s.height = height;
-    s.internalformat = GL_RGBA;
-    s.maxFilter = GL_LINEAR; GL_NEAREST;
-    s.numSamples = 8;
-    s.numColorbuffers = 6;
-    s.useDepth = true;
-    s.useStencil = true;
-    
-    
-    gpuBlur.setup(s);
-
     
     
     origin = ofVec2f(width/2, height/2);
@@ -48,7 +32,24 @@ void EnvironmentThreeSource::setup(){
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
     debug = false;
-
+    
+    blur.setup(width,height, 8, .1, 4);
+    
+    
+    s.width = width;
+    s.height = height;
+    s.internalformat = GL_RGBA;
+    s.maxFilter = GL_LINEAR; GL_NEAREST;
+    s.numSamples = 6;
+    s.numColorbuffers = 3;
+    s.useDepth = true;
+    s.useStencil = true;
+    
+    
+    gpuBlur.setup(s);
+    
+    blur1 = true;
+    blur2 = true;
 }
 
 void EnvironmentThreeSource::update(){
@@ -56,10 +57,10 @@ void EnvironmentThreeSource::update(){
     blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
     
-    gpuBlur.blurOffset = 5;// * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    gpuBlur.blurPasses = 10.;// * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
-    gpuBlur.numBlurOverlays = 4;
-    gpuBlur.blurOverlayGain = 255;
+    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    gpuBlur.numBlurOverlays = 3;
+    gpuBlur.blurOverlayGain = 150;
     
     
     
@@ -71,41 +72,50 @@ void EnvironmentThreeSource::update(){
 void EnvironmentThreeSource::draw(){
    
     //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
-    ofBackground(255);
-    
-    //refresh background circle colour every frame
-    ofPushStyle();
-    ofFill();
-    ofSetLineWidth(5);
-    ofSetColor(0);
-    ofDrawCircle(origin, rad);
-    ofPopStyle();
+  
 
-    
-    
-//    gpuBlur.beginDrawScene();
-    //    blur.begin();
-    
+    if(blur2) gpuBlur.beginDrawScene();
+    if(blur1)blur.begin();
+
+    ofBackground(0);
+//    //refresh background circle colour every frame
+//    ofPushStyle();
+//    ofFill();
+//    ofSetLineWidth(5);
+//    ofSetColor(0);
+//    ofDrawCircle(origin, rad);
+//    ofPopStyle();
+//
+//    ofClear(0);
+
+   
+
+   
+ 
     enviro.display();
-//    blur.end();
-//    blur.draw();
-//
-//    gpuBlur.endDrawScene();
-//    //calc the fbo blurring, no drawing on screen yet
-//    gpuBlur.performBlur();
-//
-//    //draw the "clean" scene on screen
-//    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//    gpuBlur.drawSceneFBO();
-//
-//    //overlay the blurred fbo on top of the previously drawn clean scene
-//    ofEnableBlendMode(OF_BLENDMODE_ADD);
-//    gpuBlur.drawBlurFbo();
-//
+    if(blur1)blur.end();
+    if(blur1)blur.draw();
+
+    if(blur2){
+        gpuBlur.endDrawScene();
+        //calc the fbo blurring, no drawing on screen yet
+        gpuBlur.performBlur();
+        
+        //draw the "clean" scene on screen
+        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+        gpuBlur.drawSceneFBO();
+        
+        //overlay the blurred fbo on top of the previously drawn clean scene
+        ofEnableBlendMode(OF_BLENDMODE_ADD);
+        gpuBlur.drawBlurFbo();
+        
+    }
+
+
     if(debug){
-        
+
         // Draw white circle over environment and display fbo position label
-        
+
         ofPushStyle();
         ofFill();
         ofSetLineWidth(5);
@@ -114,7 +124,7 @@ void EnvironmentThreeSource::draw(){
         ofSetColor(0);
         font.drawString("Enviro 3", origin.x - 200, origin.y);
         ofPopStyle();
-        
+
     }
 
     

@@ -44,7 +44,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     centerAttraction = 0.6;
     drawBalls = true;
     
-
+    impact = false;
     
 }
 
@@ -280,6 +280,12 @@ void EnvironmentOneSystem::display(){
     // do this once per frame
     setupForces();
     
+    
+    if(impact){
+        addRepulsionForce(origin.x, origin.y, 200, 3);
+    }
+    
+    
     ofPushMatrix();
     
     // apply per-particle forces
@@ -330,11 +336,4 @@ void EnvironmentOneSystem::display(){
     
 }
 
-
-//void EnvironmentOneSystem::receiveGeometry(ofVec2f origin_, float externalRad_){
-//    
-//    origin = origin_;
-//    externalRad = externalRad_;
-//    
-//}
 

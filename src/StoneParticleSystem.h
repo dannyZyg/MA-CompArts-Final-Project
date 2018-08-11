@@ -2,6 +2,7 @@
 
 #include "StoneParticle.h"
 #include "ofxColorPalette.h"
+#include "ofxBlur.h"
 
 #define DRAW_FORCES
 #define USE_INVSQRT
@@ -72,6 +73,7 @@ public:
     
     
     bool active;
+    bool drawLines;
     ofColor baseColour;
     
     int numToDisplay;

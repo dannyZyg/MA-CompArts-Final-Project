@@ -23,7 +23,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     showParticleSpacing = 5;
     
     numToDisplay = 0;
-    kParticles = 100;
+    kParticles = 50;
     for(int i = 0; i < kParticles; i++) {
 
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -48,6 +48,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     active = false;
     timer = 0;
     timeIntervalPassed = 0;
+    drawLines = true;
     
 }
 
@@ -264,6 +265,7 @@ void StoneParticleSystem::update(float lastTimeStep) {
 }
 
 void StoneParticleSystem::draw() {
+
     
     if(active){
         int n = particles.size();
@@ -288,6 +290,7 @@ int StoneParticleSystem::getHeight() const {
 
 void StoneParticleSystem::display(){
     
+
     fadeParticles();
     
     ofPushStyle();
@@ -350,6 +353,10 @@ void StoneParticleSystem::display(){
     
     
     if(timer > 50000)timer = 0;
+    
+    
+    
+
 }
 
 
