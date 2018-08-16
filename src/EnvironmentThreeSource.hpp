@@ -38,7 +38,7 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     
     ofxBlur blur;
     bool blur1, blur2;
-    
+    bool active;
     
     ofxFboBlur gpuBlur;
     //choose your fbo settings
@@ -46,5 +46,9 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     
     // debug font
     ofTrueTypeFont font;
+    
+    
+
+    
 
 };

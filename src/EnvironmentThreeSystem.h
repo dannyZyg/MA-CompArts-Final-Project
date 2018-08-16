@@ -65,6 +65,10 @@ public:
     ofVec2f origin;
     float externalRad;
     
+    bool impact;
+    float angle;
+    ofVec2f target;
+    
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;

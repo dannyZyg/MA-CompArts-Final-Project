@@ -44,6 +44,9 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     centerAttraction = 0;
     drawBalls = true;
     
+    angle = 0;
+    target = ofVec2f(origin.x + 100, origin.y + 100);
+    
 }
 
 
@@ -267,7 +270,7 @@ void EnvironmentThreeSystem::update(float lastTimeStep) {
 	}
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
-
+    angle += 10;
 }
 
 void EnvironmentThreeSystem::draw() {
@@ -297,6 +300,21 @@ void EnvironmentThreeSystem::display(){
     setupForces();
     
     ofPushMatrix();
+    
+    ofPushMatrix();
+    ofPushStyle();
+    ofTranslate(origin.x, origin.y);
+    ofRotate(angle);
+    ofSetColor(255, 0, 0   );
+    if(impact){
+//        ofDrawLine(0, 0, 100, 100);
+        ofDrawCircle(200, 200, 5);
+        addRepulsionForce(200, 200, 500, 3);
+    }
+    
+    ofPopStyle();
+    ofPopMatrix();
+    
     
     // apply per-particle forces
     if(!drawBalls) {

@@ -50,6 +50,8 @@ void EnvironmentThreeSource::setup(){
     
     blur1 = true;
     blur2 = true;
+    
+    
 }
 
 void EnvironmentThreeSource::update(){
@@ -65,6 +67,18 @@ void EnvironmentThreeSource::update(){
     
     
 //    cout<< gpuBlur.blurPasses<<endl;
+    if(active){
+        //        startTime = 0;
+        enviro.impact = true;
+    }
+    
+    if(!active){
+        enviro.impact = false;
+        
+    }
+    
+    
+
     
     
 }
@@ -127,8 +141,6 @@ void EnvironmentThreeSource::draw(){
 
     }
 
-    
-    
 }
 
 

@@ -107,7 +107,7 @@ public:
 //    vector<StoneParticleSystem&> systems;
     
     void triggerStone(StoneParticleSystem& stone, int timing);
-
+    void sequenceComplete(int timing);
     int count;
     
     
@@ -122,5 +122,18 @@ public:
     bool sequenceActive;
     float timer;
     void resetTimer();
+    
+    
+    int randomPath;
+    void SensorSequenceComplete();
+    
+    bool sensorSequenceActive;
+    
+    
+    int e1Count, e2Count, e3Count;
+    
+    float activeLength;
+    
+    
     
 };
