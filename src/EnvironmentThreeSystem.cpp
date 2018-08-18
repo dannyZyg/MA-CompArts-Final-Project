@@ -47,6 +47,12 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     angle = 0;
     target = ofVec2f(origin.x + 100, origin.y + 100);
     
+    for(int i = 0; i < kParticles; i ++){
+        float seed = ofRandom(1000);
+        noiseSeed.push_back(seed);
+    }
+    
+    glowTimer.setup(3000);
 }
 
 
@@ -271,6 +277,7 @@ void EnvironmentThreeSystem::update(float lastTimeStep) {
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
     angle += 10;
+    glowTimer.run();
 }
 
 void EnvironmentThreeSystem::draw() {
@@ -336,12 +343,15 @@ void EnvironmentThreeSystem::display(){
         
         vector<EnvironmentThreeParticle*> nei = getNeighbors(cur.x, cur.y, tempRad);
         
+        vector<EnvironmentThreeParticle*> clusters = getNeighbors(cur.x, cur.y, 10);
         
+        vector<EnvironmentThreeParticle*> global = getNeighbors(cur.x, cur.y, externalRad/3);
+
         for(int j = 0; j < nei.size(); j ++){
 
             
             addRepulsionForce(cur, particleNeighborhood, 0.04);
-
+            
             
             if(cur.team != nei[j] -> team){
                 ofSetColor(255);
@@ -350,22 +360,52 @@ void EnvironmentThreeSystem::display(){
             }
             
             if(cur.team == nei[j] -> team){
-                
                 addAttractionForce(cur, particleNeighborhood, 0.06);
             }
-            
         }
         
+        for(int j = 0; j < clusters.size(); j ++){
+            if(cur.team == clusters[j] -> team){
+                clusterCount ++;
+            }
+        }
+        for(int j = 0; j < global.size(); j ++){
+            if(glow){
+                ofPushStyle();
+                float alpha = ofMap(sin(ofGetFrameNum() * 0.01 + noiseSeed[i]), -1, 1, 0, 200);
+                ofColor c = cur.col;
+                ofSetColor(c, alpha);
+
+                ofDrawLine(cur.x, cur.y, global[j] -> x, global[j] -> y);
+                ofPopStyle();
+            }
+        }
         
-            
+        if(clusterCount > 10 && !sequenceActive) {
+//            ofSetColor(0, 255, 0);
+//            ofDrawCircle(origin, 50);
+            systemOutput = true;
+            glowTimer.reset();
+            sequenceActive = true;
+        }
         
+        if(!glowTimer.complete) glow = true;
+        if(glowTimer.complete){
+            glow = false;
+//            sequenceActive = false;
+            systemOutput = false;
+        }
+        
+//        cout<< "complete = " << glowTimer.complete << endl;
+//        cout<< "clusters = " << clusterCount<< endl;
+        cout<< glowTimer.timer<<endl;
         
         // forces on this particle
         cur.bounceOffWalls();
         cur.addDampingForce();
         
         
-        
+        clusterCount = 0;
         
     }
     if(!drawBalls) {

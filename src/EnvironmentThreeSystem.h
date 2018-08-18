@@ -1,5 +1,6 @@
 #include "EnvironmentThreeParticle.h"
 #include "ofxColorPalette.h"
+#include "Timer.hpp"
 
 #define DRAW_FORCES
 #define USE_INVSQRT
@@ -69,6 +70,16 @@ public:
     float angle;
     ofVec2f target;
     
+    
+    bool systemOutput;
+    bool glow;
+    int clusterCount;
+    
+    vector <float> noiseSeed;
+    
+    Timer glowTimer;
+
+    bool sequenceActive;
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
@@ -83,8 +94,6 @@ public:
         const static float sharpness = 1;
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
-    
-    
     
 };
 

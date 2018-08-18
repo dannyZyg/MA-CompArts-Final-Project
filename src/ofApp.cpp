@@ -62,6 +62,15 @@ void ofApp::setup(){
     e3Count = 0;
     
     activeLength = 3000;
+    
+    testEnvelope = Envelope();
+    
+    env1Timer = Timer();
+    env2Timer = Timer();
+    env3Timer = Timer();
+    
+    env1Timer.setup(3000);
+    
 }
 
 void ofApp::update(){
@@ -76,12 +85,32 @@ void ofApp::update(){
 //    }
 
     timer = ofGetElapsedTimeMillis() - startTime;
+    
+    timerSequenceSpacing = ofGetElapsedTimeMillis() - sequenceSpacingStart;
+    
+    
+    
+    
+    env1Timer.run();
+    env2Timer.run();
+    env3Timer.run();
 
+
+//    env = testEnvelope.completion();
+    
+    
 }
 
 void ofApp::draw(){
  
+    
+    float x = testEnvelope.output(env, 50, 100, 100);
+    if(testEnvelope.complete) env = false;
+    
+    
     ofBackground(0);
+//    ofSetColor(255, 0, 0);
+//    ofDrawCircle(300, 300, x, x);
     
     if(drawTemplate) layout.draw(0, 0);
     
@@ -109,7 +138,31 @@ void ofApp::draw(){
     ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
     
     
+    ofSetColor(255);
+    if (sequenceActive) ofDrawBitmapString("active", mouseX, mouseY);
+    
+    
+    envelope(envTest, testVal, 10, 250, 500);
+//    cout << testVal <<endl;
 }
+
+
+void ofApp::envelope(bool trigger, float val, float min, float max, float release){
+    
+    int counter;
+    
+    if(!trigger) counter = 0;
+    
+    if(trigger) counter ++;
+    
+    if(counter > release) {
+        //        trigger
+    }
+    
+    val = ofMap(counter, 0, release, min, max);
+    
+}
+
 
 void ofApp::keyPressed(int key){
 	piMapper.keyPressed(key);
@@ -150,7 +203,10 @@ void ofApp::keyReleased(int key){
 void ofApp::mousePressed(int x, int y, int button){
 	piMapper.mousePressed(x, y, button);
     
-    
+    envTest = !envTest;
+    env = !env;
+    cout<< "env = " << envTest << endl;
+
 }
 
 void ofApp::mouseReleased(int x, int y, int button){
@@ -184,23 +240,29 @@ void ofApp::scheduler(){
 //    E2_to_E3(0);
     
 
-    if(ofGetElapsedTimeMillis() > 0 && val < 250 && !sensorTrigger && !sequenceActive){
-        randomPath = ofRandom(3);
-        sensorTrigger = true;
+    float tempVal = ofMap(mouseX, 0, ofGetWidth(), 0, 1000);
+    
+    if(ofGetElapsedTimeMillis() > 2000 && tempVal < 250) sensorTrigger = true;
+    
+    if(sensorTrigger && !sequenceActive){
         sequenceActive = true;
         resetTimer();
-        }
-    
+    }
+
     if(sensorTrigger && sequenceActive){
-//        sensorToSystem(1);
-//        E1_to_E2(2);
-//        E1_to_E3(0);
-//        E2_to_E3(2);
-        E3_to_E1(2);
-        
+            //  sensorToSystem(1);
+//        E3_to_E1(2);
     }
     
-    cout<< "SeqAct = " << sequenceActive << endl;
+    
+    if(environmentThree.enviro.sequenceActive){
+//        E3_to_E1(2);
+    }
+    E3_to_E1(2);
+
+
+//    cout << "timerSequenceSpacing = " << timerSequenceSpacing<<endl;
+//    cout<< "SeqAct = " << sequenceActive << endl;
 }
 
 
@@ -230,9 +292,16 @@ void ofApp::triggerEnviro1(int timing){
         environmentOne.active = true;
     }
     //turn off the stone
-    if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + activeLength){
+    if( ofGetElapsedTimeMillis() - startTime > (timeSpacing * timing) + activeLength){
         environmentOne.active = false;
         sensorTrigger = false;
+    }
+    
+    if(ofGetElapsedTimeMillis() - startTime > (timeSpacing * timing) + (activeLength )){
+        sequenceActive = false;
+
+//        sequenceSpacingStart = ofGetElapsedTimeMillis();
+
     }
 }
 
@@ -427,12 +496,9 @@ void ofApp::E3_to_E1(int variation){
         triggerStone(large_stones.stones[2], 5);
         triggerStone(med_stones_5_8.stones[2], 6);
         triggerEnviro1(7);
-        
-        
-        
-        
-        
- 
+        if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 8){
+            environmentThree.enviro.sequenceActive = false;
+        }
 
     }
 }
@@ -493,8 +559,10 @@ void ofApp::sensorToSystem(int variation){
         triggerStone(small_stones_9_12.stones[1], 4);
         triggerEnviro1(5);
     }
-    
 }
+
+
+
 
 void ofApp::resetTimer(){
     startTime = ofGetElapsedTimeMillis();
@@ -551,4 +619,7 @@ void ofApp::serialUpdate(){
         countCycles = 0;
     }
 }
+
+
+
 

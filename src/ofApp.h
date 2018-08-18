@@ -14,7 +14,8 @@
 #include "EnvironmentOneSource.hpp"
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
-
+#include "Timer.hpp"
+#include "Envelope.hpp"
 
 
 
@@ -135,5 +136,19 @@ public:
     float activeLength;
     
     
+    float sequenceSpacingStart;
+    
+    float timerSequenceSpacing;
+    
+    void envelope(bool trigger, float val, float min, float max, float release);
+    
+    bool envTest;
+    float testVal;
+    
+    Timer testTimer;
+    Timer env1Timer, env2Timer, env3Timer, sensorTimer;
+    Envelope testEnvelope;
+    
+    bool env;
     
 };
