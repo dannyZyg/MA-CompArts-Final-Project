@@ -23,6 +23,7 @@ public:
     
     void run();
     void reset();
+    void setup();
     void setup(int interval);
     
     float startTime;
@@ -33,7 +34,7 @@ public:
     bool begin;
 
     
-    
+    float activeStoneTime;
     
     
     

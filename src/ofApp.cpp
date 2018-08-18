@@ -69,7 +69,11 @@ void ofApp::setup(){
     env2Timer = Timer();
     env3Timer = Timer();
     
-    env1Timer.setup(3000);
+    env1Timer.setup();
+    env2Timer.setup();
+    env3Timer.setup();
+    
+    randomPath = 0;
     
 }
 
@@ -77,32 +81,21 @@ void ofApp::update(){
 	piMapper.update();
     scheduler();
     serialUpdate();
-    
-    
-//    if(ofGetElapsedTimeMillis() > 2000){
-    
-        
-//    }
 
-    timer = ofGetElapsedTimeMillis() - startTime;
+    testTimer = ofGetElapsedTimeMillis() - startTime;
     
     timerSequenceSpacing = ofGetElapsedTimeMillis() - sequenceSpacingStart;
-    
-    
-    
     
     env1Timer.run();
     env2Timer.run();
     env3Timer.run();
-
-
-//    env = testEnvelope.completion();
-    
     
 }
 
 void ofApp::draw(){
  
+    
+    
     
     float x = testEnvelope.output(env, 50, 100, 100);
     if(testEnvelope.complete) env = false;
@@ -142,26 +135,12 @@ void ofApp::draw(){
     if (sequenceActive) ofDrawBitmapString("active", mouseX, mouseY);
     
     
-    envelope(envTest, testVal, 10, 250, 500);
 //    cout << testVal <<endl;
+    
+    
+
 }
 
-
-void ofApp::envelope(bool trigger, float val, float min, float max, float release){
-    
-    int counter;
-    
-    if(!trigger) counter = 0;
-    
-    if(trigger) counter ++;
-    
-    if(counter > release) {
-        //        trigger
-    }
-    
-    val = ofMap(counter, 0, release, min, max);
-    
-}
 
 
 void ofApp::keyPressed(int key){
@@ -193,6 +172,8 @@ void ofApp::keyPressed(int key){
         
         cout << "DEBUG = " << debug << endl;
     }
+    
+    if(key == ' ') environmentThree.enviro.sequenceActive = !environmentThree.enviro.sequenceActive;
     
 }
 
@@ -243,323 +224,349 @@ void ofApp::scheduler(){
     float tempVal = ofMap(mouseX, 0, ofGetWidth(), 0, 1000);
     
     if(ofGetElapsedTimeMillis() > 2000 && tempVal < 250) sensorTrigger = true;
+    else(sensorTrigger = false);
+    
+    
     
     if(sensorTrigger && !sequenceActive){
         sequenceActive = true;
         resetTimer();
+        
     }
 
-    if(sensorTrigger && sequenceActive){
+    if(sequenceActive){
             //  sensorToSystem(1);
-//        E3_to_E1(2);
+//        E3_to_E1(randomPath);
     }
     
+    
+    ////////////////
+    
+    if(sensorTrigger && !environmentThree.enviro.sequenceActive){
+        randomPath = ofRandom(3);
+        environmentThree.enviro.sequenceActive = true;
+        env3Timer.reset();
+        env3Timer.activeStoneTime = ofRandom(1000, 5000);
+        
+        
+//        environmentThree.enviro.systemOutput = false;
+    }
+    
+    cout << "e1timer = " << env3Timer.timer << endl;
+    cout << "sensorTrig = " << sensorTrigger << endl;
+    cout << "active seq = " << environmentThree.enviro.sequenceActive << endl;
+    cout << "path = " << randomPath << endl;
+    cout << "active time = " << env3Timer.activeStoneTime << endl;
     
     if(environmentThree.enviro.sequenceActive){
 //        E3_to_E1(2);
+          E3_to_E1(randomPath);
     }
-    E3_to_E1(2);
+  
 
-
+//    E3_to_E1(2);
 //    cout << "timerSequenceSpacing = " << timerSequenceSpacing<<endl;
 //    cout<< "SeqAct = " << sequenceActive << endl;
+    
+
+    
 }
 
+// function which completes the stone sequence, setting the sequence state to inactive at the end.
+void ofApp::sequenceComplete(Timer& timer_, int timing){
+    if (timer_.timer > (timeSpacing * (timing + 8))){
 
-void ofApp::sequenceComplete(int timing){
-    if (ofGetElapsedTimeMillis() - startTime > (timeSpacing * timing)){
-        sequenceActive = false;
-        sensorTrigger = false;
+        //check which timer/environment is being addressed and turn of the relative sequenceActive state
+        
+        if(timer_.timer == env1Timer.timer){
+            environmentOne.enviro.sequenceActive = false;
+        }
+        if(timer_.timer == env2Timer.timer){
+            environmentTwo.enviro.sequenceActive = false;
+        }
+        if(timer_.timer == env3Timer.timer){
+            environmentThree.enviro.sequenceActive = false;
+        }
     }
 }
 
 
-
-void ofApp::triggerStone(StoneParticleSystem& stone, int timing){
+// function which triggers a stone on and off at the right time in a given sequence
+void ofApp::triggerStone(Timer& timer_, StoneParticleSystem& stone, int timing){
     //turn on the stone
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
+    if(timer_.timer > timeSpacing * timing){
         stone.active = true;
     }
     //turn off the stone
-    if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + activeLength){
+    if(timer_.timer > timeSpacing * timing + timer_.activeStoneTime){
         stone.active = false;
     }
 }
 
-void ofApp::triggerEnviro1(int timing){
-    //turn on the stone
-    if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
+// The following three functions turns on and off an environment's impact state to complete the visual sequence
+void ofApp::triggerEnviro1(Timer timer_, int timing){
+    //turn on the environment impact
+    if (timer_.timer > timeSpacing * timing){
         environmentOne.active = true;
     }
-    //turn off the stone
-    if( ofGetElapsedTimeMillis() - startTime > (timeSpacing * timing) + activeLength){
+    //turn off the environment impact
+    if( timer_.timer > (timeSpacing * timing) + timer_.activeStoneTime){
         environmentOne.active = false;
-        sensorTrigger = false;
     }
     
-    if(ofGetElapsedTimeMillis() - startTime > (timeSpacing * timing) + (activeLength )){
-        sequenceActive = false;
-
-//        sequenceSpacingStart = ofGetElapsedTimeMillis();
-
-    }
 }
 
 void ofApp::triggerEnviro2(int timing){
-    //turn on the stone
+    //turn on the environment impact
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
         environmentTwo.active = true;
     }
-    //turn off the stone
+    //turn off the environment impact
     if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + activeLength){
         environmentTwo.active = false;
         sensorTrigger = false;
-
     }
 }
 
 void ofApp::triggerEnviro3(int timing){
-    //turn on the stone
+    //turn on the environment impact
     if (ofGetElapsedTimeMillis() - startTime > timeSpacing * timing){
         environmentThree.active = true;
     }
-    //turn off the stone
+    //turn off the environment impact
     if( ofGetElapsedTimeMillis() - startTime > timeSpacing * timing + activeLength){
         environmentThree.active = false;
-        
-        
-        e3Count ++;
-        if(e3Count > 2) e3Count = 0;
     }
 }
 
 
 // instructions for the illumination of particular stepping stones in order and in a timed sequence
 
-void ofApp::E1_to_E2(int variation){
-    
-    if(variation == 0){
-        triggerStone(med_stones_5_8.stones[2], 0);
-        triggerStone(large_stones.stones[2], 1);
-        triggerStone(med_stones_5_8.stones[3], 2);
-        triggerStone(large_stones.stones[3], 3);
-        triggerStone(small_stones_13_16.stones[2], 4);
-        triggerEnviro2(5);
-        
-    }
-    if(variation == 1){
-        triggerStone(small_stones_9_12.stones[1], 0);
-        triggerStone(small_stones_9_12.stones[2], 1);
-        triggerStone(small_stones_13_16.stones[0], 2);
-        triggerStone(large_stones.stones[3], 3);
-        triggerStone(small_stones_13_16.stones[2], 4);
-        triggerEnviro2(5);
-    }
-    if(variation == 2){
-        triggerStone(small_stones_5_8.stones[3], 0);
-        triggerStone(small_stones_9_12.stones[0], 1);
-        triggerStone(med_stones_5_8.stones[0], 2);
-        triggerStone(med_stones_5_8.stones[1], 3);
-        triggerStone(large_stones.stones[2], 4);
-        triggerStone(small_stones_5_8.stones[2], 5);
-        triggerEnviro2(6);
-    }
-}
-void ofApp::E1_to_E3(int variation){
-    
-    if(variation == 0){
-        triggerStone(small_stones_5_8.stones[3], 0);
-        triggerStone(small_stones_9_12.stones[0], 1);
-        triggerStone(med_stones_5_8.stones[1], 2);
-        triggerStone(med_stones_5_8.stones[0], 3);
-        triggerStone(large_stones.stones[1], 4);
-        triggerStone(med_stones_1_4.stones[3], 5);
-        triggerStone(med_stones_1_4.stones[2], 6);
-        triggerStone(small_stones_5_8.stones[1], 7);
-        triggerEnviro3(8);
-//        sequenceComplete(9);
-    }
-    if(variation == 1){
-        triggerStone(med_stones_5_8.stones[2], 0);
-        triggerStone(large_stones.stones[2], 1);
-        triggerStone(small_stones_5_8.stones[2], 2);
-        triggerStone(med_stones_5_8.stones[1], 3);
-        triggerStone(med_stones_5_8.stones[0], 4);
-        triggerStone(large_stones.stones[1], 5);
-        triggerStone(med_stones_1_4.stones[3], 6);
-        triggerStone(small_stones_5_8.stones[1], 7);
-        triggerEnviro3(8);
-    }
-    if(variation == 2){
-        triggerStone(small_stones_9_12.stones[0], 0);
-        triggerStone(med_stones_5_8.stones[1], 1);
-        triggerStone(med_stones_5_8.stones[0], 2);
-        triggerStone(large_stones.stones[1], 3);
-        triggerStone(med_stones_1_4.stones[3], 4);
-        triggerStone(small_stones_5_8.stones[1], 5);
-        triggerEnviro3(6);
-    }
-    
-}
-
-void ofApp::E2_to_E1(int variation){
-    
-    if(variation == 0){
-        triggerStone(small_stones_13_16.stones[2], 0);
-        triggerStone(large_stones.stones[3], 1);
-        triggerStone(med_stones_5_8.stones[3], 2);
-        triggerStone(small_stones_13_16.stones[0], 3);
-        triggerStone(small_stones_9_12.stones[2], 4);
-        triggerStone(small_stones_9_12.stones[1], 5);
-        triggerEnviro1(6);
-        
-    }
-    if(variation == 1){
-        
-        triggerStone(small_stones_5_8.stones[2], 0);
-        triggerStone(med_stones_5_8.stones[1], 1);
-        triggerStone(med_stones_5_8.stones[0], 2);
-        triggerStone(small_stones_5_8.stones[3], 3);
-        triggerStone(small_stones_9_12.stones[0], 4);
-        triggerStone(med_stones_5_8.stones[2], 5);
-        triggerEnviro1(6);
-    }
-    if(variation == 2){
-        triggerStone(small_stones_5_8.stones[2], 0);
-        triggerStone(med_stones_5_8.stones[1], 1);
-        triggerStone(med_stones_5_8.stones[0], 2);
-        triggerStone(small_stones_5_8.stones[3], 3);
-        triggerStone(small_stones_9_12.stones[0], 4);
-        triggerStone(med_stones_5_8.stones[2], 5);
-        triggerEnviro1(6);
-    }
-}
-void ofApp::E2_to_E3(int variation){
-    
-    if(variation == 0){
-        triggerStone(small_stones_1_4.stones[3], 0);
-        triggerStone(small_stones_5_8.stones[0], 1);
-        triggerStone(small_stones_1_4.stones[2], 2);
-        triggerStone(med_stones_1_4.stones[0], 3);
-        triggerStone(large_stones.stones[0], 4);
-        triggerStone(small_stones_1_4.stones[1], 5);
-        triggerStone(small_stones_1_4.stones[0], 6);
-    }
-    if(variation == 1){
-        triggerStone(small_stones_5_8.stones[2], 0);
-        triggerStone(med_stones_5_8.stones[1], 1);
-        triggerStone(med_stones_5_8.stones[0], 2);
-        triggerStone(large_stones.stones[1], 3);
-        triggerStone(med_stones_1_4.stones[3], 4);
-        triggerStone(med_stones_1_4.stones[2], 5);
-        triggerStone(small_stones_5_8.stones[1], 6);
-        triggerEnviro3(7);
-        
-    }
-    if(variation == 2){
-        
-        triggerStone(small_stones_1_4.stones[3], 0);
-        triggerStone(small_stones_5_8.stones[0], 1);
-        triggerStone(med_stones_1_4.stones[0], 2);
-        triggerStone(small_stones_1_4.stones[2], 3);
-        triggerStone(med_stones_1_4.stones[1], 4);
-        triggerEnviro3(5);
-    }
-}
-
+//void ofApp::E1_to_E2(int variation){
+//
+//    if(variation == 0){
+//        triggerStone(med_stones_5_8.stones[2], 0);
+//        triggerStone(large_stones.stones[2], 1);
+//        triggerStone(med_stones_5_8.stones[3], 2);
+//        triggerStone(large_stones.stones[3], 3);
+//        triggerStone(small_stones_13_16.stones[2], 4);
+//        triggerEnviro2(5);
+//
+//    }
+//    if(variation == 1){
+//        triggerStone(small_stones_9_12.stones[1], 0);
+//        triggerStone(small_stones_9_12.stones[2], 1);
+//        triggerStone(small_stones_13_16.stones[0], 2);
+//        triggerStone(large_stones.stones[3], 3);
+//        triggerStone(small_stones_13_16.stones[2], 4);
+//        triggerEnviro2(5);
+//    }
+//    if(variation == 2){
+//        triggerStone(small_stones_5_8.stones[3], 0);
+//        triggerStone(small_stones_9_12.stones[0], 1);
+//        triggerStone(med_stones_5_8.stones[0], 2);
+//        triggerStone(med_stones_5_8.stones[1], 3);
+//        triggerStone(large_stones.stones[2], 4);
+//        triggerStone(small_stones_5_8.stones[2], 5);
+//        triggerEnviro2(6);
+//    }
+//}
+//void ofApp::E1_to_E3(int variation){
+//
+//    if(variation == 0){
+//        triggerStone(small_stones_5_8.stones[3], 0);
+//        triggerStone(small_stones_9_12.stones[0], 1);
+//        triggerStone(med_stones_5_8.stones[1], 2);
+//        triggerStone(med_stones_5_8.stones[0], 3);
+//        triggerStone(large_stones.stones[1], 4);
+//        triggerStone(med_stones_1_4.stones[3], 5);
+//        triggerStone(med_stones_1_4.stones[2], 6);
+//        triggerStone(small_stones_5_8.stones[1], 7);
+//        triggerEnviro3(8);
+////        sequenceComplete(9);
+//    }
+//    if(variation == 1){
+//        triggerStone(med_stones_5_8.stones[2], 0);
+//        triggerStone(large_stones.stones[2], 1);
+//        triggerStone(small_stones_5_8.stones[2], 2);
+//        triggerStone(med_stones_5_8.stones[1], 3);
+//        triggerStone(med_stones_5_8.stones[0], 4);
+//        triggerStone(large_stones.stones[1], 5);
+//        triggerStone(med_stones_1_4.stones[3], 6);
+//        triggerStone(small_stones_5_8.stones[1], 7);
+//        triggerEnviro3(8);
+//    }
+//    if(variation == 2){
+//        triggerStone(small_stones_9_12.stones[0], 0);
+//        triggerStone(med_stones_5_8.stones[1], 1);
+//        triggerStone(med_stones_5_8.stones[0], 2);
+//        triggerStone(large_stones.stones[1], 3);
+//        triggerStone(med_stones_1_4.stones[3], 4);
+//        triggerStone(small_stones_5_8.stones[1], 5);
+//        triggerEnviro3(6);
+//    }
+//
+//}
+//
+//void ofApp::E2_to_E1(int variation){
+//
+//    if(variation == 0){
+//        triggerStone(small_stones_13_16.stones[2], 0);
+//        triggerStone(large_stones.stones[3], 1);
+//        triggerStone(med_stones_5_8.stones[3], 2);
+//        triggerStone(small_stones_13_16.stones[0], 3);
+//        triggerStone(small_stones_9_12.stones[2], 4);
+//        triggerStone(small_stones_9_12.stones[1], 5);
+//        triggerEnviro1(6);
+//
+//    }
+//    if(variation == 1){
+//
+//        triggerStone(small_stones_5_8.stones[2], 0);
+//        triggerStone(med_stones_5_8.stones[1], 1);
+//        triggerStone(med_stones_5_8.stones[0], 2);
+//        triggerStone(small_stones_5_8.stones[3], 3);
+//        triggerStone(small_stones_9_12.stones[0], 4);
+//        triggerStone(med_stones_5_8.stones[2], 5);
+//        triggerEnviro1(6);
+//    }
+//    if(variation == 2){
+//        triggerStone(small_stones_5_8.stones[2], 0);
+//        triggerStone(med_stones_5_8.stones[1], 1);
+//        triggerStone(med_stones_5_8.stones[0], 2);
+//        triggerStone(small_stones_5_8.stones[3], 3);
+//        triggerStone(small_stones_9_12.stones[0], 4);
+//        triggerStone(med_stones_5_8.stones[2], 5);
+//        triggerEnviro1(6);
+//    }
+//}
+//void ofApp::E2_to_E3(int variation){
+//
+//    if(variation == 0){
+//        triggerStone(small_stones_1_4.stones[3], 0);
+//        triggerStone(small_stones_5_8.stones[0], 1);
+//        triggerStone(small_stones_1_4.stones[2], 2);
+//        triggerStone(med_stones_1_4.stones[0], 3);
+//        triggerStone(large_stones.stones[0], 4);
+//        triggerStone(small_stones_1_4.stones[1], 5);
+//        triggerStone(small_stones_1_4.stones[0], 6);
+//    }
+//    if(variation == 1){
+//        triggerStone(small_stones_5_8.stones[2], 0);
+//        triggerStone(med_stones_5_8.stones[1], 1);
+//        triggerStone(med_stones_5_8.stones[0], 2);
+//        triggerStone(large_stones.stones[1], 3);
+//        triggerStone(med_stones_1_4.stones[3], 4);
+//        triggerStone(med_stones_1_4.stones[2], 5);
+//        triggerStone(small_stones_5_8.stones[1], 6);
+//        triggerEnviro3(7);
+//
+//    }
+//    if(variation == 2){
+//
+//        triggerStone(small_stones_1_4.stones[3], 0);
+//        triggerStone(small_stones_5_8.stones[0], 1);
+//        triggerStone(med_stones_1_4.stones[0], 2);
+//        triggerStone(small_stones_1_4.stones[2], 3);
+//        triggerStone(med_stones_1_4.stones[1], 4);
+//        triggerEnviro3(5);
+//    }
+//}
+//
 void ofApp::E3_to_E1(int variation){
     
     if(variation == 0){
-       triggerStone(small_stones_5_8.stones[1], 0);
-       triggerStone(med_stones_1_4.stones[2], 1);
-       triggerStone(large_stones.stones[1], 2);
-       triggerStone(med_stones_5_8.stones[0], 3);
-       triggerStone(small_stones_5_8.stones[3], 4);
-       triggerEnviro1(5);
-        
+       triggerStone(env3Timer, small_stones_5_8.stones[1], 0);
+       triggerStone(env3Timer, med_stones_1_4.stones[2], 1);
+       triggerStone(env3Timer, large_stones.stones[1], 2);
+       triggerStone(env3Timer, med_stones_5_8.stones[0], 3);
+       triggerStone(env3Timer, small_stones_5_8.stones[3], 4);
+       triggerEnviro1(env3Timer, 5);
+       sequenceComplete(env3Timer, 6);
+
+
     }
     if(variation == 1){
-        triggerStone(small_stones_5_8.stones[1], 0);
-        triggerStone(med_stones_1_4.stones[2], 1);
-        triggerStone(large_stones.stones[1], 2);
-        triggerStone(med_stones_5_8.stones[0], 3);
-        triggerStone(med_stones_5_8.stones[1], 4);
-        triggerStone(small_stones_9_12.stones[0], 5);
-        triggerEnviro1(6);
+        triggerStone(env3Timer, small_stones_5_8.stones[1], 0);
+        triggerStone(env3Timer, med_stones_1_4.stones[2], 1);
+        triggerStone(env3Timer, large_stones.stones[1], 2);
+        triggerStone(env3Timer, med_stones_5_8.stones[0], 3);
+        triggerStone(env3Timer, med_stones_5_8.stones[1], 4);
+        triggerStone(env3Timer, small_stones_9_12.stones[0], 5);
+        triggerEnviro1(env3Timer, 6);
+        sequenceComplete(env3Timer, 7);
     }
     if(variation == 2){
-        triggerStone(small_stones_5_8.stones[1], 0);
-        triggerStone(med_stones_1_4.stones[3], 1);
-        triggerStone(large_stones.stones[1], 2);
-        triggerStone(med_stones_5_8.stones[0], 3);
-        triggerStone(med_stones_5_8.stones[1], 4);
-        triggerStone(large_stones.stones[2], 5);
-        triggerStone(med_stones_5_8.stones[2], 6);
-        triggerEnviro1(7);
-        if (ofGetElapsedTimeMillis() - startTime > timeSpacing * 8){
-            environmentThree.enviro.sequenceActive = false;
-        }
-
-    }
-}
-
-void ofApp::E3_to_E2(int variation){
-    
-    if(variation == 0){
-        triggerStone(small_stones_1_4.stones[0], 0);
-        triggerStone(small_stones_1_4.stones[1], 1);
-        triggerStone(large_stones.stones[0], 2);
-        triggerStone(med_stones_1_4.stones[0], 3);
-        triggerStone(small_stones_5_8.stones[0], 4);
-        triggerStone(small_stones_1_4.stones[2], 4);
-        triggerStone(small_stones_1_4.stones[3], 5);
-        triggerEnviro1(6);
-    }
-    
-    if(variation == 1){
-        triggerStone(small_stones_5_8.stones[1], 0);
-        triggerStone(med_stones_1_4.stones[2], 1);
-        triggerStone(med_stones_1_4.stones[3], 2);
-        triggerStone(large_stones.stones[1], 3);
-        triggerStone(med_stones_5_8.stones[0], 4);
-        triggerStone(med_stones_5_8.stones[1], 5);
-        triggerStone(small_stones_5_8.stones[2], 6);
-        triggerEnviro1(7);
-
-    }
-    if(variation == 2){
-        triggerStone(med_stones_1_4.stones[1], 0);
-        triggerStone(small_stones_1_4.stones[2], 1);
-        triggerStone(med_stones_1_4.stones[0], 2);
-        triggerStone(small_stones_5_8.stones[0], 3);
-        triggerStone(small_stones_1_4.stones[3], 4);
-        triggerEnviro1(5);
-    }
-}
-
-
-void ofApp::sensorToSystem(int variation){
-    
-    sensorSequenceActive = true;
-    if(variation == 0){
         
-        triggerStone(small_stones_13_16.stones[1], 0);
-        triggerStone(small_stones_13_16.stones[0], 1);
-        triggerStone(med_stones_5_8.stones[3], 2);
-        triggerStone(large_stones.stones[3], 3);
-        triggerStone(small_stones_13_16.stones[2], 4);
-        triggerEnviro2(5);
-        
-    }
-    if(variation == 1){
-        triggerStone(small_stones_13_16.stones[1], 0);
-        triggerStone(small_stones_13_16.stones[0], 1);
-        triggerStone(small_stones_9_12.stones[2], 2);
-        triggerStone(small_stones_9_12.stones[3], 3);
-        triggerStone(small_stones_9_12.stones[1], 4);
-        triggerEnviro1(5);
+        triggerStone(env3Timer, small_stones_5_8.stones[1], 0);
+        triggerStone(env3Timer, med_stones_1_4.stones[3], 1);
+        triggerStone(env3Timer, large_stones.stones[1], 2);
+        triggerStone(env3Timer, med_stones_5_8.stones[0], 3);
+        triggerStone(env3Timer, med_stones_5_8.stones[1], 4);
+        triggerStone(env3Timer, large_stones.stones[2], 5);
+        triggerStone(env3Timer, med_stones_5_8.stones[2], 6);
+        triggerEnviro1(env3Timer, 7);
+        sequenceComplete(env3Timer, 8);
     }
 }
+//
+//void ofApp::E3_to_E2(int variation){
+//
+//    if(variation == 0){
+//        triggerStone(small_stones_1_4.stones[0], 0);
+//        triggerStone(small_stones_1_4.stones[1], 1);
+//        triggerStone(large_stones.stones[0], 2);
+//        triggerStone(med_stones_1_4.stones[0], 3);
+//        triggerStone(small_stones_5_8.stones[0], 4);
+//        triggerStone(small_stones_1_4.stones[2], 4);
+//        triggerStone(small_stones_1_4.stones[3], 5);
+//        triggerEnviro1(6);
+//    }
+//
+//    if(variation == 1){
+//        triggerStone(small_stones_5_8.stones[1], 0);
+//        triggerStone(med_stones_1_4.stones[2], 1);
+//        triggerStone(med_stones_1_4.stones[3], 2);
+//        triggerStone(large_stones.stones[1], 3);
+//        triggerStone(med_stones_5_8.stones[0], 4);
+//        triggerStone(med_stones_5_8.stones[1], 5);
+//        triggerStone(small_stones_5_8.stones[2], 6);
+//        triggerEnviro1(7);
+//
+//    }
+//    if(variation == 2){
+//        triggerStone(med_stones_1_4.stones[1], 0);
+//        triggerStone(small_stones_1_4.stones[2], 1);
+//        triggerStone(med_stones_1_4.stones[0], 2);
+//        triggerStone(small_stones_5_8.stones[0], 3);
+//        triggerStone(small_stones_1_4.stones[3], 4);
+//        triggerEnviro1(5);
+//    }
+//}
+//
+//
+//void ofApp::sensorToSystem(int variation){
+//
+//    sensorSequenceActive = true;
+//    if(variation == 0){
+//
+//        triggerStone(small_stones_13_16.stones[1], 0);
+//        triggerStone(small_stones_13_16.stones[0], 1);
+//        triggerStone(med_stones_5_8.stones[3], 2);
+//        triggerStone(large_stones.stones[3], 3);
+//        triggerStone(small_stones_13_16.stones[2], 4);
+//        triggerEnviro2(5);
+//
+//    }
+//    if(variation == 1){
+//        triggerStone(small_stones_13_16.stones[1], 0);
+//        triggerStone(small_stones_13_16.stones[0], 1);
+//        triggerStone(small_stones_9_12.stones[2], 2);
+//        triggerStone(small_stones_9_12.stones[3], 3);
+//        triggerStone(small_stones_9_12.stones[1], 4);
+//        triggerEnviro1(5);
+//    }
+//}
 
 
 

@@ -81,7 +81,7 @@ public:
     }
     
     bool impact;
-    
+    bool sequenceActive;
     
 };
 

@@ -10,11 +10,18 @@
 
 Timer::Timer(){
 //    intervalLength = intervalLength_;
+    activeStoneTime = 3000;
+
+}
+
+void Timer::setup(){
+    startTime = ofGetElapsedTimeMillis();
     
 }
 
 void Timer::setup(int interval){
     startTime = ofGetElapsedTimeMillis();
+
     intervalLength = interval;
     
     

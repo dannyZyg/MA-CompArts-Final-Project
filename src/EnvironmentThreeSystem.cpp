@@ -381,24 +381,24 @@ void EnvironmentThreeSystem::display(){
             }
         }
         
-        if(clusterCount > 10 && !sequenceActive) {
+//        if(clusterCount > 5 && !sequenceActive) {
 //            ofSetColor(0, 255, 0);
 //            ofDrawCircle(origin, 50);
-            systemOutput = true;
-            glowTimer.reset();
-            sequenceActive = true;
-        }
+//            systemOutput = true;
+//            glowTimer.reset();
+////            sequenceActive = true;
+//        }
         
-        if(!glowTimer.complete) glow = true;
-        if(glowTimer.complete){
-            glow = false;
-//            sequenceActive = false;
-            systemOutput = false;
-        }
+//        if(!glowTimer.complete) glow = true;
+//        if(glowTimer.complete){
+//            glow = false;
+////            sequenceActive = false;
+////            systemOutput = false;
+//        }
         
 //        cout<< "complete = " << glowTimer.complete << endl;
 //        cout<< "clusters = " << clusterCount<< endl;
-        cout<< glowTimer.timer<<endl;
+//        cout<< glowTimer.timer<<endl;
         
         // forces on this particle
         cur.bounceOffWalls();
