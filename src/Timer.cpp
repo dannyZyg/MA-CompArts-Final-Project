@@ -11,7 +11,8 @@
 Timer::Timer(){
 //    intervalLength = intervalLength_;
     activeStoneTime = 3000;
-
+    endTime = 0;
+    reached = true;
 }
 
 void Timer::setup(){
@@ -31,15 +32,28 @@ void Timer::setup(int interval){
 void Timer::run(){
     timer = ofGetElapsedTimeMillis() - startTime;
     
-    if(timer > intervalLength){
-        complete = true;
+    if(timer >= endTime && !reached) {
+        reached = true;
+        ofMessage msg("Timer Reached");
+        ofSendMessage(msg);
     }
-    else{
-        complete = false;
-    }
+    
+    
+    // get the percantage of the timer
+    pct = ofMap(timer, 0.0, endTime, 0.0, 1.0, true);
+    
+    
+    
+//    if(timer > intervalLength){
+//        complete = true;
+//    }
+//    else{
+//        complete = false;
+//    }
 }
 
 void Timer::reset(){
     startTime = ofGetElapsedTimeMillis();
+    reached = false;
 }
 

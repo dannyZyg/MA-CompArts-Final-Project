@@ -74,6 +74,7 @@ void ofApp::setup(){
     env3Timer.setup();
     
     randomPath = 0;
+    s = Scheduler();
     
 }
 
@@ -90,6 +91,8 @@ void ofApp::update(){
     env2Timer.run();
     env3Timer.run();
     
+    
+    s.recieveStones(small_stones_5_8.stones[3]);
 }
 
 void ofApp::draw(){
@@ -132,7 +135,7 @@ void ofApp::draw(){
     
     
     ofSetColor(255);
-    if (sequenceActive) ofDrawBitmapString("active", mouseX, mouseY);
+//    if (sequenceActive) ofDrawBitmapString("active", mouseX, mouseY);
     
     
 //    cout << testVal <<endl;
@@ -242,34 +245,19 @@ void ofApp::scheduler(){
     
     ////////////////
     
-    if(sensorTrigger && !environmentThree.enviro.sequenceActive){
+// if these conditions are met, do this once only!
+    
+    if(environmentThree.enviro.sequenceTrigger && !environmentThree.enviro.sequenceActive){
         randomPath = ofRandom(3);
         environmentThree.enviro.sequenceActive = true;
+        environmentThree.enviro.sequenceTrigger = false;
         env3Timer.reset();
-        env3Timer.activeStoneTime = ofRandom(1000, 5000);
-        
-        
-//        environmentThree.enviro.systemOutput = false;
+        env3Timer.activeStoneTime = 2000;
     }
-    
-    cout << "e1timer = " << env3Timer.timer << endl;
-    cout << "sensorTrig = " << sensorTrigger << endl;
-    cout << "active seq = " << environmentThree.enviro.sequenceActive << endl;
-    cout << "path = " << randomPath << endl;
-    cout << "active time = " << env3Timer.activeStoneTime << endl;
     
     if(environmentThree.enviro.sequenceActive){
-//        E3_to_E1(2);
           E3_to_E1(randomPath);
     }
-  
-
-//    E3_to_E1(2);
-//    cout << "timerSequenceSpacing = " << timerSequenceSpacing<<endl;
-//    cout<< "SeqAct = " << sequenceActive << endl;
-    
-
-    
 }
 
 // function which completes the stone sequence, setting the sequence state to inactive at the end.
@@ -277,7 +265,6 @@ void ofApp::sequenceComplete(Timer& timer_, int timing){
     if (timer_.timer > (timeSpacing * (timing + 8))){
 
         //check which timer/environment is being addressed and turn of the relative sequenceActive state
-        
         if(timer_.timer == env1Timer.timer){
             environmentOne.enviro.sequenceActive = false;
         }
@@ -285,9 +272,14 @@ void ofApp::sequenceComplete(Timer& timer_, int timing){
             environmentTwo.enviro.sequenceActive = false;
         }
         if(timer_.timer == env3Timer.timer){
+            environmentThree.enviro.systemOutput = false;
             environmentThree.enviro.sequenceActive = false;
+            
         }
+        
+
     }
+    
 }
 
 

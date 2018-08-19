@@ -78,6 +78,10 @@ public:
     vector <float> noiseSeed;
     
     Timer glowTimer;
+    
+    bool trigger;
+    
+    bool sequenceTrigger;
 
     bool sequenceActive;
 

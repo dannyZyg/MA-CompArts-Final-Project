@@ -16,6 +16,7 @@
 #include "EnvironmentThreeSource.hpp"
 #include "Timer.hpp"
 #include "Envelope.hpp"
+#include "Scheduler.hpp"
 
 
 
@@ -148,5 +149,6 @@ public:
     
     bool env;
     int randomPath;
+    Scheduler s;
     
 };

@@ -52,7 +52,9 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
         noiseSeed.push_back(seed);
     }
     
-    glowTimer.setup(3000);
+    glowTimer.setup();
+    trigger = false;
+    glow = false;
 }
 
 
@@ -277,7 +279,6 @@ void EnvironmentThreeSystem::update(float lastTimeStep) {
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
     angle += 10;
-    glowTimer.run();
 }
 
 void EnvironmentThreeSystem::draw() {
@@ -369,6 +370,8 @@ void EnvironmentThreeSystem::display(){
                 clusterCount ++;
             }
         }
+        
+        
         for(int j = 0; j < global.size(); j ++){
             if(glow){
                 ofPushStyle();
@@ -381,30 +384,42 @@ void EnvironmentThreeSystem::display(){
             }
         }
         
-//        if(clusterCount > 5 && !sequenceActive) {
-//            ofSetColor(0, 255, 0);
-//            ofDrawCircle(origin, 50);
-//            systemOutput = true;
-//            glowTimer.reset();
-////            sequenceActive = true;
-//        }
+        float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
+    
+// run the timer for the glow effect
+        glowTimer.run();
+
         
-//        if(!glowTimer.complete) glow = true;
-//        if(glowTimer.complete){
-//            glow = false;
-////            sequenceActive = false;
-////            systemOutput = false;
-//        }
-        
-//        cout<< "complete = " << glowTimer.complete << endl;
-//        cout<< "clusters = " << clusterCount<< endl;
-//        cout<< glowTimer.timer<<endl;
-        
+        if(clusterCount > 4) trigger = true;
+        else(trigger = false);
+
+// if these conditions are met, do this once only!
+
+        if(trigger && !systemOutput) {
+            systemOutput = true;
+            ofSetColor(0, 255, 0);
+            ofDrawCircle(origin, 50);
+            glowTimer.reset();
+            glowTimer.endTime = 5000;
+            sequenceTrigger = true;
+        }
+    
+// if the timer is active, glow
+        if(!glowTimer.reached){
+            glow = true;
+            
+        }
+// if not, don't glow
+        if (glowTimer.reached){
+            glow = false;
+//
+        }
+
         // forces on this particle
         cur.bounceOffWalls();
         cur.addDampingForce();
         
-        
+// reset the cluster tally
         clusterCount = 0;
         
     }

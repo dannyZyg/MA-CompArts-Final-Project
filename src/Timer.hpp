@@ -27,7 +27,12 @@ public:
     void setup(int interval);
     
     float startTime;
+    float endTime; // when do want to stop the timer
+
     float timer;
+    float pct;
+    
+    
     float intervalLength;
     bool complete;
     bool active;
@@ -36,6 +41,6 @@ public:
     
     float activeStoneTime;
     
-    
+    bool reached; // used as a trigger when we hit the timer
     
 };
