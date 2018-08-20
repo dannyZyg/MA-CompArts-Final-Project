@@ -2,57 +2,34 @@
 
 #include "ofGraphics.h"
 
-EnvironmentTwoParticle::EnvironmentTwoParticle(float x, float y, float xv, float yv) :
-x(x), y(y),
-xv(xv), yv(yv) {
-        
-//        r = 3;
-        r = ofRandom (2, 7);
-//        col = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
+EnvironmentTwoParticle::EnvironmentTwoParticle(float x_, float y_){
+    r = ofRandom (2, 7);
+    x = x_;
+    y = y_;
     
-//        xv = 1;
-//    xv = 0;
-//    yv = 0;
-//        xv = ofRandom(-1, 1);
-//        yv = ofRandom(-1, 1);
-//        if(xv == 0) xv = ofRandom(-0.5, 0.5);
+    xv = ofRandom(-1, 1);
+    yv = ofRandom(-1, 1);
     
-         vel = ofVec2f(ofRandom(-1, 1), ofRandom(-1, 1));
-        if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-        
-//        cellState = ofRandom(3);
-        damping = .3;
-        randomOffset = ofRandom(-5, 10);
-        wallTimer = Timer();
-        wallTimer.setup();
-        wallTimer.endTime = 3000;
-        stuckOnWall = false;
-        mass = 1;
-        acceleration = ofVec2f(0,0);
-        maxSpeed = 5;
+    damping = .3;
+    randomOffset = ofRandom(-5, 10);
+    wallTimer = Timer();
+    wallTimer.setup();
+    wallTimer.endTime = 3000;
+    stuckOnWall = false;
+    mass = 1;
+    acceleration = ofVec2f(0,0);
+    maxSpeed = 5;
+    
 }
 
-void EnvironmentTwoParticle::updatePosition(float timeStep) {
+void EnvironmentTwoParticle::updatePosition() {
 //     f = ma, m = 1, f = a, v = int(a)
-   
+
+    xv += xf;
+    yv += yf;
+    x += xv;
+    y += yv;
     
-    
-    xv += xf;// * timeStep;
-    yv += yf;// * timeStep;
-    x += xv;// * timeStep;
-    y += yv;// * timeStep;
-    
-    
-//    xv += acceleration.x;
-//    yv += acceleration.y;
-//
-//    vel.x += xf;
-//    vel.y += yf;
-//
-//    x += vel.x;
-//    y += vel.y;
-//
-    acceleration *=0;
 }
 
 void EnvironmentTwoParticle::resetForce() {
@@ -84,6 +61,24 @@ void EnvironmentTwoParticle::bounceOffWalls() {
     }
 }
 
+
+void EnvironmentTwoParticle::addDampingForce() {
+    if(xv > 0.5) xf -= xv * damping;
+    if(yv > 0.5) yf -= yv * damping;
+}
+
+void EnvironmentTwoParticle::draw() {
+    
+    glVertex2f(x, y);
+}
+
+
+void EnvironmentTwoParticle::displayParticle(){
+    ofSetColor(col);
+    ofDrawCircle(x, y, r);
+    returnFromWall();
+}
+
 // Function that reverses velocity when hitting an outer cell wall
 void EnvironmentTwoParticle::bounceOffOuterCell(float outer){
     bool collision = false;
@@ -94,16 +89,13 @@ void EnvironmentTwoParticle::bounceOffOuterCell(float outer){
         ofVec2f posAtEdge = ofVec2f(x, y);
         ofVec2f ret = origin - posAtEdge;
         ret = ret.normalize();
-
+        
         x += ret.x;
         y += ret.y;
-
+        
         xv *= -1;
         yv *= -1;
-
-        vel.x *= -1;
-        vel.y *= -1;
-
+        
         collision = true;
     }
 }
@@ -126,31 +118,8 @@ void EnvironmentTwoParticle::bounceOffInnerCell(float inner){
         xv *= -1;
         yv *= -1;
         
-        vel.x *= -1;
-        vel.y *= -1;
-        
         collision = true;
     }
-}
-    
-
-
-
-void EnvironmentTwoParticle::addDampingForce() {
-	xf -= xv * damping;
-	yf -= yv * damping;
-}
-
-void EnvironmentTwoParticle::draw() {
-    
-    glVertex2f(x, y);
-}
-
-
-void EnvironmentTwoParticle::displayParticle(){
-    ofSetColor(col);
-    ofDrawCircle(x, y, r);
-    returnFromWall();
 }
 
 void EnvironmentTwoParticle::receiveCells(vector <float> cells_){
@@ -205,7 +174,4 @@ void EnvironmentTwoParticle::returnFromWall(){
         
         
     }
-    
-
-    
 }

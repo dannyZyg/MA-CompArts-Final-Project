@@ -15,8 +15,8 @@ public:
     
     float damping;
     
-	EnvironmentTwoParticle(float x, float y, float xv, float yv);
-	void updatePosition(float timeStep);
+    EnvironmentTwoParticle(float x, float y);
+	void updatePosition();
 	void resetForce();
 	void bounceOffWalls();
     void bounceOffOuterCell(float outer);
@@ -31,7 +31,6 @@ public:
     
     int cellState;
     float randomOffset;
-    
     int colIndex;
     
     vector <float> cells;

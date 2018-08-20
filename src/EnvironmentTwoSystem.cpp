@@ -27,7 +27,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        EnvironmentTwoParticle particle = EnvironmentTwoParticle(x, y, 0, 0);
+        EnvironmentTwoParticle particle = EnvironmentTwoParticle(x, y);
         
         particles.push_back(particle);
         
@@ -36,7 +36,10 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         
 //        particleSystem.add(particle);
         setupColours();
+        
     }
+    
+    
     
     padding = 128;
     timeStep = 100;
@@ -47,6 +50,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     centerAttraction = 0;
     drawBalls = true;
     
+//     b = BabyParticle();
 }
 
 
@@ -97,6 +101,7 @@ void EnvironmentTwoSystem::updateColours(){
         
         
     }
+    
     
     
 }
@@ -284,7 +289,7 @@ void EnvironmentTwoSystem::update(float lastTimeStep) {
     int n = particles.size();
     float curTimeStep = lastTimeStep * timeStep;
     for(int i = 0; i < n; i++) {
-        particles[i].updatePosition(curTimeStep);
+        particles[i].updatePosition();
         particles[i].receiveCells(cells);
     }
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
@@ -323,7 +328,7 @@ void EnvironmentTwoSystem::display(){
      target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
     if(impact){
-//        addRepulsionForce(target.x, target.y, 500, 1);
+        addRepulsionForce(target.x, target.y, 100, 0.5);
     }
     
     ofPushMatrix();
@@ -386,6 +391,12 @@ void EnvironmentTwoSystem::display(){
 //    particleSystem.display();
     ofPopMatrix();
 
+    
+    
+    
+//    b.updatePosition();
+//    b.displayParticle();
+//    b.test();
     
 }
 

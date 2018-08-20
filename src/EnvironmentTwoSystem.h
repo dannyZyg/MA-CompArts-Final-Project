@@ -2,6 +2,8 @@
 
 #include "EnvironmentTwoParticle.h"
 #include "ofxColorPalette.h"
+#include "Particle.h"
+
 
 #define DRAW_FORCES
 #define USE_INVSQRT
@@ -102,6 +104,7 @@ public:
  
     bool impact;
     bool sequenceActive;
+    BabyParticle b;
 };
 
 
