@@ -1,5 +1,6 @@
-#include "EnvironmentThreeParticle.h"
-//#include "Particle.h"
+#pragma once
+
+#include "Particle.h"
 #include "ofxColorPalette.h"
 #include "Timer.hpp"
 
@@ -7,13 +8,13 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-#pragma once
+
 
 class EnvironmentThreeSystem {
 protected:
 	float timeStep;
-	vector<EnvironmentThreeParticle> particles;
-	vector< vector<EnvironmentThreeParticle*> > bins;
+	vector<E3Particle> particles;
+	vector< vector<E3Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
 
 public:
@@ -22,19 +23,19 @@ public:
 	void setup(int width, int height, int k);
 	void setTimeStep(float timeStep);
 
-	void add(EnvironmentThreeParticle particle);
-	vector<EnvironmentThreeParticle*> getNeighbors(EnvironmentThreeParticle& particle, float radius);
-	vector<EnvironmentThreeParticle*> getNeighbors(float x, float y, float radius);
-	vector<EnvironmentThreeParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
+	void add(E3Particle particle);
+	vector<E3Particle*> getNeighbors(E3Particle& particle, float radius);
+	vector<E3Particle*> getNeighbors(float x, float y, float radius);
+	vector<E3Particle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
 	unsigned size() const;
-	EnvironmentThreeParticle& operator[](unsigned i);
+	E3Particle& operator[](unsigned i);
 
 	void setupForces();
-	void addRepulsionForce(const EnvironmentThreeParticle& particle, float radius, float scale);
+	void addRepulsionForce(const E3Particle& particle, float radius, float scale);
 	void addRepulsionForce(float x, float y, float radius, float scale);
-	void addAttractionForce(const EnvironmentThreeParticle& particle, float radius, float scale);
+	void addAttractionForce(const E3Particle& particle, float radius, float scale);
 	void addAttractionForce(float x, float y, float radius, float scale);
-	void addForce(const EnvironmentThreeParticle& particle, float radius, float scale);
+	void addForce(const E3Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
 	void update(float lastTimeStep);
 

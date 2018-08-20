@@ -27,7 +27,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        EnvironmentTwoParticle particle = EnvironmentTwoParticle(x, y);
+        E2Particle particle = E2Particle();
         
         particles.push_back(particle);
         
@@ -46,7 +46,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 1;
+    particleRepulsion = 0.5;
     centerAttraction = 0;
     drawBalls = true;
     
@@ -111,7 +111,7 @@ void EnvironmentTwoSystem::setTimeStep(float timeStep) {
     this->timeStep = timeStep;
 }
 
-void EnvironmentTwoSystem::add(EnvironmentTwoParticle particle) {
+void EnvironmentTwoSystem::add(E2Particle particle) {
     particles.push_back(particle);
 }
 
@@ -119,26 +119,26 @@ unsigned EnvironmentTwoSystem::size() const {
     return particles.size();
 }
 
-EnvironmentTwoParticle& EnvironmentTwoSystem::operator[](unsigned i) {
+E2Particle& EnvironmentTwoSystem::operator[](unsigned i) {
     return particles[i];
 }
 
-vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getNeighbors(EnvironmentTwoParticle& particle, float radius) {
+vector<E2Particle*> EnvironmentTwoSystem::getNeighbors(E2Particle& particle, float radius) {
     return getNeighbors(particle.x, particle.y, radius);
 }
 
-vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getNeighbors(float x, float y, float radius) {
-    vector<EnvironmentTwoParticle*> region = getRegion(
+vector<E2Particle*> EnvironmentTwoSystem::getNeighbors(float x, float y, float radius) {
+    vector<E2Particle*> region = getRegion(
                                                        (int) (x - radius),
                                                        (int) (y - radius),
                                                        (int) (x + radius),
                                                        (int) (y + radius));
-    vector<EnvironmentTwoParticle*> neighbors;
+    vector<E2Particle*> neighbors;
     int n = region.size();
     float xd, yd, rsq, maxrsq;
     maxrsq = radius * radius;
     for(int i = 0; i < n; i++) {
-        EnvironmentTwoParticle& cur = *region[i];
+        E2Particle& cur = *region[i];
         xd = cur.x - x;
         yd = cur.y - y;
         rsq = xd * xd + yd * yd;
@@ -148,9 +148,9 @@ vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getNeighbors(float x, floa
     return neighbors;
 }
 
-vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
-    vector<EnvironmentTwoParticle*> region;
-    back_insert_iterator< vector<EnvironmentTwoParticle*> > back = back_inserter(region);
+vector<E2Particle*> EnvironmentTwoSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
+    vector<E2Particle*> region;
+    back_insert_iterator< vector<E2Particle*> > back = back_inserter(region);
     unsigned minXBin = minX >> k;
     unsigned maxXBin = maxX >> k;
     unsigned minYBin = minY >> k;
@@ -163,7 +163,7 @@ vector<EnvironmentTwoParticle*> EnvironmentTwoSystem::getRegion(unsigned minX, u
         maxYBin = yBins;
     for(int y = minYBin; y < maxYBin; y++) {
         for(int x = minXBin; x < maxXBin; x++) {
-            vector<EnvironmentTwoParticle*>& cur = bins[y * xBins + x];
+            vector<E2Particle*>& cur = bins[y * xBins + x];
             copy(cur.begin(), cur.end(), back);
         }
     }
@@ -178,7 +178,7 @@ void EnvironmentTwoSystem::setupForces() {
     n = particles.size();
     unsigned xBin, yBin, bin;
     for(int i = 0; i < n; i++) {
-        EnvironmentTwoParticle& cur = particles[i];
+        E2Particle& cur = particles[i];
         cur.resetForce();
         xBin = ((unsigned) cur.x) >> k;
         yBin = ((unsigned) cur.y) >> k;
@@ -188,7 +188,7 @@ void EnvironmentTwoSystem::setupForces() {
     }
 }
 
-void EnvironmentTwoSystem::addRepulsionForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addRepulsionForce(const E2Particle& particle, float radius, float scale) {
     addRepulsionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -196,7 +196,7 @@ void EnvironmentTwoSystem::addRepulsionForce(float x, float y, float radius, flo
     addForce(x, y, radius, scale);
 }
 
-void EnvironmentTwoSystem::addAttractionForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addAttractionForce(const E2Particle& particle, float radius, float scale) {
     addAttractionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -204,7 +204,7 @@ void EnvironmentTwoSystem::addAttractionForce(float x, float y, float radius, fl
     addForce(x, y, radius, -scale);
 }
 
-void EnvironmentTwoSystem::addForce(const EnvironmentTwoParticle& particle, float radius, float scale) {
+void EnvironmentTwoSystem::addForce(const E2Particle& particle, float radius, float scale) {
     addForce(particle.x, particle.y, radius, -scale);
 }
 
@@ -237,10 +237,10 @@ void EnvironmentTwoSystem::addForce(float targetX, float targetY, float radius, 
     maxrsq = radius * radius;
     for(int y = minYBin; y < maxYBin; y++) {
         for(int x = minXBin; x < maxXBin; x++) {
-            vector<EnvironmentTwoParticle*>& curBin = bins[y * xBins + x];
+            vector<E2Particle*>& curBin = bins[y * xBins + x];
             int n = curBin.size();
             for(int i = 0; i < n; i++) {
-                EnvironmentTwoParticle& curBinnedParticle = *(curBin[i]);
+                E2Particle& curBinnedParticle = *(curBin[i]);
                 xd = curBinnedParticle.x - targetX;
                 yd = curBinnedParticle.y - targetY;
                 length = xd * xd + yd * yd;
@@ -331,6 +331,17 @@ void EnvironmentTwoSystem::display(){
         addRepulsionForce(target.x, target.y, 100, 0.5);
     }
     
+    
+    if(newRules){
+        //change rules
+        
+        particleRepulsion = ofRandom(0.1, 1.5);
+
+        cout<< particleRepulsion <<endl;
+        
+        newRules = false;
+    }
+    
     ofPushMatrix();
     
     // apply per-particle forces
@@ -340,7 +351,7 @@ void EnvironmentTwoSystem::display(){
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     for(int i = 0; i < particles.size(); i++) {
-        EnvironmentTwoParticle& cur = particles[i];
+        E2Particle& cur = particles[i];
         // global force on other particles
         
         
@@ -361,6 +372,8 @@ void EnvironmentTwoSystem::display(){
             cur.bounceOffWalls();
             
         }
+        
+        
         
     }
     
@@ -384,6 +397,7 @@ void EnvironmentTwoSystem::display(){
             //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
             
             particles[i].displayParticle();
+            particles[i].returnFromWall();
         }
     }
     
@@ -406,7 +420,7 @@ void EnvironmentTwoSystem::receiveCells(vector <float> cells_){
 }
 
 
-void EnvironmentTwoSystem::cellWallRebound(EnvironmentTwoParticle& particle){
+void EnvironmentTwoSystem::cellWallRebound(E2Particle& particle){
     
     // if statements telling the particles to stay within their allocated cell walls
     
@@ -425,7 +439,7 @@ void EnvironmentTwoSystem::cellWallRebound(EnvironmentTwoParticle& particle){
     
 }
 
-void EnvironmentTwoSystem::allocateCellState(EnvironmentTwoParticle& particle){
+void EnvironmentTwoSystem::allocateCellState(E2Particle& particle){
     
     float d = ofDist(particle.x, particle.y, origin.x, origin.y);
     if(d > 0 && d < cells[1]){

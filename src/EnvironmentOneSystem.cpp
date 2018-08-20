@@ -27,7 +27,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        EnvironmentOneParticle particle = EnvironmentOneParticle(x, y, 0, 0);
+        E1Particle particle = E1Particle();
         
         particles.push_back(particle);
         
@@ -71,7 +71,7 @@ void EnvironmentOneSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
-void EnvironmentOneSystem::add(EnvironmentOneParticle particle) {
+void EnvironmentOneSystem::add(E1Particle particle) {
 	particles.push_back(particle);
 }
 
@@ -79,26 +79,26 @@ unsigned EnvironmentOneSystem::size() const {
 	return particles.size();
 }
 
-EnvironmentOneParticle& EnvironmentOneSystem::operator[](unsigned i) {
+E1Particle& EnvironmentOneSystem::operator[](unsigned i) {
 	return particles[i];
 }
 
-vector<EnvironmentOneParticle*> EnvironmentOneSystem::getNeighbors(EnvironmentOneParticle& particle, float radius) {
+vector<E1Particle*> EnvironmentOneSystem::getNeighbors(E1Particle& particle, float radius) {
 	return getNeighbors(particle.x, particle.y, radius);
 }
 
-vector<EnvironmentOneParticle*> EnvironmentOneSystem::getNeighbors(float x, float y, float radius) {
-	vector<EnvironmentOneParticle*> region = getRegion(
+vector<E1Particle*> EnvironmentOneSystem::getNeighbors(float x, float y, float radius) {
+	vector<E1Particle*> region = getRegion(
 		(int) (x - radius),
 		(int) (y - radius),
 		(int) (x + radius),
 		(int) (y + radius));
-	vector<EnvironmentOneParticle*> neighbors;
+	vector<E1Particle*> neighbors;
 	int n = region.size();
 	float xd, yd, rsq, maxrsq;
 	maxrsq = radius * radius;
 	for(int i = 0; i < n; i++) {
-		EnvironmentOneParticle& cur = *region[i];
+		E1Particle& cur = *region[i];
 		xd = cur.x - x;
 		yd = cur.y - y;
 		rsq = xd * xd + yd * yd;
@@ -108,9 +108,9 @@ vector<EnvironmentOneParticle*> EnvironmentOneSystem::getNeighbors(float x, floa
 	return neighbors;
 }
 
-vector<EnvironmentOneParticle*> EnvironmentOneSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
-	vector<EnvironmentOneParticle*> region;
-	back_insert_iterator< vector<EnvironmentOneParticle*> > back = back_inserter(region);
+vector<E1Particle*> EnvironmentOneSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
+	vector<E1Particle*> region;
+	back_insert_iterator< vector<E1Particle*> > back = back_inserter(region);
 	unsigned minXBin = minX >> k;
 	unsigned maxXBin = maxX >> k;
 	unsigned minYBin = minY >> k;
@@ -123,7 +123,7 @@ vector<EnvironmentOneParticle*> EnvironmentOneSystem::getRegion(unsigned minX, u
 		maxYBin = yBins;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<EnvironmentOneParticle*>& cur = bins[y * xBins + x];
+			vector<E1Particle*>& cur = bins[y * xBins + x];
 			copy(cur.begin(), cur.end(), back);
 		}
 	}
@@ -138,7 +138,7 @@ void EnvironmentOneSystem::setupForces() {
 	n = particles.size();
 	unsigned xBin, yBin, bin;
 	for(int i = 0; i < n; i++) {
-		EnvironmentOneParticle& cur = particles[i];
+		E1Particle& cur = particles[i];
 		cur.resetForce();
 		xBin = ((unsigned) cur.x) >> k;
 		yBin = ((unsigned) cur.y) >> k;
@@ -148,7 +148,7 @@ void EnvironmentOneSystem::setupForces() {
 	}
 }
 
-void EnvironmentOneSystem::addRepulsionForce(const EnvironmentOneParticle& particle, float radius, float scale) {
+void EnvironmentOneSystem::addRepulsionForce(const E1Particle& particle, float radius, float scale) {
 	addRepulsionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -156,7 +156,7 @@ void EnvironmentOneSystem::addRepulsionForce(float x, float y, float radius, flo
 	addForce(x, y, radius, scale);
 }
 
-void EnvironmentOneSystem::addAttractionForce(const EnvironmentOneParticle& particle, float radius, float scale) {
+void EnvironmentOneSystem::addAttractionForce(const E1Particle& particle, float radius, float scale) {
 	addAttractionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -164,7 +164,7 @@ void EnvironmentOneSystem::addAttractionForce(float x, float y, float radius, fl
 	addForce(x, y, radius, -scale);
 }
 
-void EnvironmentOneSystem::addForce(const EnvironmentOneParticle& particle, float radius, float scale) {
+void EnvironmentOneSystem::addForce(const E1Particle& particle, float radius, float scale) {
 	addForce(particle.x, particle.y, radius, -scale);
 }
 
@@ -197,10 +197,10 @@ void EnvironmentOneSystem::addForce(float targetX, float targetY, float radius, 
 	maxrsq = radius * radius;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<EnvironmentOneParticle*>& curBin = bins[y * xBins + x];
+			vector<E1Particle*>& curBin = bins[y * xBins + x];
 			int n = curBin.size();
 			for(int i = 0; i < n; i++) {
-				EnvironmentOneParticle& curBinnedParticle = *(curBin[i]);
+				E1Particle& curBinnedParticle = *(curBin[i]);
 				xd = curBinnedParticle.x - targetX;
 				yd = curBinnedParticle.y - targetY;
 				length = xd * xd + yd * yd;
@@ -249,7 +249,7 @@ void EnvironmentOneSystem::update(float lastTimeStep) {
 	int n = particles.size();
 	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
-		particles[i].updatePosition(curTimeStep);
+		particles[i].updatePosition();
 	}
     
     particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
@@ -297,7 +297,7 @@ void EnvironmentOneSystem::display(){
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     for(int i = 0; i < particles.size(); i++) {
-        EnvironmentOneParticle& cur = particles[i];
+        E1Particle& cur = particles[i];
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
@@ -383,12 +383,11 @@ void EnvironmentOneSystem::display(){
 
 
 
-void EnvironmentOneSystem::alterSize(EnvironmentOneParticle& cur_){
+void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     
     int nearby;
     int region = 50;
-    vector<EnvironmentOneParticle*> closeNei = getNeighbors(cur_.x, cur_.y, cur_.r + maxRad);
-    cout<< "size = " << closeNei.size() << endl;
+    vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, cur_.r + maxRad);
     
     
     //alter size

@@ -27,9 +27,9 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
-        EnvironmentThreeParticle particle = EnvironmentThreeParticle(x, y, 0, 0);
+        E3Particle particle = E3Particle();
         
-//        EnvironmentThreeParticle particle();
+//        E3Particle particle();
         
         particles.push_back(particle);
         
@@ -98,7 +98,7 @@ void EnvironmentThreeSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
 }
 
-void EnvironmentThreeSystem::add(EnvironmentThreeParticle particle) {
+void EnvironmentThreeSystem::add(E3Particle particle) {
 	particles.push_back(particle);
 }
 
@@ -106,26 +106,26 @@ unsigned EnvironmentThreeSystem::size() const {
 	return particles.size();
 }
 
-EnvironmentThreeParticle& EnvironmentThreeSystem::operator[](unsigned i) {
+E3Particle& EnvironmentThreeSystem::operator[](unsigned i) {
 	return particles[i];
 }
 
-vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getNeighbors(EnvironmentThreeParticle& particle, float radius) {
+vector<E3Particle*> EnvironmentThreeSystem::getNeighbors(E3Particle& particle, float radius) {
 	return getNeighbors(particle.x, particle.y, radius);
 }
 
-vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getNeighbors(float x, float y, float radius) {
-	vector<EnvironmentThreeParticle*> region = getRegion(
+vector<E3Particle*> EnvironmentThreeSystem::getNeighbors(float x, float y, float radius) {
+	vector<E3Particle*> region = getRegion(
 		(int) (x - radius),
 		(int) (y - radius),
 		(int) (x + radius),
 		(int) (y + radius));
-	vector<EnvironmentThreeParticle*> neighbors;
+	vector<E3Particle*> neighbors;
 	int n = region.size();
 	float xd, yd, rsq, maxrsq;
 	maxrsq = radius * radius;
 	for(int i = 0; i < n; i++) {
-		EnvironmentThreeParticle& cur = *region[i];
+		E3Particle& cur = *region[i];
 		xd = cur.x - x;
 		yd = cur.y - y;
 		rsq = xd * xd + yd * yd;
@@ -135,9 +135,9 @@ vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getNeighbors(float x, 
 	return neighbors;
 }
 
-vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
-	vector<EnvironmentThreeParticle*> region;
-	back_insert_iterator< vector<EnvironmentThreeParticle*> > back = back_inserter(region);
+vector<E3Particle*> EnvironmentThreeSystem::getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY) {
+	vector<E3Particle*> region;
+	back_insert_iterator< vector<E3Particle*> > back = back_inserter(region);
 	unsigned minXBin = minX >> k;
 	unsigned maxXBin = maxX >> k;
 	unsigned minYBin = minY >> k;
@@ -150,7 +150,7 @@ vector<EnvironmentThreeParticle*> EnvironmentThreeSystem::getRegion(unsigned min
 		maxYBin = yBins;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<EnvironmentThreeParticle*>& cur = bins[y * xBins + x];
+			vector<E3Particle*>& cur = bins[y * xBins + x];
 			copy(cur.begin(), cur.end(), back);
 		}
 	}
@@ -165,7 +165,7 @@ void EnvironmentThreeSystem::setupForces() {
 	n = particles.size();
 	unsigned xBin, yBin, bin;
 	for(int i = 0; i < n; i++) {
-		EnvironmentThreeParticle& cur = particles[i];
+		E3Particle& cur = particles[i];
 		cur.resetForce();
 		xBin = ((unsigned) cur.x) >> k;
 		yBin = ((unsigned) cur.y) >> k;
@@ -175,7 +175,7 @@ void EnvironmentThreeSystem::setupForces() {
 	}
 }
 
-void EnvironmentThreeSystem::addRepulsionForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addRepulsionForce(const E3Particle& particle, float radius, float scale) {
 	addRepulsionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -183,7 +183,7 @@ void EnvironmentThreeSystem::addRepulsionForce(float x, float y, float radius, f
 	addForce(x, y, radius, scale);
 }
 
-void EnvironmentThreeSystem::addAttractionForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addAttractionForce(const E3Particle& particle, float radius, float scale) {
 	addAttractionForce(particle.x, particle.y, radius, scale);
 }
 
@@ -191,7 +191,7 @@ void EnvironmentThreeSystem::addAttractionForce(float x, float y, float radius, 
 	addForce(x, y, radius, -scale);
 }
 
-void EnvironmentThreeSystem::addForce(const EnvironmentThreeParticle& particle, float radius, float scale) {
+void EnvironmentThreeSystem::addForce(const E3Particle& particle, float radius, float scale) {
 	addForce(particle.x, particle.y, radius, -scale);
 }
 
@@ -224,10 +224,10 @@ void EnvironmentThreeSystem::addForce(float targetX, float targetY, float radius
 	maxrsq = radius * radius;
 	for(int y = minYBin; y < maxYBin; y++) {
 		for(int x = minXBin; x < maxXBin; x++) {
-			vector<EnvironmentThreeParticle*>& curBin = bins[y * xBins + x];
+			vector<E3Particle*>& curBin = bins[y * xBins + x];
 			int n = curBin.size();
 			for(int i = 0; i < n; i++) {
-				EnvironmentThreeParticle& curBinnedParticle = *(curBin[i]);
+				E3Particle& curBinnedParticle = *(curBin[i]);
 				xd = curBinnedParticle.x - targetX;
 				yd = curBinnedParticle.y - targetY;
 				length = xd * xd + yd * yd;
@@ -274,9 +274,9 @@ void EnvironmentThreeSystem::addForce(float targetX, float targetY, float radius
 
 void EnvironmentThreeSystem::update(float lastTimeStep) {
 	int n = particles.size();
-	float curTimeStep = lastTimeStep * timeStep;
+//    float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
-		particles[i].updatePosition(curTimeStep);
+		particles[i].updatePosition();
 	}
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
@@ -336,7 +336,7 @@ void EnvironmentThreeSystem::display(){
     float tempRad = 50;
     
     for(int i = 0; i < particles.size(); i++) {
-        EnvironmentThreeParticle& cur = particles[i];
+        E3Particle& cur = particles[i];
         // global force on other particles
         
         
@@ -344,11 +344,11 @@ void EnvironmentThreeSystem::display(){
 //        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         
         
-        vector<EnvironmentThreeParticle*> nei = getNeighbors(cur.x, cur.y, tempRad);
+        vector<E3Particle*> nei = getNeighbors(cur.x, cur.y, tempRad);
         
-        vector<EnvironmentThreeParticle*> clusters = getNeighbors(cur.x, cur.y, 10);
+        vector<E3Particle*> clusters = getNeighbors(cur.x, cur.y, 10);
         
-        vector<EnvironmentThreeParticle*> global = getNeighbors(cur.x, cur.y, externalRad/3);
+        vector<E3Particle*> global = getNeighbors(cur.x, cur.y, externalRad/3);
 
         for(int j = 0; j < nei.size(); j ++){
 

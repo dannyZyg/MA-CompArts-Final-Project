@@ -21,41 +21,57 @@ public:
     
 	void updatePosition();
 	void resetForce();
-//    void bounceOffWalls(float damping = .3);
-    
     void bounceOffWalls();
-	void addDampingForce(float damping = .01);
+	void addDampingForce();
 	void draw();
     void displayParticle();
 
     void applyForce(ofVec2f force);
     void accelerateTowardsTarget(ofVec2f _target);
     
-
-
-};
-
-class E2Particle: public Particle {
-public:
+    float damping;
+    ofVec2f friction;
+    float cF;
     
     int cellState;
     float randomOffset;
     int colIndex;
     
-    vector <float> cells;
-    void receiveCells(vector <float> cells_);
     
-    Timer wallTimer;
+    float life;
     
-    bool stuckOnWall;
-    float distFromWall;
-    void returnFromWall();
-    void bounceOffOuterCell(float outer);
-    void bounceOffInnerCell(float inner);
-    
+    ofVec2f vel;
+
 };
 
 
+class E1Particle: public Particle {
+public:
+    E1Particle();
+
+};
+
+class E2Particle: public Particle {
+public:
+    E2Particle();
+    void returnFromWall();
+    void bounceOffOuterCell(float outer);
+    void bounceOffInnerCell(float inner);
+    vector <float> cells;
+    void receiveCells(vector <float> cells_);
+    Timer wallTimer;
+    bool stuckOnWall;
+    float distFromWall;
+};
+
+class E3Particle: public Particle {
+public:
+    E3Particle();
+    
+    
+     int team;
+    
+};
 
 
 

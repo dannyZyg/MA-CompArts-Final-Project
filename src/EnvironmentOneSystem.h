@@ -1,4 +1,6 @@
-#include "EnvironmentOneParticle.h"
+#pragma once
+
+#include "Particle.h"
 #include "ofxColorPalette.h"
 #include "Timer.hpp"
 
@@ -6,13 +8,13 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-#pragma once
+
 
 class EnvironmentOneSystem {
 protected:
 	float timeStep;
-	vector<EnvironmentOneParticle> particles;
-	vector< vector<EnvironmentOneParticle*> > bins;
+	vector<E1Particle> particles;
+	vector< vector<E1Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
 
 public:
@@ -21,19 +23,19 @@ public:
 	void setup(int width, int height, int k);
 	void setTimeStep(float timeStep);
 
-	void add(EnvironmentOneParticle particle);
-	vector<EnvironmentOneParticle*> getNeighbors(EnvironmentOneParticle& particle, float radius);
-	vector<EnvironmentOneParticle*> getNeighbors(float x, float y, float radius);
-	vector<EnvironmentOneParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
+	void add(E1Particle particle);
+	vector<E1Particle*> getNeighbors(E1Particle& particle, float radius);
+	vector<E1Particle*> getNeighbors(float x, float y, float radius);
+	vector<E1Particle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
 	unsigned size() const;
-	EnvironmentOneParticle& operator[](unsigned i);
+	E1Particle& operator[](unsigned i);
 
 	void setupForces();
-	void addRepulsionForce(const EnvironmentOneParticle& particle, float radius, float scale);
+	void addRepulsionForce(const E1Particle& particle, float radius, float scale);
 	void addRepulsionForce(float x, float y, float radius, float scale);
-	void addAttractionForce(const EnvironmentOneParticle& particle, float radius, float scale);
+	void addAttractionForce(const E1Particle& particle, float radius, float scale);
 	void addAttractionForce(float x, float y, float radius, float scale);
-	void addForce(const EnvironmentOneParticle& particle, float radius, float scale);
+	void addForce(const E1Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
 	void update(float lastTimeStep);
 
@@ -91,7 +93,7 @@ public:
     bool glow;
     Timer glowTimer;
     
-    void alterSize(EnvironmentOneParticle& cur_);
+    void alterSize(E1Particle& cur_);
     float maxRad;
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EnvironmentTwoParticle.h"
+//#include "E2Particle.h"
 #include "ofxColorPalette.h"
 #include "Particle.h"
 
@@ -14,8 +14,8 @@
 class EnvironmentTwoSystem {
 protected:
     float timeStep;
-    vector<EnvironmentTwoParticle> particles;
-    vector< vector<EnvironmentTwoParticle*> > bins;
+    vector<E2Particle> particles;
+    vector< vector<E2Particle*> > bins;
     int width, height, k, xBins, yBins, binSize;
     
 public:
@@ -24,23 +24,23 @@ public:
     void setup(int width, int height, int k);
     void setTimeStep(float timeStep);
     
-    void add(EnvironmentTwoParticle particle);
-    vector<EnvironmentTwoParticle*> getNeighbors(EnvironmentTwoParticle& particle, float radius);
-    vector<EnvironmentTwoParticle*> getNeighbors(float x, float y, float radius);
-    vector<EnvironmentTwoParticle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
+    void add(E2Particle particle);
+    vector<E2Particle*> getNeighbors(E2Particle& particle, float radius);
+    vector<E2Particle*> getNeighbors(float x, float y, float radius);
+    vector<E2Particle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
     unsigned size() const;
-    EnvironmentTwoParticle& operator[](unsigned i);
+    E2Particle& operator[](unsigned i);
     
-    void cellWallRebound(EnvironmentTwoParticle& particle);
+    void cellWallRebound(E2Particle& particle);
     
-    void allocateCellState(EnvironmentTwoParticle& particle);
+    void allocateCellState(E2Particle& particle);
     
     void setupForces();
-    void addRepulsionForce(const EnvironmentTwoParticle& particle, float radius, float scale);
+    void addRepulsionForce(const E2Particle& particle, float radius, float scale);
     void addRepulsionForce(float x, float y, float radius, float scale);
-    void addAttractionForce(const EnvironmentTwoParticle& particle, float radius, float scale);
+    void addAttractionForce(const E2Particle& particle, float radius, float scale);
     void addAttractionForce(float x, float y, float radius, float scale);
-    void addForce(const EnvironmentTwoParticle& particle, float radius, float scale);
+    void addForce(const E2Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
     void update(float lastTimeStep);
     
@@ -104,5 +104,6 @@ public:
     
     bool impact;
     bool sequenceActive;
+    bool newRules;
     BabyParticle b;
 };

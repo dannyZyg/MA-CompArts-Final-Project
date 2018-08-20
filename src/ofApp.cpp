@@ -345,6 +345,9 @@ void ofApp::triggerEnviro2(Timer& t, int timing){
     if (t.timer > timeSpacing * timing + t.activeStoneTime){
         environmentTwo.active = false;
     }
+    if (t.timer == timeSpacing * timing){
+        environmentTwo.enviro.newRules = true;
+    }
 }
 
 void ofApp::triggerEnviro3(Timer& t, int timing){

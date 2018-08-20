@@ -22,20 +22,17 @@ EnvironmentOneParticle::EnvironmentOneParticle(float x, float y, float xv, float
 void EnvironmentOneParticle::updatePosition(float timeStep) {
 //     f = ma, m = 1, f = a, v = int(a)
    
-
-
-    
-    xv += xf;// * timeStep;
-    yv += yf;// * timeStep;
-    x += xv;// * timeStep;
-    y += yv;// * timeStep;
-//
-//    vel.x += xf;
-//    vel.y += yf;
-//
-    x += vel.x;
-    y += vel.y;
-//
+    xv += xf;
+    yv += yf;
+    x += xv;
+    y += yv;
+////
+////    vel.x += xf;
+////    vel.y += yf;
+////
+//    x += vel.x;
+//    y += vel.y;
+////
 }
 
 void EnvironmentOneParticle::resetForce() {
