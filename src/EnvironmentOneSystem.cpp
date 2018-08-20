@@ -21,7 +21,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 800;
+    kParticles = 20;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -39,12 +39,14 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     timeStep = 100;
     isMousePressed = false;
     slowMotion = true;
-    particleNeighborhood = 32;
-    particleRepulsion = 0.5;
-    centerAttraction = 0.6;
+    particleNeighborhood = 80;
+    particleRepulsion = 0.9;// 0.5;
+    centerAttraction = 0; //0.6;
+    
     drawBalls = true;
     
     impact = false;
+    maxRad = 20;
     
 }
 
@@ -57,7 +59,7 @@ void EnvironmentOneSystem::setupColours(){
 
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
@@ -302,7 +304,14 @@ void EnvironmentOneSystem::display(){
         cur.bounceOffWalls();
         cur.addDampingForce();
         
-        
+        alterSize(cur);
+        if(i == 0){
+            ofPushStyle();
+//            ofFill();
+            cur.col = ofColor(255);
+            ofPopStyle();
+            
+        }
         
         
     }
@@ -330,10 +339,92 @@ void EnvironmentOneSystem::display(){
     }
     
     
+    
+    
+//////// TRIGGER FOR OUTPUT////////////
+    float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
+    
+    // run the timer for the glow effect
+    glowTimer.run();
+    
+    
+    if(testVal > 4) trigger = true;
+    else(trigger = false);
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !systemOutput) {
+        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+    }
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+    
+    
+    
 //    particleSystem.display();
     ofPopMatrix();
 
     
 }
 
+
+
+void EnvironmentOneSystem::alterSize(EnvironmentOneParticle& cur_){
+    
+    int nearby;
+    int region = 50;
+    vector<EnvironmentOneParticle*> closeNei = getNeighbors(cur_.x, cur_.y, cur_.r + maxRad);
+    cout<< "size = " << closeNei.size() << endl;
+    
+    
+    //alter size
+    
+    
+    //test
+    nearby = closeNei.size();
+    string nearbyNum = ofToString(nearby);
+    ofPushStyle();
+    ofSetColor(255);
+    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
+    ofNoFill();
+    ofSetColor(255, 0, 0 );
+//            if(nearby > 1)
+                ofDrawCircle(cur_.x, cur_.y, region);
+    ofPopStyle();
+    
+    //
+    for(int j = 0; j < closeNei.size(); j ++){
+        float dist = ofDist(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+        float overlap = cur_.r + closeNei[j] -> r;
+        
+        if(overlap < dist){
+//            addRepulsionForce(cur_, cur_.r, 1);
+            ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+        }
+//        if(nearby > 1) cur_.r += 0.1;
+//        else if (nearby <= 1) cur_.r -= 0.1;
+        if(cur_.r > maxRad) cur_.r = maxRad;
+
+//        ofNoFill();
+    }
+    
+    
+    
+    
+    
+}
 

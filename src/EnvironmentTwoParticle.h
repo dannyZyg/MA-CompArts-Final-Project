@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Timer.hpp"
 
 class EnvironmentTwoParticle {
 public:
@@ -14,7 +15,7 @@ public:
     
     float damping;
     
-	EnvironmentTwoParticle(float x = 0, float y = 0, float xv = 0, float yv = 0);
+	EnvironmentTwoParticle(float x, float y, float xv, float yv);
 	void updatePosition(float timeStep);
 	void resetForce();
 	void bounceOffWalls();
@@ -36,5 +37,15 @@ public:
     vector <float> cells;
     void receiveCells(vector <float> cells_);
 
+    Timer wallTimer;
     
+    bool stuckOnWall;
+    float distFromWall;
+    void returnFromWall();
+    void applyForce(ofVec2f force);
+    void accelerateTowardsTarget(ofVec2f _target);
+    
+    float mass;
+    ofVec2f acceleration;
+    float maxSpeed;
 };

@@ -1,5 +1,6 @@
 #include "EnvironmentOneParticle.h"
 #include "ofxColorPalette.h"
+#include "Timer.hpp"
 
 #define DRAW_FORCES
 #define USE_INVSQRT
@@ -82,7 +83,16 @@ public:
     
     bool impact;
     bool sequenceActive;
+    bool trigger;
+    bool sequenceTrigger;
+    int destination;
+    int randomPath;
+    bool systemOutput;
+    bool glow;
+    Timer glowTimer;
     
+    void alterSize(EnvironmentOneParticle& cur_);
+    float maxRad;
 };
 
 

@@ -1,4 +1,5 @@
 #include "EnvironmentThreeParticle.h"
+//#include "Particle.h"
 #include "ofxColorPalette.h"
 #include "Timer.hpp"
 
@@ -80,10 +81,10 @@ public:
     Timer glowTimer;
     
     bool trigger;
-    
     bool sequenceTrigger;
-
     bool sequenceActive;
+    int destination;
+    int randomPath;
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;

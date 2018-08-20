@@ -8,7 +8,6 @@ EnvironmentOneParticle::EnvironmentOneParticle(float x, float y, float xv, float
         
 //        r = 3;
         r = ofRandom (2, 7);
-//        col = ofColor(ofRandom(255), ofRandom(255), ofRandom(255));
         
         
 //        xv = 1;
@@ -16,17 +15,14 @@ EnvironmentOneParticle::EnvironmentOneParticle(float x, float y, float xv, float
         if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
         
         team = ofRandom(2);
+        life = 255;
 
 }
 
 void EnvironmentOneParticle::updatePosition(float timeStep) {
 //     f = ma, m = 1, f = a, v = int(a)
    
-//    ofSetColor(255, 0, 0);
-//    ofSetColor(col);
-    
-    
-//    ofSetColor(col);
+
 
     
     xv += xf;// * timeStep;
@@ -37,8 +33,8 @@ void EnvironmentOneParticle::updatePosition(float timeStep) {
 //    vel.x += xf;
 //    vel.y += yf;
 //
-//    x += vel.x;
-//    y += vel.y;
+    x += vel.x;
+    y += vel.y;
 //
 }
 

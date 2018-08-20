@@ -29,6 +29,8 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
         
         EnvironmentThreeParticle particle = EnvironmentThreeParticle(x, y, 0, 0);
         
+//        EnvironmentThreeParticle particle();
+        
         particles.push_back(particle);
         
 //        particleSystem.add(particle);
@@ -383,7 +385,9 @@ void EnvironmentThreeSystem::display(){
                 ofPopStyle();
             }
         }
+ 
         
+// TRIGGER FOR OUTPUT
         float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
     
 // run the timer for the glow effect
@@ -412,7 +416,6 @@ void EnvironmentThreeSystem::display(){
 // if not, don't glow
         if (glowTimer.reached){
             glow = false;
-//
         }
 
         // forces on this particle

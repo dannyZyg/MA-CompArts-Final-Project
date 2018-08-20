@@ -323,7 +323,7 @@ void EnvironmentTwoSystem::display(){
      target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
     if(impact){
-        addRepulsionForce(target.x, target.y, 500, 1);
+//        addRepulsionForce(target.x, target.y, 500, 1);
     }
     
     ofPushMatrix();
@@ -337,6 +337,9 @@ void EnvironmentTwoSystem::display(){
     for(int i = 0; i < particles.size(); i++) {
         EnvironmentTwoParticle& cur = particles[i];
         // global force on other particles
+        
+        
+        
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
 //        cur.bounceOffWalls();
