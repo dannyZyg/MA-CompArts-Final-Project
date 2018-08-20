@@ -11,8 +11,8 @@ Particle::Particle(float x_, float y_){
 }
 
 Particle::Particle(){
-    x = ofRandom(-1, 1);;
-    y = ofRandom(-1, 1);
+    x = 250;//ofRandom(-1, 1);;
+    y = 250;//ofRandom(-1, 1);
     
     xv = ofRandom(-1, 1);
     yv = ofRandom(-1, 1);
@@ -64,6 +64,28 @@ void Particle::accelerateTowardsTarget(ofVec2f _target){
     
 }
 
+void Particle::bounceOffWalls() {
+    bool collision = false;
+    
+    ofVec2f cent = ofVec2f(328, 328);
+    int d = ofDist(x, y, origin.x, origin.y);
+    if( (d > externalRad - r )){
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f ret = origin - out;
+        ret = ret.normalize();
+        
+        x += ret.x;
+        y += ret.y;
+        
+        xv *= -1;
+        yv *= -1;
+        
+        collision = true;
+    }
+}
+
+
 void Particle::addDampingForce(float damping) {
     if(xv > 0.5) xf -= xv * damping;
     if(yv > 0.5) yf -= yv * damping;
@@ -84,6 +106,27 @@ void E2Particle::bounceOffInnerCell(float inner){
         ofVec2f posAtEdge = ofVec2f(x, y);
         ofVec2f ret = origin - posAtEdge;
         ret *= -1;
+        ret = ret.normalize();
+        
+        x += ret.x;
+        y += ret.y;
+        
+        xv *= -1;
+        yv *= -1;
+        
+        collision = true;
+    }
+}
+
+// Function that reverses velocity when hitting an outer cell wall
+void E2Particle::bounceOffOuterCell(float outer){
+    bool collision = false;
+    
+    float d = ofDist(x, y, origin.x, origin.y);
+    if( (d > outer - r)){
+        
+        ofVec2f posAtEdge = ofVec2f(x, y);
+        ofVec2f ret = origin - posAtEdge;
         ret = ret.normalize();
         
         x += ret.x;

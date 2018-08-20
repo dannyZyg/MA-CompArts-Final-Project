@@ -22,7 +22,8 @@ public:
 	void updatePosition();
 	void resetForce();
 //    void bounceOffWalls(float damping = .3);
-    void bounceOffOuterCell(float outer);
+    
+    void bounceOffWalls();
 	void addDampingForce(float damping = .01);
 	void draw();
     void displayParticle();
@@ -49,7 +50,7 @@ public:
     bool stuckOnWall;
     float distFromWall;
     void returnFromWall();
-    
+    void bounceOffOuterCell(float outer);
     void bounceOffInnerCell(float inner);
     
 };

@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "FboSource.h"
 #include "EnvironmentTwoSystem.h"
+#include "ParticleSystem.h"
 #include "ofxBlur.h"
 #include "ofxFboBlur.h"
 

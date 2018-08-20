@@ -13,7 +13,6 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
     
     name = "Environment Two";
     allocate(600, 600);
-    
     width = fbo-> getWidth();
     height = fbo -> getHeight();
     
@@ -41,6 +40,7 @@ void EnvironmentTwoSource::setup(){
     enviro.origin = origin;
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
+    enviro.setupColours();
     
     debug = false;
     
@@ -83,6 +83,7 @@ void EnvironmentTwoSource::update(){
     
     enviro.receiveCells(cells);
 //    enviro.update(100);
+    enviro.updateColours();
 
     
     if(active){
@@ -117,8 +118,9 @@ void EnvironmentTwoSource::draw(){
 //    ofClear(255);
 //    blur.begin();
 
-   
+//   enviro.behaviourState();
     enviro.display();
+    
     
     if(blur1){
         blur.end();
