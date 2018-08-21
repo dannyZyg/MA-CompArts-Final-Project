@@ -12,17 +12,13 @@
 
 class EnvironmentOneSystem {
 protected:
-	float timeStep;
 	vector<E1Particle> particles;
 	vector< vector<E1Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
 
 public:
 	EnvironmentOneSystem();
-
 	void setup(int width, int height, int k);
-	void setTimeStep(float timeStep);
-
 	void add(E1Particle particle);
 	vector<E1Particle*> getNeighbors(E1Particle& particle, float radius);
 	vector<E1Particle*> getNeighbors(float x, float y, float radius);
@@ -37,31 +33,23 @@ public:
 	void addAttractionForce(float x, float y, float radius, float scale);
 	void addForce(const E1Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
-	void update(float lastTimeStep);
+	void update();
 
 	void draw();
     void setupColours();
-	
-	int getWidth() const;
-	int getHeight() const;
-    
     
     ofxColorPalette team1Col;
     ofxColorPalette team2Col;
     
     ofxColorPalette::ColorChannel mode;
+    
     float brightness;
     float saturation;
 
-    
-    
     int kParticles;
-//    float timeStep;
     float particleNeighborhood, particleRepulsion;
     float centerAttraction;
-    float padding;
-    bool isMousePressed, slowMotion;
-    bool drawBalls;
+    bool drawLines;
     
     void display();
     
@@ -96,6 +84,29 @@ public:
     void alterSize(E1Particle& cur_);
     float maxRad, minRad;
     float region;
+    
+    void newRules(int option);
+    void presetSelector(string preset);
+    bool sizeFlux;
+    
+    
+    void populate();
+    
+    bool attraction;
+    
+    int numActive;
+//    bool positionReset;
+    
+//    void positionReset();
+    
+    int maxParticles;
+    
+    void updateNumParticles();
+    
+    int counter;
+    
+    int particlePushPopRate;
+    
 };
 
 

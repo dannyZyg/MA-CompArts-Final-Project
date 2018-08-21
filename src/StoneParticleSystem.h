@@ -1,4 +1,4 @@
-
+#pragma once
 
 //#include "StoneParticle.h"
 #include "Particle.h"
@@ -9,7 +9,7 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-#pragma once
+
 
 class StoneParticleSystem {
 protected:
@@ -80,7 +80,6 @@ public:
     int numToDisplay;
     bool timeIntervalPassed;
     unsigned int timer;
-    
     int showParticleSpacing;
     
 };

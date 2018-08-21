@@ -46,19 +46,25 @@ void EnvironmentOneSource::setup(){
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
     
-    blur1 = false;
-    blur2 = false;
+    blur1 = true;
+    blur2 = true;
     startTime = 0;
 //    active = true;
 }
 
 void EnvironmentOneSource::update(){
-    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
+    float setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
+    float setRotation = (ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+
+    blur.setScale(setScale);
+    blur.setRotation(setRotation);
     
-    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    float blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+    float blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    
+    gpuBlur.blurOffset = blurOffset;
+    gpuBlur.blurPasses = blurPasses;
     gpuBlur.numBlurOverlays = 3;
     gpuBlur.blurOverlayGain = 150;
     
@@ -126,7 +132,6 @@ void EnvironmentOneSource::draw(){
     if(debug){
         
         // Draw white circle over environment and display fbo position label
-
         
         ofPushStyle();
         ofFill();

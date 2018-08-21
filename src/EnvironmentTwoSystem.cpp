@@ -28,7 +28,7 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
         E2Particle particle = E2Particle();
-        
+        particle.setup(x, y);
         particles.push_back(particle);
         
         

@@ -18,7 +18,7 @@ public:
     
     Particle();
 	Particle(float x_, float y_);
-    
+    void setup(float x_, float y_);
 	void updatePosition();
 	void resetForce();
     void bounceOffWalls();
@@ -52,8 +52,11 @@ public:
     float minSize, maxSize;
     void limitSize();
     void bounceOffWalls();
-    float membraneRad;
+    void limitMembraneLife();
     
+    float membraneRad;
+    float membraneLife;
+    float membraneStep;
     bool alone;
 
 };

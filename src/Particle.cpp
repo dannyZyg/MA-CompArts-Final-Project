@@ -3,17 +3,8 @@
 
 Particle::Particle(){
     r = ofRandom (2, 7);
-    x = ofRandom(100, 500);
-    y = ofRandom(100, 500);
-    
     xv = ofRandom(-0.5, 0.5);
     yv = ofRandom(-0.5, 0.5);
-    
-    
-//    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-//    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-    
-    
     damping = .01;
     randomOffset = ofRandom(-5, 10);
     mass = 1;
@@ -22,12 +13,13 @@ Particle::Particle(){
     
 }
 
-
 E1Particle::E1Particle(){
     r = ofRandom (3, 15);
     minSize = 4;
     maxSize = 20;
     life = 255;
+    membraneLife = 20;
+    membraneStep = 0.1;
 }
 
 E2Particle::E2Particle(){
@@ -55,15 +47,19 @@ StoneParticle::StoneParticle(){
     r = ofRandom (5, 15);
 }
 
+void Particle::setup(float x_, float y_){
+    x = y_;
+    y = y_;
+    
+}
+
 void Particle::updatePosition() {
     //     f = ma, m = 1, f = a, v = int(a)
     
     xv += xf;// apply forces
     yv += yf;// apply forces
-    x += xv;//
-    y += yv;//
-    
-    
+    x += xv; // apply velocity
+    y += yv; //apply velocity
     xv += acceleration.x;
     yv += acceleration.y;
     
@@ -152,13 +148,18 @@ void Particle::applyForce(ofVec2f force){
     ofVec2f f = ofPoint(force);
     f /= mass;
     acceleration += f;
-//    yv += f.y;
 }
 
 
 void E1Particle::limitSize(){
     if(r < minSize) r = minSize;
     if(r > maxSize) r = maxSize;
+}
+
+void E1Particle::limitMembraneLife(){
+    if(membraneLife < 20) membraneLife = 20;
+    if(membraneLife > 200) membraneLife = 200;
+    
 }
 
 
