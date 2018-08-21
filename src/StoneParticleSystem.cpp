@@ -2,6 +2,8 @@
 
 StoneParticleSystem::StoneParticleSystem() :
 	timeStep(100) {
+
+        
 }
 
 void StoneParticleSystem::setup(int width, int height, int k) {
@@ -294,6 +296,8 @@ void StoneParticleSystem::display(){
     // do this once per frame
     setupForces();
     
+    
+    
     // apply per-particle forces
     if(!drawBalls) {
         ofSetColor(24, 124, 174);
@@ -320,8 +324,18 @@ void StoneParticleSystem::display(){
     }
     update(ofGetLastFrameTime());
     
+
+    
     ofPopStyle();
     ofPopMatrix();
+    
+    timer ++;
+    
+    
+    if(timer > 50000)timer = 0;
+    
+    
+    
 
 }
 
@@ -356,9 +370,6 @@ void StoneParticleSystem::fadeParticles(){
               }
           }
     }
-    
-    timer ++;
-    if(timer > 50000)timer = 0;
     
 }
 

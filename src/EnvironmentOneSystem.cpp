@@ -1,6 +1,9 @@
 #include "EnvironmentOneSystem.h"
 
-EnvironmentOneSystem::EnvironmentOneSystem(){
+EnvironmentOneSystem::EnvironmentOneSystem() :
+	timeStep(100) {
+
+        
 }
 
 void EnvironmentOneSystem::setup(int width, int height, int k) {
@@ -18,33 +21,33 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 150;
-    numActive = 80;
+    kParticles = 80;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
-        float y = ofRandom(origin.y - 100, origin.y + 100);
+        float y = ofRandom(origin.y - 100, origin.y + 100);;
         
         E1Particle particle = E1Particle();
-        particle.setup(x, y);
         
         particles.push_back(particle);
         setupColours();
     }
     
-
+    padding = 128;
+    timeStep = 100;
+    isMousePressed = false;
+    slowMotion = true;
     particleNeighborhood = 80;
     particleRepulsion = 0.8;// 0.5;
     centerAttraction = 0.1; //0.6;
     
-    drawLines = false;
+    drawBalls = true;
     
     impact = false;
     maxRad = 20;
-    sizeFlux = true;
-    presetSelector("p1");
-    particlePushPopRate = 5;
+    
 }
+
 
 void EnvironmentOneSystem::setupColours(){
     ofColor team1Base = ofColor(27,125, 204);
@@ -52,11 +55,18 @@ void EnvironmentOneSystem::setupColours(){
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
 
+    
     for(int i = 0; i < particles.size(); i++){
         particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
+    
+}
+
+
+void EnvironmentOneSystem::setTimeStep(float timeStep) {
+	this->timeStep = timeStep;
 }
 
 void EnvironmentOneSystem::add(E1Particle particle) {
@@ -233,18 +243,16 @@ void EnvironmentOneSystem::addForce(float targetX, float targetY, float radius, 
 	}
 }
 
-void EnvironmentOneSystem::update() {
+void EnvironmentOneSystem::update(float lastTimeStep) {
 	int n = particles.size();
+	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
         particles[i].membraneRad = region;
 	}
     
     particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
-    
-//    if(ofGetElapsedTimeMillis() > 10000) presetSelector("p3");
-//    cout<< "num active = " << numActive << endl;
-    
+
 }
 
 void EnvironmentOneSystem::draw() {
@@ -253,10 +261,23 @@ void EnvironmentOneSystem::draw() {
 	for(int i = 0; i < n; i++)
         particles[i].draw();
 	glEnd();
+    
+    
 }
+
+int EnvironmentOneSystem::getWidth() const {
+	return width;
+}
+
+int EnvironmentOneSystem::getHeight() const {
+	return height;
+}
+
 
 void EnvironmentOneSystem::display(){
 
+    
+    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
@@ -265,51 +286,72 @@ void EnvironmentOneSystem::display(){
         addRepulsionForce(origin.x, origin.y, 200, 3);
     }
     
+    
     ofPushMatrix();
     
     // apply per-particle forces
-    if(drawLines) {
+    if(!drawBalls) {
         ofSetColor(24, 124, 174);
-        ofSetLineWidth(1);
+        ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
+    
+    
+
     
     for(int i = 0; i < particles.size(); i++) {
         E1Particle& cur = particles[i];
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
-        if(attraction) addAttractionForce(cur, particleNeighborhood, 0.5);
+        addAttractionForce(cur, particleNeighborhood, 0.5);
         cur.bounceOffWalls();
         cur.addDampingForce();
         
-        if(sizeFlux) alterSize(cur);
-        cur.limitMembraneLife();
+        alterSize(cur);
         
         ofFill();
+//        if(i == 0){
+//            ofPushStyle();
+////            ofFill();
+//            cur.col = ofColor(255);
+//            ofPopStyle();
+//
+//        }
+        
         
     }
-    if(drawLines) {
+    if(!drawBalls) {
         glEnd();
     }
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    update();
+    if(isMousePressed) {
+    addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
+    }
+    update(ofGetLastFrameTime());
+    
+    
+    
     
     // draw all the particles
-    for(int i = 0; i < particles.size(); i++) {
-        //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-        ofSetColor(0, 255, 0);
-        particles[i].displayParticle();
-        particles[i].limitSize();
-    }
+//    if(drawBalls) {
+        for(int i = 0; i < particles.size(); i++) {
+            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
+            ofSetColor(0, 255, 0);
+            particles[i].displayParticle();
+            particles[i].limitSize();
+            particles[i].limitMembraneLife();
+        }
+//    }
     
 //////// TRIGGER FOR OUTPUT////////////
     float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
     
     // run the timer for the glow effect
     glowTimer.run();
+    
     
     if(testVal > 4) trigger = true;
     else(trigger = false);
@@ -335,10 +377,12 @@ void EnvironmentOneSystem::display(){
         glow = false;
     }
     
-    ofPopMatrix();
     
-    populate();
-    updateNumParticles();
+    
+    
+//    particleSystem.display();
+    ofPopMatrix();
+
     
 }
 
@@ -355,9 +399,14 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     
     //alter size
     
+    
+    //test
     nearby = closeNei.size();
+//    string nearbyNum = ofToString(nearby);
     ofPushStyle();
-
+//    ofSetColor(255);
+//    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
+    ofFill();
     ofSetColor(255, cur_.membraneLife);
     if(nearby > 1){
             ofDrawCircle(cur_.x, cur_.y, region);
@@ -374,6 +423,7 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
         float overlap = cur_.r + closeNei[j] -> r;
         
         if(overlap < dist){
+//            addRepulsionForce(cur_, cur_.r, 1);
             ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
         }
         if(nearby > 1) {
@@ -387,96 +437,5 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     }
 }
 
-
-void EnvironmentOneSystem::populate(){
-//    if(active){
-//    cout << particles.size() << endl;
-    
-    }
-
-
-
-//    cout<< ofGetElapsedTimef() << endl;
-
-void EnvironmentOneSystem::updateNumParticles(){
-    
-    
-//    if(active){
-//        if(counter % particlePushPopRate == 0){
-//            numActive ++;
-//             if (numActive >= maxParticles) numActive = maxParticles;
-//        }
-//    }
-    
-//    if(!active){
-//        if(counter % showParticleSpacing == 0){
-//            numToDisplay --;
-//            if(numToDisplay <= 0){
-//                numToDisplay = 0;
-//            }
-//        }
-//    }
-    
-    counter ++;
-    if(counter > 50000) counter = 0;
-    
-}
-
-
-
-void EnvironmentOneSystem::newRules(int option){
-    
-    // predefined behaviours
-    if(option == 0) presetSelector("p1");
-    if(option == 1) presetSelector("p2");
-    if(option == 2) presetSelector("p3");
-    
-    //random behaviours
-    if(option == 3) presetSelector("r1");
-    if(option == 4) presetSelector("r2");
-    if(option == 5) presetSelector("r3");
-
-}
-
-
-void EnvironmentOneSystem::presetSelector(string preset){
-    
-    if(preset == "p1"){
-        particleRepulsion = 0.8;// 0.5;
-        centerAttraction = 0.1;
-        sizeFlux = true;
-        attraction = true;
-        maxParticles = 80;
-
-    }
-    
-    if(preset == "p2"){
-        particleRepulsion = 0.5;// 0.5;
-        centerAttraction = 0.6;
-        sizeFlux = false;
-        attraction = false;
-//        maxParticles = 120;
-//        positionReset = true;
-        
-    }
-    
-    if(preset == "p3"){
-//        numActive = 200;
-//        maxParticles = 150;
-    }
-    
-    if(preset == "r1"){
-        
-    }
-    
-    if(preset == "r2"){
-        
-    }
-    
-    if(preset == "r3"){
-        
-    }
-    
-}
 
 

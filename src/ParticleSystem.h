@@ -109,26 +109,31 @@ class E2System : public ParticleSystem {
     ofxColorPalette cell1Col;
     ofxColorPalette cell2Col;
     ofxColorPalette cell3Col;
-
+    
+    
 };
 
-class stoneSystem : public ParticleSystem {
-    vector<E2Particle> particles;
+class StoneSystem : public ParticleSystem {
+public:
+    StoneSystem();
+    vector<StoneParticle> particles;
     
-    void reset();
     void fadeParticles();
-
-//    bool active;
+    
+    
+    ofVec2f origin;
+    float externalRad;
+    
+    
+    bool active;
     bool drawLines;
     ofColor baseColour;
     
     int numToDisplay;
     bool timeIntervalPassed;
     unsigned int timer;
+    
     int showParticleSpacing;
-    
-    
-    
 };
 
 

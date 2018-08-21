@@ -28,7 +28,7 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
         E3Particle particle = E3Particle();
-        particle.setup(x, y);
+        
 //        E3Particle particle();
         
         particles.push_back(particle);

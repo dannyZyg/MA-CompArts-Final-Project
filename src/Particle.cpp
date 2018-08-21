@@ -3,8 +3,17 @@
 
 Particle::Particle(){
     r = ofRandom (2, 7);
+    x = ofRandom(100, 500);
+    y = ofRandom(100, 500);
+    
     xv = ofRandom(-0.5, 0.5);
     yv = ofRandom(-0.5, 0.5);
+    
+    
+//    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+//    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    
+    
     damping = .01;
     randomOffset = ofRandom(-5, 10);
     mass = 1;
@@ -13,11 +22,13 @@ Particle::Particle(){
     
 }
 
+
 E1Particle::E1Particle(){
     r = ofRandom (3, 15);
     minSize = 4;
     maxSize = 20;
     life = 255;
+    
     membraneLife = 20;
     membraneStep = 0.1;
 }
@@ -47,19 +58,15 @@ StoneParticle::StoneParticle(){
     r = ofRandom (5, 15);
 }
 
-void Particle::setup(float x_, float y_){
-    x = y_;
-    y = y_;
-    
-}
-
 void Particle::updatePosition() {
     //     f = ma, m = 1, f = a, v = int(a)
     
     xv += xf;// apply forces
     yv += yf;// apply forces
-    x += xv; // apply velocity
-    y += yv; //apply velocity
+    x += xv;//
+    y += yv;//
+    
+    
     xv += acceleration.x;
     yv += acceleration.y;
     
@@ -148,6 +155,7 @@ void Particle::applyForce(ofVec2f force){
     ofVec2f f = ofPoint(force);
     f /= mass;
     acceleration += f;
+//    yv += f.y;
 }
 
 
@@ -160,6 +168,39 @@ void E1Particle::limitMembraneLife(){
     if(membraneLife < 20) membraneLife = 20;
     if(membraneLife > 200) membraneLife = 200;
     
+}
+
+void E1Particle::bounceOffWalls() {
+    bool collision = false;
+    
+    
+    float offset;
+    
+    if(alone) offset = r;
+    else if(!alone) offset = membraneRad;
+    
+    int d = ofDist(x, y, origin.x, origin.y);
+    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f ret = origin - out;
+        ret = ret.normalize();
+        
+        x += ret.x;
+        y += ret.y;
+        
+        
+        xv *= -1;
+        yv *= -1;
+        
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        //        vel.x *= -1;
+        //        vel.y *= -1;
+        
+        collision = true;
+    }
 }
 
 
@@ -246,38 +287,8 @@ void E2Particle::returnFromWall(){
     }
 }
 
-void E1Particle::bounceOffWalls() {
-    bool collision = false;
-    
-    
-    float offset;
-    
-    if(alone) offset = r;
-    else if(!alone) offset = membraneRad;
-    
-    int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
-        
-        ofVec2f out = ofVec2f(x, y);
-        ofVec2f ret = origin - out;
-        ret = ret.normalize();
-        
-        x += ret.x;
-        y += ret.y;
-        
-        
-        xv *= -1;
-        yv *= -1;
-        
-        vel.x *= -1;
-        vel.y *= -1;
-        
-        //        vel.x *= -1;
-        //        vel.y *= -1;
-        
-        collision = true;
-    }
-}
+
+
 
 
 void StoneParticle::bounceOffWalls() {
