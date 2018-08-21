@@ -59,8 +59,6 @@ public:
     ofxColorPalette cell2Col;
     ofxColorPalette cell3Col;
     
-    
-    
     ofxColorPalette::ColorChannel mode;
     float brightness;
     float saturation;

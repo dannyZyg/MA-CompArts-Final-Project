@@ -24,8 +24,10 @@ Particle::Particle(){
 
 
 E1Particle::E1Particle(){
-
-    
+    r = ofRandom (3, 15);
+    minSize = 4;
+    maxSize = 20;
+    life = 255;
 }
 
 E2Particle::E2Particle(){
@@ -152,6 +154,16 @@ void Particle::applyForce(ofVec2f force){
     acceleration += f;
 //    yv += f.y;
 }
+
+
+void E1Particle::limitSize(){
+    if(r < minSize) r = minSize;
+    if(r > maxSize) r = maxSize;
+}
+
+
+
+
 // Function that reverses velocity when hitting an outer cell wall
 void E2Particle::bounceOffOuterCell(float outer){
     bool collision = false;
@@ -233,6 +245,39 @@ void E2Particle::returnFromWall(){
     }
 }
 
+void E1Particle::bounceOffWalls() {
+    bool collision = false;
+    
+    
+    float offset;
+    
+    if(alone) offset = r;
+    else if(!alone) offset = membraneRad;
+    
+    int d = ofDist(x, y, origin.x, origin.y);
+    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f ret = origin - out;
+        ret = ret.normalize();
+        
+        x += ret.x;
+        y += ret.y;
+        
+        
+        xv *= -1;
+        yv *= -1;
+        
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        //        vel.x *= -1;
+        //        vel.y *= -1;
+        
+        collision = true;
+    }
+}
+
 
 void StoneParticle::bounceOffWalls() {
     bool collision = false;
@@ -260,3 +305,7 @@ void StoneParticle::bounceOffWalls() {
         collision = true;
     }
 }
+
+
+
+

@@ -21,7 +21,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     saturation = 200;
     
     
-    kParticles = 20;
+    kParticles = 80;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -30,8 +30,6 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         E1Particle particle = E1Particle();
         
         particles.push_back(particle);
-        
-//        particleSystem.add(particle);
         setupColours();
     }
     
@@ -40,8 +38,8 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 80;
-    particleRepulsion = 0.9;// 0.5;
-    centerAttraction = 0; //0.6;
+    particleRepulsion = 0.8;// 0.5;
+    centerAttraction = 0.1; //0.6;
     
     drawBalls = true;
     
@@ -250,6 +248,7 @@ void EnvironmentOneSystem::update(float lastTimeStep) {
 	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
+        particles[i].membraneRad = region;
 	}
     
     particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
@@ -296,22 +295,29 @@ void EnvironmentOneSystem::display(){
         ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
+    
+    
+
+    
     for(int i = 0; i < particles.size(); i++) {
         E1Particle& cur = particles[i];
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
+        addAttractionForce(cur, particleNeighborhood, 0.5);
         cur.bounceOffWalls();
         cur.addDampingForce();
         
         alterSize(cur);
-        if(i == 0){
-            ofPushStyle();
-//            ofFill();
-            cur.col = ofColor(255);
-            ofPopStyle();
-            
-        }
+        
+        ofFill();
+//        if(i == 0){
+//            ofPushStyle();
+////            ofFill();
+//            cur.col = ofColor(255);
+//            ofPopStyle();
+//
+//        }
         
         
     }
@@ -330,15 +336,16 @@ void EnvironmentOneSystem::display(){
     
     
     // draw all the particles
-    if(drawBalls) {
+//    if(drawBalls) {
         for(int i = 0; i < particles.size(); i++) {
             //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            
+            ofSetColor(0, 255, 0);
             particles[i].displayParticle();
+            particles[i].limitSize();
         }
-    }
+//    }
     
-    
+    cout << particleRepulsion <<endl;
     
     
 //////// TRIGGER FOR OUTPUT////////////
@@ -386,8 +393,10 @@ void EnvironmentOneSystem::display(){
 void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     
     int nearby;
-    int region = 50;
-    vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, cur_.r + maxRad);
+    region = cur_.r + maxRad;
+    
+    maxRad = particles[0].maxSize;
+    vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region);
     
     
     //alter size
@@ -395,17 +404,22 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     
     //test
     nearby = closeNei.size();
-    string nearbyNum = ofToString(nearby);
+//    string nearbyNum = ofToString(nearby);
     ofPushStyle();
-    ofSetColor(255);
-    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
+//    ofSetColor(255);
+//    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
     ofNoFill();
-    ofSetColor(255, 0, 0 );
-//            if(nearby > 1)
-                ofDrawCircle(cur_.x, cur_.y, region);
+    ofSetColor(255);
+    if(nearby > 1){
+            ofDrawCircle(cur_.x, cur_.y, region);
+            cur_.alone = false;
+//        addAttractionForce(cur_, region, 0.2);
+    }
+    else(cur_.alone = true);
+
     ofPopStyle();
     
-    //
+    
     for(int j = 0; j < closeNei.size(); j ++){
         float dist = ofDist(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
         float overlap = cur_.r + closeNei[j] -> r;
@@ -414,16 +428,10 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
 //            addRepulsionForce(cur_, cur_.r, 1);
             ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
         }
-//        if(nearby > 1) cur_.r += 0.1;
-//        else if (nearby <= 1) cur_.r -= 0.1;
-        if(cur_.r > maxRad) cur_.r = maxRad;
-
-//        ofNoFill();
+        if(nearby > 1) cur_.r -= 0.1;
+        else if (nearby <= 1) cur_.r += 0.1;
     }
-    
-    
-    
-    
-    
 }
+
+
 

@@ -266,17 +266,13 @@ void StoneParticleSystem::update(float lastTimeStep) {
 
 void StoneParticleSystem::draw() {
 
-    
     if(active){
         int n = particles.size();
         glBegin(GL_POINTS);
         for(int i = 0; i < n; i++)
             particles[i].draw();
         glEnd();
-    
     }
-    
-    
 }
 
 int StoneParticleSystem::getWidth() const {
@@ -316,9 +312,6 @@ void StoneParticleSystem::display(){
         cur.bounceOffWalls();
         cur.addDampingForce();
         
-        
-        
-        
     }
     if(!drawBalls) {
         glEnd();
@@ -331,23 +324,10 @@ void StoneParticleSystem::display(){
     }
     update(ofGetLastFrameTime());
     
-    
-    
-    
-    // draw all the particles
-    if(drawBalls) {
-        for(int i = 0; i < particles.size(); i++) {
-           
-//            particles[i].displayParticle();
-        }
-    }
-   
 
     
     ofPopStyle();
     ofPopMatrix();
-
-//    addParticle();
     
     timer ++;
     

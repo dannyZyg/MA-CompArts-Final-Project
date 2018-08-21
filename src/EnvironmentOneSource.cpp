@@ -98,6 +98,7 @@ void EnvironmentOneSource::draw(){
     ofDrawCircle(origin, rad);
     ofPopStyle();
     
+    ofSetColor(0, 255, 0);
     enviro.display();
     
     

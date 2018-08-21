@@ -48,6 +48,13 @@ public:
 class E1Particle: public Particle {
 public:
     E1Particle();
+    
+    float minSize, maxSize;
+    void limitSize();
+    void bounceOffWalls();
+    float membraneRad;
+    
+    bool alone;
 
 };
 

@@ -94,7 +94,8 @@ public:
     Timer glowTimer;
     
     void alterSize(E1Particle& cur_);
-    float maxRad;
+    float maxRad, minRad;
+    float region;
 };
 
 
