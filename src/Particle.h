@@ -73,14 +73,10 @@ public:
     
 };
 
-
-
-class BabyParticle: public Particle {
+class StoneParticle: public Particle {
 public:
-
-    
-    int team;
-    void test();
-    float length;
+    StoneParticle();
+    void bounceOffWalls();
     
 };
+

@@ -105,5 +105,4 @@ public:
     bool impact;
     bool sequenceActive;
     bool newRules;
-    BabyParticle b;
 };

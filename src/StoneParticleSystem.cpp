@@ -29,7 +29,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
 
-        StoneParticle particle = StoneParticle(x, y, 0, 0);
+        StoneParticle particle = StoneParticle();
 
         particles.push_back(particle);
     }
@@ -78,7 +78,7 @@ void StoneParticleSystem::addParticle() {
     float x = ofRandom(origin.x, origin.x);
     float y = ofRandom(origin.y, origin.y);;
     
-    StoneParticle particle = StoneParticle(x, y, 0, 0);
+    StoneParticle particle = StoneParticle();
     
     particles.push_back(particle);
 }
@@ -257,7 +257,7 @@ void StoneParticleSystem::update(float lastTimeStep) {
 	int n = particles.size();
 	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
-		particles[i].updatePosition(curTimeStep);
+		particles[i].updatePosition();
 	}
     
     

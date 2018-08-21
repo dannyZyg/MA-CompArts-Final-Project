@@ -10,8 +10,8 @@ Particle::Particle(){
     yv = ofRandom(-0.5, 0.5);
     
     
-    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+//    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+//    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     
     
     damping = .01;
@@ -21,6 +21,7 @@ Particle::Particle(){
     maxSpeed = 5;
     
 }
+
 
 E1Particle::E1Particle(){
 
@@ -47,6 +48,10 @@ E3Particle::E3Particle(){
     
 }
 
+StoneParticle::StoneParticle(){
+    
+    r = ofRandom (5, 15);
+}
 
 void Particle::updatePosition() {
     //     f = ma, m = 1, f = a, v = int(a)
@@ -225,5 +230,33 @@ void E2Particle::returnFromWall(){
                 accelerateTowardsTarget(origin);
         
         
+    }
+}
+
+
+void StoneParticle::bounceOffWalls() {
+    bool collision = false;
+    
+    ofVec2f cent = ofVec2f(328, 328);
+    int d = ofDist(x, y, origin.x, origin.y);
+    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f ret = origin - out;
+        //        ret = ret.normalize();
+        
+        //        ret *= 0;
+        
+        addDampingForce();
+        
+        x += ret.x;
+        y += ret.y;
+        
+        
+        xv *= -1;
+        yv *= -1;
+        
+        
+        collision = true;
     }
 }

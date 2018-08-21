@@ -88,7 +88,6 @@ public:
  
     bool impact;
     bool sequenceActive;
-    BabyParticle b;
 };
 
 

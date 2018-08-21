@@ -1,6 +1,7 @@
 
 
-#include "StoneParticle.h"
+//#include "StoneParticle.h"
+#include "Particle.h"
 #include "ofxColorPalette.h"
 #include "ofxBlur.h"
 
