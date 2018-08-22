@@ -18,6 +18,7 @@
 #include "Envelope.hpp"
 #include "Scheduler.hpp"
 #include "ParticleSystem.h"
+#include "ofxGui.h"
 
 
 #define NUM_BYTES 2
@@ -122,16 +123,10 @@ public:
     bool sensorTrigger;
     
     bool sequenceActive;
-    float testTimer;
-    void resetTimer();
-    
-    
-    void SensorSequenceComplete();
     
     bool sensorSequenceActive;
     
     
-    int e1Count, e2Count, e3Count;
     
     float activeLength;
     
@@ -153,8 +148,18 @@ public:
     
     void destinationPicker();
     
-    bool sensorPath;
     
-    void newColours(string system, StoneParticleSystem& stone);
+    
+    
+    ofxPanel e1gui;
+    ofxLabel fps;
+    ofxFloatSlider scale;
+    ofxFloatSlider rotation;
+    ofxFloatSlider offset;
+    ofxFloatSlider passes;
+
+    void setupGuis();
+    void drawGuis();
+    
     
 };

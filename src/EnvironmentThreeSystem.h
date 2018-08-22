@@ -61,7 +61,7 @@ public:
     float centerAttraction;
     float padding;
     bool isMousePressed, slowMotion;
-    bool drawBalls;
+    bool drawLines;
     
     void display();
     
@@ -86,6 +86,10 @@ public:
     bool sequenceActive;
     int destination;
     int randomPath;
+    void particleInteractions();
+    void outputConditions();
+    void impactEffect();
+    
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;

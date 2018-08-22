@@ -44,8 +44,8 @@ void EnvironmentTwoSource::setup(){
     
     debug = false;
     
-    blur1 = true;
-    blur2 = true;
+    blur1 = false;
+    blur2 = false;
     
     int num = 3;
     for(int i = 0; i < num; i ++){
@@ -65,12 +65,12 @@ void EnvironmentTwoSource::setup(){
 void EnvironmentTwoSource::update(){
     
 
-    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+    blur.setScale(3);//ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
+    blur.setRotation(-PI);//ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
     
-    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0);
-    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1);
+    gpuBlur.blurOffset = 3;//5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0);
+    gpuBlur.blurPasses = 0.7;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1);
     gpuBlur.numBlurOverlays = 3;
     gpuBlur.blurOverlayGain = 150;
     

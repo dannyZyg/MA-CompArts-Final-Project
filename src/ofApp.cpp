@@ -57,9 +57,6 @@ void ofApp::setup(){
     sensorSequenceActive = false;
     sequenceActive = false;
     
-    e1Count = 0;
-    e2Count = 0;
-    e3Count = 0;
     
     activeLength = 3000;
     
@@ -75,7 +72,7 @@ void ofApp::setup(){
     env3Timer.setup();
     sensorTimer.setup();
 //    s = Scheduler();
-    
+    setupGuis();
 }
 
 void ofApp::update(){
@@ -83,7 +80,6 @@ void ofApp::update(){
     scheduler();
     serialUpdate();
 
-    testTimer = ofGetElapsedTimeMillis() - startTime;
     
     timerSequenceSpacing = ofGetElapsedTimeMillis() - sequenceSpacingStart;
     
@@ -97,7 +93,7 @@ void ofApp::update(){
 
 void ofApp::draw(){
  
-    
+
     
     
     float x = testEnvelope.output(env, 50, 100, 100);
@@ -140,8 +136,7 @@ void ofApp::draw(){
     
 //    cout << testVal <<endl;
     
-    
-
+    drawGuis();
 }
 
 
@@ -177,6 +172,11 @@ void ofApp::keyPressed(int key){
     }
     
     if(key == ' ') environmentThree.enviro.sequenceActive = !environmentThree.enviro.sequenceActive;
+ 
+    if(key == 'B') environmentOne.blur1 = !environmentOne.blur1;
+    if(key == 'N') environmentOne.blur2 = !environmentOne.blur2;
+    if(key == 'A') environmentOne.active = !environmentOne.active;
+
     
 }
 
@@ -216,29 +216,6 @@ void ofApp::debugDisplay(){
     
     
 }
-
-
-void ofApp::newColours(string system, StoneParticleSystem& stone){
-    
-//    if(system == "Sensor"){
-//        ofColor c = ofColor(255, 0, 0);
-//        stone.setupColours(c);
-//        
-//    }
-//    if(system == "Environment One"){
-//        ofColor c = ofColor(0, 255, 0);
-//        stone.setupColours(c);
-//    }
-//    if(system == "Environment Two"){
-//        ofColor c = ofColor(255, 0, 255);
-//        stone.setupColours(c);
-//    }
-//    if(system == "Environment Three"){
-//        ofColor c = ofColor(255, 100, 0);
-//        stone.setupColours(c);
-//    }
-}
-
 
 void ofApp::scheduler(){
 
@@ -625,11 +602,7 @@ void ofApp::E3_to_E2(Timer& t, int variation){
 
 
 void ofApp::sensorToSystem(Timer& t, int variation){
-//    ofDrawRectangle(300, 300, 300, 300);
-    sensorPath = true;
-//    sensorSequenceActive = true;
     if(variation == 0){
-
         triggerStone(t, small_stones_13_16.stones[1], 0);
         triggerStone(t, small_stones_13_16.stones[0], 1);
         triggerStone(t, med_stones_5_8.stones[3], 2);
@@ -653,9 +626,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
 
 
 
-void ofApp::resetTimer(){
-    startTime = ofGetElapsedTimeMillis();
-}
+
 
 
 
@@ -710,5 +681,30 @@ void ofApp::serialUpdate(){
 }
 
 
+void ofApp::setupGuis(){
+    
+//    e1gui.setup();
+//    e1gui.add(scale.setup("scale", 0, 0.001, 10.0));
+//    e1gui.add(rotation.setup("rotation", -PI, 0.001, PI));
+//    e1gui.add(offset.setup("offset", 0., 0.001, 1.));
+//    e1gui.add(passes.setup("passes", 0, 0.001, 1.0));
+
+
+}
+void ofApp::drawGuis(){
+    
+    // link variables to gui
+    
+//    environmentOne.setScale = scale;
+//    environmentOne.setRotation= rotation;
+//    environmentOne.blurOffset = offset;
+//    environmentOne.blurPasses = passes;
+    
+//    e1gui.draw();
+
+
+    //    cout<<system1.separateScaler<<endl;
+    
+}
 
 

@@ -43,7 +43,7 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
-    drawBalls = true;
+    drawLines = false;
     
     angle = 0;
     target = ofVec2f(origin.x + 100, origin.y + 100);
@@ -287,8 +287,6 @@ void EnvironmentThreeSystem::draw() {
 	for(int i = 0; i < n; i++)
         particles[i].draw();
 	glEnd();
-    
-    
 }
 
 int EnvironmentThreeSystem::getWidth() const {
@@ -302,35 +300,16 @@ int EnvironmentThreeSystem::getHeight() const {
 
 void EnvironmentThreeSystem::display(){
 
-//    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
-    ofPushMatrix();
-    
-    ofPushMatrix();
-    ofPushStyle();
-    ofTranslate(origin.x, origin.y);
-    ofRotate(angle);
-    ofSetColor(255, 0, 0   );
-    if(impact){
-//      ofDrawLine(0, 0, 100, 100);
-        ofDrawCircle(200, 200, 5);
-        addRepulsionForce(200, 200, 500, 3);
-    }
-    
-    ofPopStyle();
-    ofPopMatrix();
-    
-    
     // apply per-particle forces
-    if(!drawBalls) {
+    if(drawLines) {
         ofSetColor(24, 124, 174);
         ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     
-    float tempRad = 50;
     
     for(int i = 0; i < particles.size(); i++) {
         E3Particle& cur = particles[i];
@@ -338,8 +317,7 @@ void EnvironmentThreeSystem::display(){
         
 //        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         
-        
-        vector<E3Particle*> nei = getNeighbors(cur.x, cur.y, tempRad);
+        vector<E3Particle*> nei = getNeighbors(cur.x, cur.y, 50);
         
         vector<E3Particle*> clusters = getNeighbors(cur.x, cur.y, 10);
         
@@ -347,7 +325,6 @@ void EnvironmentThreeSystem::display(){
 
         for(int j = 0; j < nei.size(); j ++){
 
-            
             addRepulsionForce(cur, particleNeighborhood, 0.04);
             
             
@@ -368,90 +345,92 @@ void EnvironmentThreeSystem::display(){
             }
         }
         
-        
         for(int j = 0; j < global.size(); j ++){
             if(glow){
                 ofPushStyle();
                 float alpha = ofMap(sin(ofGetFrameNum() * 0.01 + noiseSeed[i]), -1, 1, 0, 200);
                 ofColor c = cur.col;
                 ofSetColor(c, alpha);
-
                 ofDrawLine(cur.x, cur.y, global[j] -> x, global[j] -> y);
                 ofPopStyle();
             }
         }
- 
         
-// TRIGGER FOR OUTPUT
-        float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
-    
-// run the timer for the glow effect
-        glowTimer.run();
-
-        
-        if(clusterCount > 4) trigger = true;
-        else(trigger = false);
-
-// if these conditions are met, do this once only!
-
-        if(trigger && !systemOutput) {
-            systemOutput = true;
-            ofSetColor(0, 255, 0);
-            ofDrawCircle(origin, 50);
-            glowTimer.reset();
-            glowTimer.endTime = 5000;
-            sequenceTrigger = true;
-        }
-    
-// if the timer is active, glow
-        if(!glowTimer.reached){
-            glow = true;
-            
-        }
-// if not, don't glow
-        if (glowTimer.reached){
-            glow = false;
-        }
-
-        // forces on this particle
-        cur.bounceOffWalls(true);
-        cur.addDampingForce();
-        
-// reset the cluster tally
-        clusterCount = 0;
+    // forces on this particle
+    cur.bounceOffWalls(true);
+    cur.addDampingForce();
         
     }
-    if(!drawBalls) {
+    if(drawLines) {
         glEnd();
     }
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    if(isMousePressed) {
-    addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
-    }
     update();
     
     
     
     
     // draw all the particles
-    if(drawBalls) {
         for(int i = 0; i < particles.size(); i++) {
-            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            
             particles[i].displayParticle();
-//            ofNoFill();
-//            ofDrawCircle(particles[i].x, particles[i].y, tempRad);
         }
-    }
-    
-    
-    ofPopMatrix();
-
     
 }
 
+
+void EnvironmentThreeSystem::outputConditions(){
+    // TRIGGER FOR OUTPUT
+    
+    // run the timer for the glow effect
+    glowTimer.run();
+    
+    if(clusterCount > 4) trigger = true;
+    else(trigger = false);
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !systemOutput) {
+        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+    }
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+    // reset the cluster tally
+    clusterCount = 0;
+    
+}
+
+
+void EnvironmentThreeSystem::impactEffect(){
+    ofPushMatrix();
+    ofPushStyle();
+    ofTranslate(origin.x, origin.y);
+    ofRotate(angle);
+    ofSetColor(255, 0, 0   );
+    if(impact){
+        //      ofDrawLine(0, 0, 100, 100);
+        ofDrawCircle(200, 200, 5);
+        addRepulsionForce(200, 200, 500, 3);
+    }
+    ofPopStyle();
+    ofPopMatrix();
+    
+}
 
 
 

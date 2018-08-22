@@ -243,7 +243,8 @@ void EnvironmentOneSystem::update() {
         particles[i].membraneRad = region;
 	}
     
-    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
+//    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
+    particleRepulsion = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
 
 }
 
@@ -387,7 +388,7 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
 //    ofSetColor(255);
 //    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
     ofFill();
-    ofSetColor(255, cur_.membraneLife);
+    ofSetColor(50, cur_.membraneLife);
     if(nearby > 1){
             ofDrawCircle(cur_.x, cur_.y, region);
             cur_.alone = false;

@@ -48,19 +48,19 @@ void EnvironmentThreeSource::setup(){
     
     gpuBlur.setup(s);
     
-    blur1 = true;
-    blur2 = true;
+    blur1 = false;
+    blur2 = false;
     
     
 }
 
 void EnvironmentThreeSource::update(){
-    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+    blur.setScale(5);//ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
+    blur.setRotation(PI);//ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
     
-    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    gpuBlur.blurOffset = 0.5;//5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+    gpuBlur.blurPasses = 5;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
     gpuBlur.numBlurOverlays = 3;
     gpuBlur.blurOverlayGain = 150;
     
@@ -105,8 +105,11 @@ void EnvironmentThreeSource::draw(){
    
 
    
- 
+    enviro.impactEffect();
     enviro.display();
+//    enviro.particleInteractions();
+    enviro.outputConditions();
+    
     if(blur1)blur.end();
     if(blur1)blur.draw();
 

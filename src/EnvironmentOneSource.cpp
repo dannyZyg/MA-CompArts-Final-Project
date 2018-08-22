@@ -53,16 +53,35 @@ void EnvironmentOneSource::setup(){
 }
 
 void EnvironmentOneSource::update(){
-    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
     
+    //float setScale = 1.5;//(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
+    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 2, 10);
+//    else setScale = 1.5;
     
-    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+//    setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 2, 10);
+    float setRotation = 1.1;// (ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+    float blurOffset = 3.5; //5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+    float blurPasses = 1;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    
+//    cout <<"scale = " << setScale<<endl;
+//    cout <<"rot = " << setRotation<<endl;
+//    cout <<"blurOffset = " << blurOffset<<endl;
+//    cout <<"blurPasses = " << blurPasses<<endl;
+
+
+    
+    blur.setScale(setScale);
+    blur.setRotation(setRotation);
+    
+    gpuBlur.blurOffset = blurOffset;
+    gpuBlur.blurPasses = blurPasses;
+    
     gpuBlur.numBlurOverlays = 3;
-    gpuBlur.blurOverlayGain = 150;
+    gpuBlur.blurOverlayGain = 255;
     
     enviro.addRepulsionForce(100, 300, 200, 1);
+    
+    
     
     
     if(active){
@@ -77,14 +96,13 @@ void EnvironmentOneSource::update(){
     
 
     
-    
+    newRules();
     
     
 }
 
 void EnvironmentOneSource::draw(){
-    
-    
+
    
     //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
     if(blur2) gpuBlur.beginDrawScene();
@@ -143,4 +161,13 @@ void EnvironmentOneSource::draw(){
     
 }
 
+void EnvironmentOneSource::newRules(){
+    
+    if(active){
+        
+        enviro.centerAttraction = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, -1.5, 1.5);
+        
+    }
+
+}
 
