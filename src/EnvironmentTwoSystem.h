@@ -81,7 +81,7 @@ public:
     vector <float> cells;
     void receiveCells(vector <float> cells_);
     
-    bool state;
+    bool cellWallsActive;
     
     
     inline float InvSqrt(float x){
@@ -102,5 +102,10 @@ public:
     
     bool impact;
     bool sequenceActive;
-    bool newRules;
+//    bool newRules;
+    
+    bool generateRules;
+    
+    void newRules(int option);
+    void presetSelector(string preset);
 };

@@ -155,4 +155,6 @@ public:
     
     bool sensorPath;
     
+    void newColours(string system, StoneParticleSystem& stone);
+    
 };

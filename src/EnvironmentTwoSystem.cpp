@@ -50,6 +50,8 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     drawBalls = true;
     
     //     b = BabyParticle();
+    
+    cellWallsActive = true;
 }
 
 
@@ -316,7 +318,8 @@ int EnvironmentTwoSystem::getHeight() const {
 
 void EnvironmentTwoSystem::display(){
     
-    
+    newRules(1);
+//    if(ofGetElapsedTimeMillis() > 5000) newRules(2);
     setTimeStep(timeStep);
     // do this once per frame
     setupForces();
@@ -330,15 +333,15 @@ void EnvironmentTwoSystem::display(){
     }
     
     
-    if(newRules){
-        //change rules
-        
-        particleRepulsion = ofRandom(0.1, 1.5);
-
-        cout<< particleRepulsion <<endl;
-        
-        newRules = false;
-    }
+//    if(newRules){
+//        //change rules
+//        
+//        particleRepulsion = ofRandom(0.1, 1.5);
+//
+//        cout<< particleRepulsion <<endl;
+//        
+//        newRules = false;
+//    }
     
     ofPushMatrix();
     
@@ -362,13 +365,12 @@ void EnvironmentTwoSystem::display(){
         
         //        if(ofGetElapsedTimeMillis() % 1000 == 0) state = !state;
         //        cout<<state<<endl;
-        if(state){
+        if(cellWallsActive){
             allocateCellState(cur);
             cellWallRebound(cur);
         }
-        if(!state){
+        if(!cellWallsActive){
             cur.bounceOffWalls(true);
-            
         }
         
         
@@ -409,7 +411,7 @@ void EnvironmentTwoSystem::display(){
     //    b.updatePosition();
     //    b.displayParticle();
     //    b.test();
-    
+//    cout<<particles[0].yv<<endl;
 }
 
 
@@ -453,3 +455,82 @@ void EnvironmentTwoSystem::allocateCellState(E2Particle& particle){
         
     }
 }
+
+void EnvironmentTwoSystem::newRules(int option){
+    
+    // predefined behaviours
+    if(option == 0) presetSelector("p1");
+    if(option == 1) presetSelector("p2");
+    if(option == 2) presetSelector("p3");
+    
+    //random behaviours
+    if(option == 3) presetSelector("r1");
+    if(option == 4) presetSelector("r2");
+    if(option == 5) presetSelector("r3");
+}
+
+void EnvironmentTwoSystem::presetSelector(string preset){
+    
+    // cell walls active. Outside cells retreat from outer wall.
+    if(preset == "p1"){
+        particleRepulsion = 0.5;
+        centerAttraction = 0;
+        cellWallsActive = true;
+        
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 0.4;
+            
+            
+        }
+        
+
+
+    }
+    
+    if(preset == "p2"){
+        
+        cellWallsActive = false;
+        particleRepulsion = 0.5;// 0.5;
+        centerAttraction = 0;
+
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 5;
+        }
+    }
+    
+    if(preset == "p3"){
+        
+        cellWallsActive = false;
+        particleRepulsion = 0.4;
+        
+        
+
+//        cout<<particles[0].xv<<endl;
+        
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 3;
+            
+//            particles[i].vel.x = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25), -1, 1, -2, 2);
+//            particles[i].vel.y = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25 + 500), -1, 1, -2, 2);
+//            particles[i].xv = ofRandom(-2, 2);
+//            particles[i].yv = ofRandom(-2, 2);
+        }
+        //        numActive = 200;
+        //        maxParticles = 150;
+    }
+    
+    if(preset == "r1"){
+        
+    }
+    
+    if(preset == "r2"){
+        
+    }
+    
+    if(preset == "r3"){
+        
+    }
+    
+}
+
+

@@ -96,6 +96,9 @@ public:
     void alterSize(E1Particle& cur_);
     float maxRad, minRad;
     float region;
+    
+    
+    void communicationCondition();
 };
 
 

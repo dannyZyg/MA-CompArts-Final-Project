@@ -6,24 +6,24 @@ Particle::Particle(){
     x = ofRandom(100, 500);
     y = ofRandom(100, 500);
     
-    xv = ofRandom(-0.5, 0.5);
-    yv = ofRandom(-0.5, 0.5);
+    xv = ofRandom(-3, 3);
+    yv = ofRandom(-3, 3);
+
     
-    
-//    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-//    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    vel = ofVec2f(0,0);
     
     
     damping = .01;
     randomOffset = ofRandom(-5, 10);
     mass = 1;
     acceleration = ofVec2f(0,0);
-    maxSpeed = 5;
+    maxSpeed = 1;
     
 }
 
 
 E1Particle::E1Particle(){
+
     r = ofRandom (3, 15);
     minSize = 4;
     maxSize = 20;
@@ -34,20 +34,23 @@ E1Particle::E1Particle(){
 }
 
 E2Particle::E2Particle(){
-    xv = ofRandom(-1, 1);
-    yv = ofRandom(-1, 1);
+    xv = ofRandom(-3, 3);
+    yv = ofRandom(-3, 3);
     wallTimer = Timer();
     wallTimer.setup();
     wallTimer.endTime = 3000;
     stuckOnWall = false;
     damping = .02;
     
+    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    
 }
 
 E3Particle::E3Particle(){
     r = ofRandom (4, 12);
-    xv = ofRandom(-1, 1);
-    yv = ofRandom(-1, 1);
+    xv = ofRandom(-3, 3);
+    yv = ofRandom(-3, 3);
     team = ofRandom(2);
     damping = .01;
     
@@ -63,6 +66,10 @@ void Particle::updatePosition() {
     
     xv += xf;// apply forces
     yv += yf;// apply forces
+    
+//    acceleration.x += xf;// apply forces
+//    acceleration.y += yf;// apply forces
+    
     x += xv;//
     y += yv;//
     
@@ -70,23 +77,27 @@ void Particle::updatePosition() {
     xv += acceleration.x;
     yv += acceleration.y;
     
+    
     //
     //    vel.x += xf;
     //    vel.y += yf;
     //
-//    x += vel.x;
-//    y += vel.y;
+    x += vel.x;
+    y += vel.y;
     
     
-    // Add friction
+//     Add friction
     friction.x = xv;
     friction.y = yv;
     friction.normalize();
-    cF = 0.1;
+    cF = 0.9;
     friction *= cF;
     applyForce(friction);
     
     acceleration *= 0;
+    
+//    xf = 0;
+//    yf = 0;
     
 }
 
@@ -112,7 +123,7 @@ void Particle::bounceOffWalls(bool rebound_) {
         
         xv *= -1;
         yv *= -1;
-        
+    
         vel.x *= -1;
         vel.y *= -1;
         
@@ -281,7 +292,7 @@ void E2Particle::returnFromWall(){
 //                ofDrawLine(origin.x, origin.y, x, y);
         //        ofPoint cent = ofPoint(origin)
         //        applyForce(- origin);
-                accelerateTowardsTarget(origin);
+        accelerateTowardsTarget(origin);
         
         
     }

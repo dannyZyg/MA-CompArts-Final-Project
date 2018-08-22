@@ -41,7 +41,7 @@ public:
 	void update();
 
 	void draw();
-    void setupColours();
+    void setupColours(ofColor base_);
     void updateColours();
 	
 	int getWidth() const;
@@ -81,6 +81,11 @@ public:
     unsigned int timer;
     
     int showParticleSpacing;
+    
+    
+    void originSystem(string originSystem_);
+    void newColours(string originSystem_);
+
     
 };
 

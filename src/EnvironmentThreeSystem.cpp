@@ -343,7 +343,7 @@ void EnvironmentThreeSystem::display(){
         
         vector<E3Particle*> clusters = getNeighbors(cur.x, cur.y, 10);
         
-        vector<E3Particle*> global = getNeighbors(cur.x, cur.y, externalRad/3);
+        vector<E3Particle*> global = getNeighbors(cur.x, cur.y, 80);//externalRad/3);
 
         for(int j = 0; j < nei.size(); j ++){
 

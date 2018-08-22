@@ -207,14 +207,36 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 void ofApp::debugDisplay(){
     
-    ofPushStyle();
-    ofFill();
-    ofSetColor(255);
-    ofDrawCircle(environmentOne.origin.x, environmentOne.origin.y, environmentOne.rad);
-    verdana30.drawString("Env 1", environmentOne.origin.x, environmentOne.origin.y);
-    ofPopStyle();
+//    ofPushStyle();
+//    ofFill();
+//    ofSetColor(255);
+//    ofDrawCircle(environmentOne.origin.x, environmentOne.origin.y, environmentOne.rad);
+//    verdana30.drawString("Env 1", environmentOne.origin.x, environmentOne.origin.y);
+//    ofPopStyle();
     
     
+}
+
+
+void ofApp::newColours(string system, StoneParticleSystem& stone){
+    
+//    if(system == "Sensor"){
+//        ofColor c = ofColor(255, 0, 0);
+//        stone.setupColours(c);
+//        
+//    }
+//    if(system == "Environment One"){
+//        ofColor c = ofColor(0, 255, 0);
+//        stone.setupColours(c);
+//    }
+//    if(system == "Environment Two"){
+//        ofColor c = ofColor(255, 0, 255);
+//        stone.setupColours(c);
+//    }
+//    if(system == "Environment Three"){
+//        ofColor c = ofColor(255, 100, 0);
+//        stone.setupColours(c);
+//    }
 }
 
 
@@ -320,11 +342,21 @@ void ofApp::sequenceComplete(Timer& t, int timing){
 
 // function which triggers a stone on and off at the right time in a given sequence
 void ofApp::triggerStone(Timer& t, StoneParticleSystem& stone, int timing){
+    
+    // check which environment/sensor sent the signal and inform the stone
+    string sender;
+    if(t.timer == env1Timer.timer) sender = "Environment One";
+    if(t.timer == env2Timer.timer) sender = "Environment Two";
+    if(t.timer == env3Timer.timer) sender = "Environment Three";
+    if(t.timer == sensorTimer.timer) sender = "Sensor";
+//    newColours(sender, stone);
+    stone.originSystem(sender);
+    
     //turn on the stone
     if(t.timer > timeSpacing * timing){
         stone.active = true;
-        if(t.timer == sensorTimer.timer) stone.sensor = true;
-        else stone.sensor = false;
+//        if(t.timer == sensorTimer.timer) stone.sensor = true;
+//        else stone.sensor = false;
     }
     //turn off the stone
     if(t.timer > timeSpacing * timing + t.activeStoneTime){
@@ -354,9 +386,9 @@ void ofApp::triggerEnviro2(Timer& t, int timing){
     if (t.timer > timeSpacing * timing + t.activeStoneTime){
         environmentTwo.active = false;
     }
-    if (t.timer == timeSpacing * timing){
-        environmentTwo.enviro.newRules = true;
-    }
+//    if (t.timer == timeSpacing * timing){
+//        environmentTwo.enviro.newRules = true;
+//    }
 }
 
 void ofApp::triggerEnviro3(Timer& t, int timing){

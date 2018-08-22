@@ -34,7 +34,12 @@ void StoneParticleSystem::setup(int width, int height, int k) {
         particles.push_back(particle);
     }
     
-    setupColours();
+    for(int i = 0; i < particles.size(); i++){
+        particles[i].origin = origin;
+        particles[i].externalRad = externalRad;
+    }
+    
+    setupColours(baseColour);
     
     padding = 128;
     timeStep = 100;
@@ -53,35 +58,33 @@ void StoneParticleSystem::setup(int width, int height, int k) {
 }
 
 
-void StoneParticleSystem::setupColours(){
+void StoneParticleSystem::setupColours(ofColor base_){
     
     
-    team1Col.setBaseColor(baseColour);
+    team1Col.setBaseColor(base_);
     team1Col.generateAnalogous();
     
     for(int i = 0; i < particles.size(); i++){
         particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-        particles[i].origin = origin;
-        particles[i].externalRad = externalRad;
     }
     
 }
 
 void StoneParticleSystem::updateColours(){
     
-    for(int i = 0; i < particles.size(); i++){
-        
-        
-        if(sensor){
-            particles[i].col = ofColor(0, 255, 0);
-            
-            
-        }
-        else{
-            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-        }
-
-    }
+//    for(int i = 0; i < particles.size(); i++){
+//        
+//        
+//        if(sensor){
+//            particles[i].col = ofColor(0, 255, 0);
+//            
+//            
+//        }
+//        else{
+//            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+//        }
+//
+//    }
     
     
 }
@@ -387,6 +390,29 @@ void StoneParticleSystem::fadeParticles(){
     
 }
 
+// Make changes based on which system sent the signal
+void StoneParticleSystem::originSystem(string originSystem_){
+    newColours(originSystem_);
+    
+}
 
-
-
+void StoneParticleSystem::newColours(string originSystem_){
+    
+    if(originSystem_ == "Sensor"){
+        ofColor c = ofColor(255, 0, 0);
+        setupColours(c);
+    }
+    if(originSystem_ == "Environment One"){
+        ofColor c = ofColor(0, 255, 0);
+        setupColours(c);
+    }
+    if(originSystem_ == "Environment Two"){
+        ofColor c = ofColor(255, 0, 255);
+        setupColours(c);
+    }
+    if(originSystem_ == "Environment Three"){
+        ofColor c = ofColor(255,211, 91);
+        setupColours(c);
+    }
+    
+}

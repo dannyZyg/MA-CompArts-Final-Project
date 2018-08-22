@@ -32,10 +32,6 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         setupColours();
     }
     
-//    padding = 128;
-//    timeStep = 100;
-//    isMousePressed = false;
-//    slowMotion = true;
     particleNeighborhood = 80;
     particleRepulsion = 0.8;// 0.5;
     centerAttraction = 0.1; //0.6;
@@ -421,5 +417,11 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     }
 }
 
+
+
+void EnvironmentOneSystem::communicationCondition(){
+    
+    
+}
 
 
