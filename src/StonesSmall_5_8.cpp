@@ -68,7 +68,8 @@ void StonesSmall_5_8::update(){
     
     for(int i = 0; i < stones.size(); i ++){
 //        stones[i].update();
-        
+        stones[i].updateColours();
+
     }
     
 //    cout<<stones.size()<<endl;
@@ -128,31 +129,31 @@ void StonesSmall_5_8::sequence1(){
 }
 
 
-void StonesSmall_5_8::sequence2(){
-    
-    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-    
-    
-    stones[3].active = true;
-    
-    stones[3].addParticle();
-
-    if (ofGetElapsedTimeMillis() - startTime > 3000){
-
-        stones[1].active = true;
-        stones[1].addParticle();
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 6000){
-
-        stones[2].active = true;
-        stones[2].addParticle();
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 9000){
-
-        stones[0].active = true;
-        stones[0].addParticle();
-    }
-}
+//void StonesSmall_5_8::sequence2(){
+//    
+//    // instructions for the illumination of particular stepping stones in order and in a timed sequence
+//    
+//    
+//    stones[3].active = true;
+//    
+//    stones[3].addParticle();
+//
+//    if (ofGetElapsedTimeMillis() - startTime > 3000){
+//
+//        stones[1].active = true;
+//        stones[1].addParticle();
+//    }
+//    if (ofGetElapsedTimeMillis() - startTime > 6000){
+//
+//        stones[2].active = true;
+//        stones[2].addParticle();
+//    }
+//    if (ofGetElapsedTimeMillis() - startTime > 9000){
+//
+//        stones[0].active = true;
+//        stones[0].addParticle();
+//    }
+//}
 
 void StonesSmall_5_8::reset(){
     

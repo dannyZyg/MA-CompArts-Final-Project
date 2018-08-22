@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "StoneParticleSystem.h"
+#include "ParticleSystem.h"
 #include "FboSource.h"
 
 #endif /* StonesSmall_13_16_hpp */

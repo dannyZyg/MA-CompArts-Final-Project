@@ -42,6 +42,7 @@ public:
 
 	void draw();
     void setupColours();
+    void updateColours();
 	
 	int getWidth() const;
 	int getHeight() const;
@@ -69,7 +70,7 @@ public:
     
     ofVec2f origin;
     float externalRad;
-    
+    bool sensor;
     
     bool active;
     bool drawLines;

@@ -64,8 +64,8 @@ void StonesMed_5_8::update(){
 //    sequence2();
     
     for(int i = 0; i < stones.size(); i ++){
-//        stones[i].update();
-        
+        stones[i].updateColours();
+
     }
     
 //    cout<<stones.size()<<endl;
@@ -125,28 +125,28 @@ void StonesMed_5_8::sequence1(){
 }
 
 
-void StonesMed_5_8::sequence2(){
-    
-    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-    
-    
-    stones[3].active = true;
-    
-
-    if (ofGetElapsedTimeMillis() - startTime > 3000){
-
-        stones[1].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 6000){
-
-        stones[2].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 9000){
-
-        stones[0].active = true;
-     
-    }
-}
+//void StonesMed_5_8::sequence2(){
+//    
+//    // instructions for the illumination of particular stepping stones in order and in a timed sequence
+//    
+//    
+//    stones[3].active = true;
+//    
+//
+//    if (ofGetElapsedTimeMillis() - startTime > 3000){
+//
+//        stones[1].active = true;
+//    }
+//    if (ofGetElapsedTimeMillis() - startTime > 6000){
+//
+//        stones[2].active = true;
+//    }
+//    if (ofGetElapsedTimeMillis() - startTime > 9000){
+//
+//        stones[0].active = true;
+//     
+//    }
+//}
 
 void StonesMed_5_8::reset(){
     

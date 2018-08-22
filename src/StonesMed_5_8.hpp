@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include "ofMain.h"
+//#include "StoneParticleSystem.h"
+//#include "ParticleSystem.h"
 #include "StoneParticleSystem.h"
 #include "FboSource.h"
 

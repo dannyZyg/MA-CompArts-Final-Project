@@ -91,6 +91,8 @@ public:
     void setupColours();
     
     bool rebound;
+    
+    bool fade;
 };
 
 

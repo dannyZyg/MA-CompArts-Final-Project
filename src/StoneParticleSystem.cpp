@@ -67,6 +67,24 @@ void StoneParticleSystem::setupColours(){
     
 }
 
+void StoneParticleSystem::updateColours(){
+    
+    for(int i = 0; i < particles.size(); i++){
+        
+        
+        if(sensor){
+            particles[i].col = ofColor(0, 255, 0);
+            
+            
+        }
+        else{
+            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+        }
+
+    }
+    
+    
+}
 
 void StoneParticleSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
@@ -290,12 +308,13 @@ void StoneParticleSystem::display(){
     // do this once per frame
     setupForces();
     
-    
+    if(sensor && active) drawLines = true;
+    else drawLines = false;
     
     // apply per-particle forces
-    if(!drawBalls) {
+    if(drawLines) {
         ofSetColor(24, 124, 174);
-        ofSetLineWidth(0.1);
+        ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     for(int i = 0; i < particles.size(); i++) {
@@ -307,7 +326,7 @@ void StoneParticleSystem::display(){
         cur.addDampingForce();
         
     }
-    if(!drawBalls) {
+    if(drawLines) {
         glEnd();
     }
     

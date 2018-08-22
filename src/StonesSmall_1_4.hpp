@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 //#include "SteppingStoneType1.hpp"
+#include "ParticleSystem.h"
 #include "StoneParticleSystem.h"
 #include "FboSource.h"
 

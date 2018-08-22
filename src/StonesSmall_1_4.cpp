@@ -59,7 +59,8 @@ void StonesSmall_1_4::update(){
     
     for(int i = 0; i < stones.size(); i ++){
 //        stones[i].update();
-        
+        stones[i].updateColours();
+
     }
     
 //    cout<<stones.size()<<endl;

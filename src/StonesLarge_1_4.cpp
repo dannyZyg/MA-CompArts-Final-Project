@@ -49,6 +49,7 @@ void StonesLarge_1_4::setup(){
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
+//        stones[i].setupColours();
     }
     
     
@@ -71,7 +72,7 @@ void StonesLarge_1_4::update(){
 
     for(int i = 0; i < stones.size(); i ++){
 //        stones[i].update();
-
+        stones[i].updateColours();
     }
 
 //    cout<<stones[1].timeIntervalPassed<<endl;

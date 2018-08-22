@@ -5,7 +5,7 @@ ParticleSystem::ParticleSystem(){
     particleNeighborhood = 32;
     
     rebound = true;
-    
+    fade = false;
 }
 
 StoneSystem::StoneSystem(){
@@ -16,7 +16,7 @@ StoneSystem::StoneSystem(){
     particleRepulsion = 0.7;
     centerAttraction = 0;
     rebound = false;
-
+    fade = false;
 }
 
 void ParticleSystem::setup(int width, int height, int k) {
@@ -43,7 +43,7 @@ void ParticleSystem::setup(int width, int height, int k) {
     centerAttraction = 0.3;
     drawLines = true;
     
-    setupColours();
+//    setupColours();
 }
 
 void ParticleSystem::add(Particle particle) {
@@ -253,18 +253,14 @@ int ParticleSystem::getHeight() const {
 void ParticleSystem::display(){
 
     
+    ofPushStyle();
+    ofPushMatrix();
+    
+//    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
-    ofVec2f target;
-    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
-    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
-    if(impact){
-        addRepulsionForce(target.x, target.y, 100, 0.5);
-    }
-    
-    ofPushMatrix();
     
     // apply per-particle forces
     if(drawLines) {
@@ -275,31 +271,25 @@ void ParticleSystem::display(){
     for(int i = 0; i < particles.size(); i++) {
         Particle& cur = particles[i];
         // global force on other particles
-        
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
-        cur.bounceOffWalls(rebound);
+        cur.bounceOffWalls(false);
         cur.addDampingForce();
         
     }
-        
     if(drawLines) {
         glEnd();
     }
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
+
     update();
     
     
     
-    
-    // draw all the particles
-    for(int i = 0; i < particles.size(); i++) {
-        particles[i].displayParticle();
-    }
-    
-    ofPopMatrix();    
+    ofPopStyle();
+    ofPopMatrix();
 }
 
 
@@ -321,31 +311,31 @@ void StoneSystem::setupColours(){
 
 void StoneSystem::fadeParticles(){
     
-    for(int i = 0; i < numToDisplay; i++) {
-        particles[i].displayParticle();
-    }
-    
-    if(active){
-        if(timer % showParticleSpacing == 0){
-            numToDisplay ++;
-            if(numToDisplay >= kParticles){
-                numToDisplay = kParticles;
-            }
-        }
-    }
-    
-    if(!active){
-        if(timer % showParticleSpacing == 0){
-            numToDisplay --;
-            if(numToDisplay <= 0){
-                numToDisplay = 0;
-            }
-        }
-    }
-    
-    timer ++;
-    
-    if(timer > 50000)timer = 0;
+//    for(int i = 0; i < numToDisplay; i++) {
+//        particles[i].displayParticle();
+//    }
+//
+//    if(active){
+//        if(timer % showParticleSpacing == 0){
+//            numToDisplay ++;
+//            if(numToDisplay >= kParticles){
+//                numToDisplay = kParticles;
+//            }
+//        }
+//    }
+//
+//    if(!active){
+//        if(timer % showParticleSpacing == 0){
+//            numToDisplay --;
+//            if(numToDisplay <= 0){
+//                numToDisplay = 0;
+//            }
+//        }
+//    }
+//
+//    timer ++;
+//
+//    if(timer > 50000)timer = 0;
     
 }
 

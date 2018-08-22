@@ -17,7 +17,7 @@
 #include "Timer.hpp"
 #include "Envelope.hpp"
 #include "Scheduler.hpp"
-
+#include "ParticleSystem.h"
 
 
 #define NUM_BYTES 2
@@ -149,8 +149,10 @@ public:
     
     bool env;
 //    int randomPath;
-    Scheduler s;
+//    Scheduler s;
     
     void destinationPicker();
+    
+    bool sensorPath;
     
 };
