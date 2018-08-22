@@ -21,7 +21,7 @@ public:
     
 	void updatePosition();
 	void resetForce();
-    void bounceOffWalls();
+    void bounceOffWalls(bool rebound_);
 	void addDampingForce();
 	void draw();
     void displayParticle();
@@ -41,6 +41,8 @@ public:
     float life;
     
     ofVec2f vel;
+    
+    bool rebound;
 
 };
 
@@ -51,7 +53,6 @@ public:
     
     float minSize, maxSize;
     void limitSize();
-    void bounceOffWalls();
     void limitMembraneLife();
     
     
@@ -90,7 +91,7 @@ public:
 class StoneParticle: public Particle {
 public:
     StoneParticle();
-    void bounceOffWalls();
+//    void bounceOffWalls();
     
 };
 

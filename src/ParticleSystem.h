@@ -9,11 +9,8 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-
-
 class ParticleSystem {
 protected:
-	float timeStep;
 	vector<Particle> particles;
 	vector< vector<Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
@@ -37,7 +34,7 @@ public:
 	void addAttractionForce(float x, float y, float radius, float scale);
 	void addForce(const Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
-	void update(float lastTimeStep);
+	void update();
     
     
 
@@ -49,18 +46,18 @@ public:
 	int getHeight() const;
     
     ofxColorPalette::ColorChannel mode;
-    float brightness;
-    float saturation;
-
     
+    ofxColorPalette team1Col;
+    ofxColorPalette team2Col;
+
+    ofColor baseColour;
     
     int kParticles;
 //    float timeStep;
     float particleNeighborhood, particleRepulsion;
     float centerAttraction;
     float padding;
-    bool isMousePressed, slowMotion;
-    bool drawBalls;
+    bool drawLines;
     
     void display();
     
@@ -69,6 +66,7 @@ public:
     
     bool state;
     
+    int preset;
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
@@ -88,6 +86,11 @@ public:
  
     bool impact;
     bool sequenceActive;
+    bool active;
+    
+    void setupColours();
+    
+    bool rebound;
 };
 
 
@@ -117,17 +120,9 @@ class StoneSystem : public ParticleSystem {
 public:
     StoneSystem();
     vector<StoneParticle> particles;
-    
+    void setupColours();
     void fadeParticles();
-    
-    
-    ofVec2f origin;
-    float externalRad;
-    
-    
-    bool active;
-    bool drawLines;
-    ofColor baseColour;
+
     
     int numToDisplay;
     bool timeIntervalPassed;

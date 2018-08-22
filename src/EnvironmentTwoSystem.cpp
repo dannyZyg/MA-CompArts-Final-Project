@@ -1,7 +1,6 @@
 #include "EnvironmentTwoSystem.h"
 
-EnvironmentTwoSystem::EnvironmentTwoSystem() :
-timeStep(100) {
+EnvironmentTwoSystem::EnvironmentTwoSystem(){
     
     
 }
@@ -285,9 +284,8 @@ void EnvironmentTwoSystem::addForce(float targetX, float targetY, float radius, 
     }
 }
 
-void EnvironmentTwoSystem::update(float lastTimeStep) {
+void EnvironmentTwoSystem::update() {
     int n = particles.size();
-    float curTimeStep = lastTimeStep * timeStep;
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
         particles[i].receiveCells(cells);
@@ -369,7 +367,7 @@ void EnvironmentTwoSystem::display(){
             cellWallRebound(cur);
         }
         if(!state){
-            cur.bounceOffWalls();
+            cur.bounceOffWalls(true);
             
         }
         
@@ -386,7 +384,7 @@ void EnvironmentTwoSystem::display(){
     if(isMousePressed) {
         addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
     }
-    update(ofGetLastFrameTime());
+    update();
     
     
     
@@ -434,7 +432,7 @@ void EnvironmentTwoSystem::cellWallRebound(E2Particle& particle){
     }
     else if(particle.cellState == 2){
         particle.bounceOffInnerCell(cells[2]);
-        particle.bounceOffWalls();
+        particle.bounceOffWalls(true);
     }
     
 }

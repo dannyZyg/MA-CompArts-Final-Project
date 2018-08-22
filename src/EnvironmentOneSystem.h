@@ -12,7 +12,7 @@
 
 class EnvironmentOneSystem {
 protected:
-	float timeStep;
+//    float timeStep;
 	vector<E1Particle> particles;
 	vector< vector<E1Particle*> > bins;
 	int width, height, k, xBins, yBins, binSize;
@@ -21,7 +21,7 @@ public:
 	EnvironmentOneSystem();
 
 	void setup(int width, int height, int k);
-	void setTimeStep(float timeStep);
+//    void setTimeStep(float timeStep);
 
 	void add(E1Particle particle);
 	vector<E1Particle*> getNeighbors(E1Particle& particle, float radius);
@@ -37,7 +37,7 @@ public:
 	void addAttractionForce(float x, float y, float radius, float scale);
 	void addForce(const E1Particle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
-	void update(float lastTimeStep);
+	void update();
 
 	void draw();
     void setupColours();
@@ -50,8 +50,8 @@ public:
     ofxColorPalette team2Col;
     
     ofxColorPalette::ColorChannel mode;
-    float brightness;
-    float saturation;
+//    float brightness;
+//    float saturation;
 
     
     
@@ -59,8 +59,8 @@ public:
 //    float timeStep;
     float particleNeighborhood, particleRepulsion;
     float centerAttraction;
-    float padding;
-    bool isMousePressed, slowMotion;
+//    float padding;
+//    bool isMousePressed, slowMotion;
     bool drawBalls;
     
     void display();

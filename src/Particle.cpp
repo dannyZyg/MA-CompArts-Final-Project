@@ -95,15 +95,16 @@ void Particle::resetForce() {
     yf = 0;
 }
 
-void Particle::bounceOffWalls() {
+void Particle::bounceOffWalls(bool rebound_) {
     bool collision = false;
+    rebound = rebound_;
     
     int d = ofDist(x, y, origin.x, origin.y);
     if( (d > externalRad - r )){
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f ret = origin - out;
-        ret = ret.normalize();
+        if(rebound) ret = ret.normalize();
         
         x += ret.x;
         y += ret.y;
@@ -131,7 +132,6 @@ void Particle::addDampingForce() {
 }
 
 void Particle::draw() {
-    
     glVertex2f(x, y);
 }
 
@@ -170,38 +170,38 @@ void E1Particle::limitMembraneLife(){
     
 }
 
-void E1Particle::bounceOffWalls() {
-    bool collision = false;
-    
-    
-    float offset;
-    
-    if(alone) offset = r;
-    else if(!alone) offset = membraneRad;
-    
-    int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
-        
-        ofVec2f out = ofVec2f(x, y);
-        ofVec2f ret = origin - out;
-        ret = ret.normalize();
-        
-        x += ret.x;
-        y += ret.y;
-        
-        
-        xv *= -1;
-        yv *= -1;
-        
-        vel.x *= -1;
-        vel.y *= -1;
-        
-        //        vel.x *= -1;
-        //        vel.y *= -1;
-        
-        collision = true;
-    }
-}
+//void E1Particle::bounceOffWalls() {
+//    bool collision = false;
+//
+//
+//    float offset;
+//
+//    if(alone) offset = r;
+//    else if(!alone) offset = membraneRad;
+//
+//    int d = ofDist(x, y, origin.x, origin.y);
+//    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
+//
+//        ofVec2f out = ofVec2f(x, y);
+//        ofVec2f ret = origin - out;
+//         ret = ret.normalize();
+//
+//        x += ret.x;
+//        y += ret.y;
+//
+//
+//        xv *= -1;
+//        yv *= -1;
+//
+//        vel.x *= -1;
+//        vel.y *= -1;
+//
+//        //        vel.x *= -1;
+//        //        vel.y *= -1;
+//
+//        collision = true;
+//    }
+//}
 
 
 
@@ -291,32 +291,32 @@ void E2Particle::returnFromWall(){
 
 
 
-void StoneParticle::bounceOffWalls() {
-    bool collision = false;
-    
-    ofVec2f cent = ofVec2f(328, 328);
-    int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
-        
-        ofVec2f out = ofVec2f(x, y);
-        ofVec2f ret = origin - out;
-        //        ret = ret.normalize();
-        
-        //        ret *= 0;
-        
-        addDampingForce();
-        
-        x += ret.x;
-        y += ret.y;
-        
-        
-        xv *= -1;
-        yv *= -1;
-        
-        
-        collision = true;
-    }
-}
+//void StoneParticle::bounceOffWalls() {
+//    bool collision = false;
+//    
+//    ofVec2f cent = ofVec2f(328, 328);
+//    int d = ofDist(x, y, origin.x, origin.y);
+//    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
+//        
+//        ofVec2f out = ofVec2f(x, y);
+//        ofVec2f ret = origin - out;
+//        //        ret = ret.normalize();
+//        
+//        //        ret *= 0;
+//        
+//        addDampingForce();
+//        
+//        x += ret.x;
+//        y += ret.y;
+//        
+//        
+//        xv *= -1;
+//        yv *= -1;
+//        
+//        
+//        collision = true;
+//    }
+//}
 
 
 

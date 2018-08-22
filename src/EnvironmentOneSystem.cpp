@@ -1,8 +1,7 @@
 #include "EnvironmentOneSystem.h"
 
-EnvironmentOneSystem::EnvironmentOneSystem() :
-	timeStep(100) {
-
+EnvironmentOneSystem::EnvironmentOneSystem(){
+    kParticles = 80;
         
 }
 
@@ -16,12 +15,12 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
 	bins.resize(xBins * yBins);
     
     
-    mode = ofxColorPalette::BRIGHTNESS;
-    brightness = 200;
-    saturation = 200;
+//    mode = ofxColorPalette::BRIGHTNESS;
+//    brightness = 200;
+//    saturation = 200;
     
     
-    kParticles = 80;
+    
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -33,10 +32,10 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         setupColours();
     }
     
-    padding = 128;
-    timeStep = 100;
-    isMousePressed = false;
-    slowMotion = true;
+//    padding = 128;
+//    timeStep = 100;
+//    isMousePressed = false;
+//    slowMotion = true;
     particleNeighborhood = 80;
     particleRepulsion = 0.8;// 0.5;
     centerAttraction = 0.1; //0.6;
@@ -65,9 +64,7 @@ void EnvironmentOneSystem::setupColours(){
 }
 
 
-void EnvironmentOneSystem::setTimeStep(float timeStep) {
-	this->timeStep = timeStep;
-}
+
 
 void EnvironmentOneSystem::add(E1Particle particle) {
 	particles.push_back(particle);
@@ -243,9 +240,8 @@ void EnvironmentOneSystem::addForce(float targetX, float targetY, float radius, 
 	}
 }
 
-void EnvironmentOneSystem::update(float lastTimeStep) {
+void EnvironmentOneSystem::update() {
 	int n = particles.size();
-	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
         particles[i].membraneRad = region;
@@ -277,7 +273,7 @@ int EnvironmentOneSystem::getHeight() const {
 void EnvironmentOneSystem::display(){
 
     
-    setTimeStep(timeStep);
+//    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
@@ -305,21 +301,12 @@ void EnvironmentOneSystem::display(){
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
         addAttractionForce(cur, particleNeighborhood, 0.5);
-        cur.bounceOffWalls();
+        cur.bounceOffWalls(true);
         cur.addDampingForce();
         
         alterSize(cur);
         
         ofFill();
-//        if(i == 0){
-//            ofPushStyle();
-////            ofFill();
-//            cur.col = ofColor(255);
-//            ofPopStyle();
-//
-//        }
-        
-        
     }
     if(!drawBalls) {
         glEnd();
@@ -327,10 +314,7 @@ void EnvironmentOneSystem::display(){
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    if(isMousePressed) {
-    addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
-    }
-    update(ofGetLastFrameTime());
+    update();
     
     
     

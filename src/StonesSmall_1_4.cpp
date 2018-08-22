@@ -16,7 +16,6 @@ StonesSmall_1_4::StonesSmall_1_4(){
     height = 800;
     allocate(width, height);
     
-    
 }
 
 
@@ -34,15 +33,12 @@ void StonesSmall_1_4::setup(){
             ofVec2f tempOrigin;
             tempOrigin.set (k*gs + gs/2, i*gs + gs/2);
             origins.push_back(tempOrigin);
-
         }
     }
 
     for(int i = 0; i < origins.size(); i ++){
         StoneParticleSystem s;
         stones.push_back(s);
-
-
     }
     
     for(int i = 0; i < stones.size(); i ++){
@@ -50,11 +46,6 @@ void StonesSmall_1_4::setup(){
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
-//        stones[i].centerAttraction = ofRandom(0.1, 2);
-//        stones[i].particleRepulsion = ofRandom(0.4, 2);
-        
-        
-        
     }
 }
 
@@ -96,62 +87,13 @@ void StonesSmall_1_4::draw(){
 
 
     for(int i = 0; i < stones.size(); i ++){
-        
+        stones[i].fadeParticles();
        stones[i].display();
     }
     
     if(debug) debugMode();
     
     
-}
-
-
-
-void StonesSmall_1_4::sequence1(){
-    
-//    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-//
-//    stones[0].active = true;
-//
-//    if (ofGetElapsedTimeMillis() - startTime > 3000){
-//
-//        stones[1].active = true;
-//    }
-//    if (ofGetElapsedTimeMillis() - startTime > 6000){
-//
-//        stones[2].active = true;
-//    }
-//    if (ofGetElapsedTimeMillis() - startTime > 9000){
-//
-//        stones[3].active = true;
-//    }
-}
-
-
-void StonesSmall_1_4::sequence2(){
-    
-    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-    
-    
-    stones[3].active = true;
-    
-    stones[3].addParticle();
-
-    if (ofGetElapsedTimeMillis() - startTime > 3000){
-
-        stones[1].active = true;
-        stones[1].addParticle();
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 6000){
-
-        stones[2].active = true;
-        stones[2].addParticle();
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 9000){
-
-        stones[0].active = true;
-        stones[0].addParticle();
-    }
 }
 
 void StonesSmall_1_4::reset(){
@@ -163,7 +105,6 @@ void StonesSmall_1_4::reset(){
 //    }
     
 }
-
 
 void StonesSmall_1_4::debugMode(){
     

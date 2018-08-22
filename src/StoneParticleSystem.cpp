@@ -58,7 +58,6 @@ void StoneParticleSystem::setupColours(){
     
     team1Col.setBaseColor(baseColour);
     team1Col.generateAnalogous();
-
     
     for(int i = 0; i < particles.size(); i++){
         particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
@@ -253,19 +252,14 @@ void StoneParticleSystem::addForce(float targetX, float targetY, float radius, f
 	}
 }
 
-void StoneParticleSystem::update(float lastTimeStep) {
+void StoneParticleSystem::update() {
 	int n = particles.size();
-	float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
 	}
-    
-    
-
 }
 
 void StoneParticleSystem::draw() {
-
     if(active){
         int n = particles.size();
         glBegin(GL_POINTS);
@@ -287,7 +281,7 @@ int StoneParticleSystem::getHeight() const {
 void StoneParticleSystem::display(){
     
 
-    fadeParticles();
+//    fadeParticles();
     
     ofPushStyle();
     ofPushMatrix();
@@ -309,7 +303,7 @@ void StoneParticleSystem::display(){
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
-        cur.bounceOffWalls();
+        cur.bounceOffWalls(false);
         cur.addDampingForce();
         
     }
@@ -322,17 +316,14 @@ void StoneParticleSystem::display(){
     if(isMousePressed) {
     addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
     }
-    update(ofGetLastFrameTime());
+    update();
     
 
     
     ofPopStyle();
     ofPopMatrix();
     
-    timer ++;
-    
-    
-    if(timer > 50000)timer = 0;
+
     
     
     
@@ -370,6 +361,10 @@ void StoneParticleSystem::fadeParticles(){
               }
           }
     }
+    
+    timer ++;
+    
+    if(timer > 50000)timer = 0;
     
 }
 

@@ -1,7 +1,6 @@
 #include "EnvironmentThreeSystem.h"
 
-EnvironmentThreeSystem::EnvironmentThreeSystem() :
-	timeStep(100) {
+EnvironmentThreeSystem::EnvironmentThreeSystem(){
 
         
 }
@@ -272,9 +271,8 @@ void EnvironmentThreeSystem::addForce(float targetX, float targetY, float radius
 	}
 }
 
-void EnvironmentThreeSystem::update(float lastTimeStep) {
+void EnvironmentThreeSystem::update() {
 	int n = particles.size();
-//    float curTimeStep = lastTimeStep * timeStep;
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
 	}
@@ -304,8 +302,7 @@ int EnvironmentThreeSystem::getHeight() const {
 
 void EnvironmentThreeSystem::display(){
 
-    
-    setTimeStep(timeStep);
+//    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
@@ -317,7 +314,7 @@ void EnvironmentThreeSystem::display(){
     ofRotate(angle);
     ofSetColor(255, 0, 0   );
     if(impact){
-//        ofDrawLine(0, 0, 100, 100);
+//      ofDrawLine(0, 0, 100, 100);
         ofDrawCircle(200, 200, 5);
         addRepulsionForce(200, 200, 500, 3);
     }
@@ -338,8 +335,6 @@ void EnvironmentThreeSystem::display(){
     for(int i = 0; i < particles.size(); i++) {
         E3Particle& cur = particles[i];
         // global force on other particles
-        
-        
         
 //        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         
@@ -419,7 +414,7 @@ void EnvironmentThreeSystem::display(){
         }
 
         // forces on this particle
-        cur.bounceOffWalls();
+        cur.bounceOffWalls(true);
         cur.addDampingForce();
         
 // reset the cluster tally
@@ -435,7 +430,7 @@ void EnvironmentThreeSystem::display(){
     if(isMousePressed) {
     addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
     }
-    update(ofGetLastFrameTime());
+    update();
     
     
     
@@ -452,17 +447,11 @@ void EnvironmentThreeSystem::display(){
     }
     
     
-//    particleSystem.display();
     ofPopMatrix();
 
     
 }
 
 
-//void EnvironmentThreeSystem::receiveGeometry(ofVec2f origin_, float externalRad_){
-//    
-//    origin = origin_;
-//    externalRad = externalRad_;
-//    
-//}
+
 

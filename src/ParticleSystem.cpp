@@ -1,7 +1,22 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem() :
-	timeStep(100) {
+ParticleSystem::ParticleSystem(){
+    kParticles = 300;
+    particleNeighborhood = 32;
+    
+    rebound = true;
+    
+}
+
+StoneSystem::StoneSystem(){
+    kParticles = 50;
+    showParticleSpacing = 5;
+    numToDisplay = 0;
+    particleNeighborhood = 32;
+    particleRepulsion = 0.7;
+    centerAttraction = 0;
+    rebound = false;
+
 }
 
 void ParticleSystem::setup(int width, int height, int k) {
@@ -14,10 +29,7 @@ void ParticleSystem::setup(int width, int height, int k) {
 	bins.resize(xBins * yBins);
     
     mode = ofxColorPalette::BRIGHTNESS;
-    brightness = 200;
-    saturation = 200;
     
-    kParticles = 300;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -27,20 +39,11 @@ void ParticleSystem::setup(int width, int height, int k) {
         particles.push_back(particle);
     }
     
-    
-    
-    padding = 128;
-    timeStep = 100;
-    isMousePressed = false;
-    slowMotion = true;
-    particleNeighborhood = 32;
     particleRepulsion = 0.1;
     centerAttraction = 0.3;
-    drawBalls = true;
-}
-
-void ParticleSystem::setTimeStep(float timeStep) {
-	this->timeStep = timeStep;
+    drawLines = true;
+    
+    setupColours();
 }
 
 void ParticleSystem::add(Particle particle) {
@@ -217,9 +220,8 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
 	}
 }
 
-void ParticleSystem::update(float lastTimeStep) {
+void ParticleSystem::update() {
     int n = particles.size();
-    float curTimeStep = lastTimeStep * timeStep;
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
         
@@ -251,13 +253,12 @@ int ParticleSystem::getHeight() const {
 void ParticleSystem::display(){
 
     
-    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
     
     ofVec2f target;
     target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
-     target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
+    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
     if(impact){
         addRepulsionForce(target.x, target.y, 100, 0.5);
@@ -266,7 +267,7 @@ void ParticleSystem::display(){
     ofPushMatrix();
     
     // apply per-particle forces
-    if(!drawBalls) {
+    if(drawLines) {
         ofSetColor(24, 124, 174);
         ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
@@ -275,55 +276,79 @@ void ParticleSystem::display(){
         Particle& cur = particles[i];
         // global force on other particles
         
-        
-        
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
-        cur.bounceOffWalls();
-        
+        cur.bounceOffWalls(rebound);
         cur.addDampingForce();
-    
-//        if(ofGetElapsedTimeMillis() % 1000 == 0) state = !state;
-//        cout<<state<<endl;
-
         
     }
         
-    if(!drawBalls) {
+    if(drawLines) {
         glEnd();
     }
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    if(isMousePressed) {
-    addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
-    }
-    update(ofGetLastFrameTime());
+    update();
     
     
     
     
     // draw all the particles
-    if(drawBalls) {
-        for(int i = 0; i < particles.size(); i++) {
-            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            
-            particles[i].displayParticle();
+    for(int i = 0; i < particles.size(); i++) {
+        particles[i].displayParticle();
+    }
+    
+    ofPopMatrix();    
+}
+
+
+
+
+void StoneSystem::setupColours(){
+    
+    
+    team1Col.setBaseColor(baseColour);
+    team1Col.generateAnalogous();
+    
+    for(int i = 0; i < particles.size(); i++){
+        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+        particles[i].origin = origin;
+        particles[i].externalRad = externalRad;
+    }
+    
+}
+
+void StoneSystem::fadeParticles(){
+    
+    for(int i = 0; i < numToDisplay; i++) {
+        particles[i].displayParticle();
+    }
+    
+    if(active){
+        if(timer % showParticleSpacing == 0){
+            numToDisplay ++;
+            if(numToDisplay >= kParticles){
+                numToDisplay = kParticles;
+            }
         }
     }
     
+    if(!active){
+        if(timer % showParticleSpacing == 0){
+            numToDisplay --;
+            if(numToDisplay <= 0){
+                numToDisplay = 0;
+            }
+        }
+    }
     
-//    particleSystem.display();
-    ofPopMatrix();
-
+    timer ++;
     
-    
-    
-//    b.updatePosition();
-//    b.displayParticle();
-//    b.test();
+    if(timer > 50000)timer = 0;
     
 }
+
 
 
 void E2System::receiveCells(vector <float> cells_){
@@ -346,7 +371,7 @@ void E2System::behaviourState(){
             cellWallRebound(cur);
         }
         if(!state){
-            cur.bounceOffWalls();
+            cur.bounceOffWalls(true);
             ofSetColor(255, 0, 0);
             ofDrawRectangle(255,255, 100, 100);
         }
@@ -369,7 +394,7 @@ void E2System::cellWallRebound(E2Particle& particle){
     }
     else if(particle.cellState == 2){
         particle.bounceOffInnerCell(cells[2]);
-        particle.bounceOffWalls();
+        particle.bounceOffWalls(true);
     }
     
 }

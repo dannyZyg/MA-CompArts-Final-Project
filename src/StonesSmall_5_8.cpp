@@ -96,7 +96,7 @@ void StonesSmall_5_8::draw(){
 
 
     for(int i = 0; i < stones.size(); i ++){
-        
+        stones[i].fadeParticles();
         stones[i].display();
     }
     

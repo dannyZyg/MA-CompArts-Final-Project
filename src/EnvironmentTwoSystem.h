@@ -42,7 +42,7 @@ public:
     void addAttractionForce(float x, float y, float radius, float scale);
     void addForce(const E2Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
-    void update(float lastTimeStep);
+    void update();
     
     
     

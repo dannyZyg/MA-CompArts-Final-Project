@@ -38,7 +38,7 @@ public:
 	void addAttractionForce(float x, float y, float radius, float scale);
 	void addForce(const StoneParticle& particle, float radius, float scale);
 	void addForce(float x, float y, float radius, float scale);
-	void update(float lastTimeStep);
+	void update();
 
 	void draw();
     void setupColours();
@@ -54,8 +54,6 @@ public:
     float brightness;
     float saturation;
 
-    
-    
     int kParticles;
 //    float timeStep;
     float particleNeighborhood, particleRepulsion;

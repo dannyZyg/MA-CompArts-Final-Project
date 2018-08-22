@@ -49,9 +49,6 @@ void StonesLarge_1_4::setup(){
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
-//        stones[i].centerAttraction = ofRandom(0.1, 2);
-//        stones[i].particleRepulsion = ofRandom(0.4, 2);
-
     }
     
     
@@ -65,17 +62,12 @@ void StonesLarge_1_4::setup(){
     s.useDepth = true;
     s.useStencil = true;
 
-
     gpuBlur.setup(s);
 }
-
-
-
 
 void StonesLarge_1_4::update(){
 
 
-//    sequence2();
 
     for(int i = 0; i < stones.size(); i ++){
 //        stones[i].update();
@@ -129,8 +121,8 @@ void StonesLarge_1_4::draw(){
 
 
     for(int i = 0; i < stones.size(); i ++){
-
-       stones[i].display();
+        stones[i].fadeParticles();
+        stones[i].display();
     }
 
     if(debug) debugMode();
@@ -156,50 +148,6 @@ void StonesLarge_1_4::draw(){
     
 }
 
-
-
-void StonesLarge_1_4::sequence1(){
-
-//    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-//
-//    stones[0].active = true;
-//
-//    if (ofGetElapsedTimeMillis() - startTime > 3000){
-//
-//        stones[1].active = true;
-//    }
-//    if (ofGetElapsedTimeMillis() - startTime > 6000){
-//
-//        stones[2].active = true;
-//    }
-//    if (ofGetElapsedTimeMillis() - startTime > 9000){
-//
-//        stones[3].active = true;
-//    }
-}
-
-
-void StonesLarge_1_4::sequence2(){
-
-    // instructions for the illumination of particular stepping stones in order and in a timed sequence
-
-
-    stones[3].active = true;
-
-
-    if (ofGetElapsedTimeMillis() - startTime > 3000){
-
-        stones[1].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 6000){
-
-        stones[2].active = true;
-    }
-    if (ofGetElapsedTimeMillis() - startTime > 9000){
-
-        stones[0].active = true;
-    }
-}
 
 void StonesLarge_1_4::reset(){
 
