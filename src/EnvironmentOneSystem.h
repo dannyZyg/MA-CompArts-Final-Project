@@ -102,6 +102,12 @@ public:
     void outputConditions();
     void impactEffect();
     
+    
+    float outputThreshold;
+    float outputCondition;
+    
+    bool colourSwitch();
+    
 };
 
 

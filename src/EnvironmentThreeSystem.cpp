@@ -5,9 +5,13 @@ EnvironmentThreeSystem::EnvironmentThreeSystem(){
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
-    drawLines = true;
+    drawLines = false;
     angle = 0;
     impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
+    
+    lineAlpha = 0;
+    
+    outputThreshold = 200;
 }
 
 void EnvironmentThreeSystem::setup(int width, int height, int k) {
@@ -47,8 +51,8 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
 
 
 void EnvironmentThreeSystem::setupColours(){
-    ofColor team1Base = ofColor(52,167, 173);
-    ofColor team2Base = ofColor(255,211, 91);
+    team1Base = ofColor(52,167, 173);
+    team2Base = ofColor(255,211, 91);
     
 //        ofColor team1Base = ofColor(255,0, 0);
 //        ofColor team2Base = ofColor(0,0, 255);
@@ -270,7 +274,11 @@ void EnvironmentThreeSystem::display(){
     impactEffect();
     // apply per-particle forces
     if(drawLines) {
-        ofSetColor(24, 124, 174);
+        
+        
+        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
+        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
+        ofSetColor(lineLerp, lineAlpha);
         ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
@@ -299,6 +307,8 @@ void EnvironmentThreeSystem::display(){
 }
 
 void EnvironmentThreeSystem::particleInteractions(){
+    
+
     for(int i = 0; i < particles.size(); i++) {
         E3Particle& cur = particles[i];
         // global force on other particles
@@ -316,9 +326,11 @@ void EnvironmentThreeSystem::particleInteractions(){
             
             
             if(cur.team != nei[j] -> team){
+                ofPushStyle();
                 ofSetColor(255);
                 ofDrawLine(cur.x, cur.y, nei[j] -> x, nei[j] -> y);
                 addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+                ofPopStyle();
             }
             
             if(cur.team == nei[j] -> team){
@@ -326,11 +338,19 @@ void EnvironmentThreeSystem::particleInteractions(){
             }
         }
         
+//OUTPUT CONDITION
+        //Send an output if the particles are clusered to a certain degree
+
         for(int j = 0; j < clusters.size(); j ++){
             if(cur.team == clusters[j] -> team){
-                clusterCount ++;
+                float d = ofDist(cur.x, cur.y, clusters[j] -> x, clusters[j] -> y);
+                if(d < 10){
+                    outputCondition ++;
+                }
             }
         }
+        
+//        cout<< clusterCount << endl;
         
         for(int j = 0; j < global.size(); j ++){
             if(glow){
@@ -357,7 +377,7 @@ void EnvironmentThreeSystem::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
-    if(clusterCount > 4) trigger = true;
+    if(outputCondition > outputThreshold) trigger = true;
     else(trigger = false);
     
     // if these conditions are met, do this once only!
@@ -382,35 +402,35 @@ void EnvironmentThreeSystem::outputConditions(){
     }
     
     // reset the cluster tally
-    clusterCount = 0;
+    outputCondition = 0;
     
 }
 
 
 void EnvironmentThreeSystem::impactEffect(){
     
-    ofPushStyle();
+//    ofPushStyle();
 
     
     impactTarget.x = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, origin.x - 300, origin.x + 300);
     impactTarget.y = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, origin.y - 300, origin.y + 300);
 
     
-    ofSetColor(255, 0, 0   );
+//    ofSetColor(255, 0, 0   );
     if(impact){
 //              ofDrawLine(0, 0, 100, 100);
 //        ofDrawCircle(impactTarget, 200);
         addRepulsionForce(impactTarget.x, impactTarget.y, 200, 3);
         drawLines = true;
+        lineAlpha += 2;
     }
     else{
         drawLines = false;
-        
+        lineAlpha -= 2;
     }
-    ofPopStyle();
-
-    
-    angle += 3;
+//    ofPopStyle();
+    if(lineAlpha > 255) lineAlpha = 255;
+    if (lineAlpha < 0) lineAlpha = 0;
 }
 
 

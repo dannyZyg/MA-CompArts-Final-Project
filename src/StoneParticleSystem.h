@@ -85,7 +85,20 @@ public:
     
     void originSystem(string originSystem_);
     void newColours(string originSystem_);
-
+    bool env1, env2, env3, sens;
+    
+    int env1Display, env2Display, env3Display, sensorDisplay;
+    int environmentDivision;
+    
+    
+    
+    ofColor env1Col;
+    ofColor env2Col;
+    ofColor env3Col;
+    ofColor sensorCol;
+    
+    
+    
     
 };
 

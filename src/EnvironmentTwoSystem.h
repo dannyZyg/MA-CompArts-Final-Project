@@ -72,6 +72,7 @@ public:
     //    float timeStep;
     float particleNeighborhood, particleRepulsion;
     float centerAttraction;
+    float particleAttraction;
     float padding;
     bool isMousePressed, slowMotion;
     bool drawLines;
@@ -100,12 +101,15 @@ public:
         const static float sharpness = 1;
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
-    
     bool impact;
     bool sequenceActive;
 //    bool newRules;
-    
+    bool systemOutput;
+    Timer glowTimer;
+    bool glow;
     bool generateRules;
+    
+    bool randomVals;
     
     void newRules(int option);
     void presetSelector(string preset);
@@ -115,5 +119,5 @@ public:
     void impactEffect();
     
     float lineAlpha;
-    
+    bool pingFromWalls;
 };

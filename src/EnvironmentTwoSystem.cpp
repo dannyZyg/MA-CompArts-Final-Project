@@ -5,6 +5,7 @@ EnvironmentTwoSystem::EnvironmentTwoSystem(){
     particleNeighborhood = 32;
     particleRepulsion = 0.5;
     centerAttraction = 0;
+    particleAttraction = 0;
     drawLines = true;
     cellWallsActive = true;
     lineAlpha = 0;
@@ -34,6 +35,10 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         particles.push_back(particle);
         setupColours();
     }
+    
+    glowTimer.setup();
+    glow = false;
+    
 }
 
 
@@ -146,6 +151,11 @@ void EnvironmentTwoSystem::setupForces() {
     }
 }
 
+
+void EnvironmentTwoSystem::add(E2Particle particle) {
+    particles.push_back(particle);
+}
+
 void EnvironmentTwoSystem::addRepulsionForce(const E2Particle& particle, float radius, float scale) {
     addRepulsionForce(particle.x, particle.y, radius, scale);
 }
@@ -248,7 +258,7 @@ void EnvironmentTwoSystem::update() {
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
         particles[i].receiveCells(cells);
-        particles[i].returnFromWall();
+        if(pingFromWalls) particles[i].returnFromWall();
     }
 }
 
@@ -261,20 +271,42 @@ void EnvironmentTwoSystem::draw() {
 }
 
 void EnvironmentTwoSystem::display(){
+    float test = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, particles.size());
 
+//    presetSelector("p3");
+    
+    
     // do this once per frame
     setupForces();
     impactEffect();
     
-//    if(newRules){
-//        //change rules
-//        
-//        particleRepulsion = ofRandom(0.1, 1.5);
-//
-//        cout<< particleRepulsion <<endl;
-//        
-//        newRules = false;
-//    }
+    if(randomVals){
+        //change rules
+        
+        particleRepulsion = ofRandom(0.1, 1.);
+        particleAttraction = ofRandom(0.1, 0.5);
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = ofRandom(3);
+            particles[i].vel.x = ofRandom(-2, 2);
+            particles[i].vel.y = ofRandom(-2, 2);
+
+        }
+        int r1 = ofRandom(2);
+        int r2 = ofRandom(2);
+        if(r1 == 1) pingFromWalls = true;
+        if(r1 == 0) pingFromWalls = false;
+        if(r2 == 1) cellWallsActive = true;
+        if(r2 == 0) cellWallsActive = false;
+
+        cout<< particleRepulsion <<endl;
+        cout<< "ping " << pingFromWalls << endl;
+        cout <<"cellWallsActive " << cellWallsActive <<endl;
+        
+        randomVals = false;
+    }
+    
+    
+    
     
     ofPushMatrix();
     
@@ -296,7 +328,7 @@ void EnvironmentTwoSystem::display(){
         E2Particle& cur = particles[i];
         // global force on other particles
         
-
+        addAttractionForce(cur, particleNeighborhood, particleAttraction);
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
         //        cur.bounceOffWalls();
@@ -319,13 +351,13 @@ void EnvironmentTwoSystem::display(){
     }
     
     // single-pass global forces
-    addAttractionForce(origin.x, origin.y, 200, centerAttraction);
     if(isMousePressed) {
         addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
     }
     update();
     
     // draw all the particles
+    
         for(int i = 0; i < particles.size(); i++) {
             particles[i].displayParticle();
         }
@@ -428,6 +460,7 @@ void EnvironmentTwoSystem::presetSelector(string preset){
         particleRepulsion = 0.5;
         centerAttraction = 0;
         cellWallsActive = true;
+        pingFromWalls = true;
         
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 0.4;
@@ -440,11 +473,11 @@ void EnvironmentTwoSystem::presetSelector(string preset){
     }
     
     if(preset == "p2"){
-        
+        pingFromWalls = true;
         cellWallsActive = false;
         particleRepulsion = 0.5;// 0.5;
         centerAttraction = 0;
-
+        
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 5;
         }
@@ -454,14 +487,16 @@ void EnvironmentTwoSystem::presetSelector(string preset){
         
         cellWallsActive = false;
         particleRepulsion = 0.4;
-        
+        particleAttraction = 0.3;
+        pingFromWalls = false;
         
 
 //        cout<<particles[0].xv<<endl;
         
         for(int i = 0; i < particles.size(); i ++){
-            particles[i].maxSpeed = 3;
-            
+            particles[i].maxSpeed = 10;
+//            particles[i].vel.x = 3;
+//            particles[i].vel.y = 3;
 //            particles[i].vel.x = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25), -1, 1, -2, 2);
 //            particles[i].vel.y = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25 + 500), -1, 1, -2, 2);
 //            particles[i].xv = ofRandom(-2, 2);

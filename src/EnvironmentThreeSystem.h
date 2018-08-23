@@ -48,12 +48,13 @@ public:
     
     ofxColorPalette team1Col;
     ofxColorPalette team2Col;
+    ofColor team1Base, team2Base;
     
     ofxColorPalette::ColorChannel mode;
     float brightness;
     float saturation;
 
-    
+    float lineAlpha;
     
     int kParticles;
 //    float timeStep;
@@ -89,7 +90,8 @@ public:
     void particleInteractions();
     void outputConditions();
     void impactEffect();
-    
+    int outputCondition;
+    int outputThreshold;
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;

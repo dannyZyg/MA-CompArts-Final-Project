@@ -175,7 +175,7 @@ void ofApp::keyPressed(int key){
  
     if(key == 'B') environmentTwo.blur1 = !environmentTwo.blur1;
     if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
-    if(key == 'A') environmentTwo.active = !environmentTwo.active;
+    if(key == 'A') environmentThree.active = !environmentThree.active;
 
     
 }
@@ -190,6 +190,7 @@ void ofApp::mousePressed(int x, int y, int button){
     envTest = !envTest;
     env = !env;
     cout<< "env = " << envTest << endl;
+    environmentTwo.enviro.randomVals = true;
 
 }
 
@@ -298,9 +299,11 @@ void ofApp::sequenceComplete(Timer& t, int timing){
         //check which timer/environment is being addressed and turn of the relative sequenceActive state
         if(t.timer == env1Timer.timer){
             environmentOne.enviro.sequenceActive = false;
+            environmentOne.enviro.systemOutput = false;
         }
         if(t.timer == env2Timer.timer){
             environmentTwo.enviro.sequenceActive = false;
+            environmentTwo.enviro.systemOutput = false;
         }
         if(t.timer == env3Timer.timer){
             environmentThree.enviro.systemOutput = false;
@@ -363,9 +366,9 @@ void ofApp::triggerEnviro2(Timer& t, int timing){
     if (t.timer > timeSpacing * timing + t.activeStoneTime){
         environmentTwo.active = false;
     }
-//    if (t.timer == timeSpacing * timing){
-//        environmentTwo.enviro.newRules = true;
-//    }
+    if (t.timer == timeSpacing * timing){
+        environmentTwo.enviro.randomVals = true;
+    }
 }
 
 void ofApp::triggerEnviro3(Timer& t, int timing){

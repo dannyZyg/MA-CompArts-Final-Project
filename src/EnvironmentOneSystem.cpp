@@ -4,14 +4,16 @@ EnvironmentOneSystem::EnvironmentOneSystem(){
     kParticles = 80;
     
     particleNeighborhood = 80;
-    particleRepulsion = 0.8;// 0.5;
+    particleRepulsion = 0.9;// 0.5;
     centerAttraction = 0.1; //0.6;
     
     drawLines = false;
     
     impact = false;
     maxRad = 20;
-        
+    
+    outputThreshold = 10;
+    outputCondition = 0;
 }
 
 void EnvironmentOneSystem::setup(int width, int height, int k) {
@@ -30,7 +32,7 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
         E1Particle particle = E1Particle();
-        
+
         particles.push_back(particle);
         setupColours();
     }
@@ -39,16 +41,29 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
 
 void EnvironmentOneSystem::setupColours(){
     ofColor team1Base = ofColor(27,125, 204);
+    ofColor team2Base = ofColor(0,125, 90);
     
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
+    
+    team2Col.setBaseColor(team2Base);
+    team2Col.generateAnalogous();
 
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
+        
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
+        
+        if(particles[i].team == 0){
+            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
+        }
+        if(particles[i].team == 1){
+            particles[i].col = ofColor(team2Col[ofRandom(team1Col.size())], particles[i].life);
+        }
     }
 }
+
+
 
 E1Particle& EnvironmentOneSystem::operator[](unsigned i) {
 	return particles[i];
@@ -224,7 +239,7 @@ void EnvironmentOneSystem::update() {
 	}
     
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
-    particleRepulsion = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
+//    particleRepulsion = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
 
 }
 
@@ -281,7 +296,7 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     region = cur_.r + maxRad;
     
     maxRad = particles[0].maxSize;
-    vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region);
+    vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region + 10);
     
     //alter size
     
@@ -289,7 +304,7 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     nearby = closeNei.size();
     ofPushStyle();
     ofFill();
-    ofSetColor(50, cur_.membraneLife);
+    ofSetColor(100, cur_.membraneLife);
     if(nearby > 1){
             ofDrawCircle(cur_.x, cur_.y, region);
             cur_.alone = false;
@@ -308,13 +323,13 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
 //            addRepulsionForce(cur_, cur_.r, 1);
             ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
         }
-        if(nearby > 1) {
+        if(!cur_.alone) {
             cur_.r -= cur_.membraneStep;
-            cur_.membraneLife --;
-        }
-        else if (nearby <= 1) {
-            cur_.r += cur_.membraneStep;
             cur_.membraneLife ++;
+        }
+        else if (cur_.alone) {
+            cur_.r += cur_.membraneStep;
+            cur_.membraneLife -= 2;
         }
     }
 }
@@ -329,7 +344,7 @@ void EnvironmentOneSystem::outputConditions(){
     glowTimer.run();
     
     
-    if(testVal > 4) trigger = true;
+    if(outputCondition > outputThreshold) trigger = true;
     else(trigger = false);
     
     // if these conditions are met, do this once only!
@@ -353,6 +368,8 @@ void EnvironmentOneSystem::outputConditions(){
         glow = false;
     }
     
+
+    
 }
 
 
@@ -370,9 +387,20 @@ void EnvironmentOneSystem::impactEffect(){
 
 
 void EnvironmentOneSystem::particleInteractions(){
+    
+    
+
+    
+    //Send an output signal if a certain number of particles reach a particular size
+    outputCondition = 0;
     for(int i = 0; i < particles.size(); i++) {
         
+        
+        
         E1Particle& cur = particles[i];
+        
+        vector<E1Particle*> membranes = getNeighbors(cur.x, cur.y, cur.membraneRad + maxRad);
+        
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
@@ -384,8 +412,24 @@ void EnvironmentOneSystem::particleInteractions(){
         cur.addDampingForce();
         
         alterSize(cur);
+        
+        if(cur.r > maxRad - 5) outputCondition ++;
+        
+        
+        for(int j = 0; j < membranes.size(); j ++){
+            if(cur.team == !membranes[j] -> team){
+                if(cur.membraneLife > 100 && membranes[j] -> membraneLife > 100){
+//                    cur.col = ofColor(255, 0, 0);
+                }
+            }
+            
+            
+        }
+        
+        
     }
-    
+
+
 }
 
 

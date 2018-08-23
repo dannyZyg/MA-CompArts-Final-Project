@@ -21,6 +21,16 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     showParticleSpacing = 5;
     
     numToDisplay = 0;
+    env1Display = 0;
+    env2Display = 0;
+    env3Display = 0;
+    sensorDisplay = 0;
+    
+    env1 = false;
+    env2 = false;
+    env3 = false;
+    sens = false;
+    
     kParticles = 50;
     for(int i = 0; i < kParticles; i++) {
 
@@ -37,26 +47,43 @@ void StoneParticleSystem::setup(int width, int height, int k) {
         particles[i].externalRad = externalRad;
     }
     
-    setupColours(baseColour);
+    
     
     padding = 128;
     timeStep = 100;
     isMousePressed = false;
     slowMotion = true;
     particleNeighborhood = 32;
-    particleRepulsion = 0.7;
+    particleRepulsion = 0.2;
     centerAttraction = 0;
     drawBalls = true;
     
     active = false;
     timer = 0;
     timeIntervalPassed = 0;
-    drawLines = true;
+    drawLines = false;
+    environmentDivision = 30;
+    
+    
+
+    env1Col = ofColor(255, 0, 0);
+    env2Col = ofColor(0, 255, 0);
+    env3Col = ofColor(255, 0, 255);
+    sensorCol = ofColor(255,211, 91);
+
+    setupColours(baseColour);
     
 }
 
 
 void StoneParticleSystem::setupColours(ofColor base_){
+    
+    ofColor c;
+    
+    env1Col = ofColor(255, 0, 0);
+    env2Col = ofColor(0, 255, 0);
+    env3Col = ofColor(255, 0, 255);
+    sensorCol = ofColor(255,211, 91);
     
     
     team1Col.setBaseColor(base_);
@@ -64,6 +91,12 @@ void StoneParticleSystem::setupColours(ofColor base_){
     
     for(int i = 0; i < particles.size(); i++){
         particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+        if(i >= 0 && i < 30) c = env1Col;
+        if(i > 30 && i < 60) c = env2Col;
+        if(i > 60 && i < 90) c = env3Col;
+        if(i > 90) c = sensorCol;
+
+        particles[i].col = c;
     }
     
 }
@@ -300,7 +333,7 @@ int StoneParticleSystem::getHeight() const {
 void StoneParticleSystem::display(){
     
 
-//    fadeParticles();
+//
     
     ofPushStyle();
     ofPushMatrix();
@@ -309,16 +342,29 @@ void StoneParticleSystem::display(){
     // do this once per frame
     setupForces();
     
-    if(sensor && active) drawLines = true;
-    else drawLines = false;
+//    if(sensor && active) drawLines = true;
+//    else drawLines = false;
     
     // apply per-particle forces
     if(drawLines) {
+        ofPushStyle();
         ofSetColor(24, 124, 174);
         ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
+        ofPopStyle();
     }
+    
+//    ofPushStyle();
+//    ofSetColor(255, 0, 0);
+//    setupColours(baseColour);
+    
+    fadeParticles();
+//    fadeParticles(1, env2);
+    
+//    ofPopStyle();
+    
     for(int i = 0; i < particles.size(); i++) {
+//        particles[i].displayParticle();
         StoneParticle& cur = particles[i];
         // global force on other particles
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
@@ -344,8 +390,10 @@ void StoneParticleSystem::display(){
     ofPopMatrix();
     
 
+//    cout<<particles.size()<<endl;
+    timer ++;
     
-    
+    if(timer > 50000)timer = 0;
     
 
 }
@@ -374,12 +422,12 @@ void StoneParticleSystem::fadeParticles(){
     }
     
     if(!active){
-          if(timer % showParticleSpacing == 0){
-              numToDisplay --;
-              if(numToDisplay <= 0){
-                  numToDisplay = 0;
-              }
-          }
+        if(timer % showParticleSpacing == 0){
+            numToDisplay --;
+            if(numToDisplay <= 0){
+                numToDisplay = 0;
+            }
+        }
     }
     
     timer ++;
@@ -390,27 +438,38 @@ void StoneParticleSystem::fadeParticles(){
 
 // Make changes based on which system sent the signal
 void StoneParticleSystem::originSystem(string originSystem_){
-    newColours(originSystem_);
+//    newColours(originSystem_);
+    
+    
+    
     
 }
 
+
+
+
 void StoneParticleSystem::newColours(string originSystem_){
     
-    if(originSystem_ == "Sensor"){
-        ofColor c = ofColor(255, 0, 0);
-        setupColours(c);
-    }
-    if(originSystem_ == "Environment One"){
-        ofColor c = ofColor(0, 255, 0);
-        setupColours(c);
-    }
-    if(originSystem_ == "Environment Two"){
-        ofColor c = ofColor(255, 0, 255);
-        setupColours(c);
-    }
-    if(originSystem_ == "Environment Three"){
-        ofColor c = ofColor(255,211, 91);
-        setupColours(c);
-    }
-    
+//    if(originSystem_ == "Sensor"){
+//        sens = true;
+////        setupColours(env1Col);
+//    }
+//    if(originSystem_ == "Environment One"){
+//        env1 = true;
+////        setupColours(env2Col);
+//    }
+//    if(originSystem_ == "Environment Two"){
+//        env2 = true;
+////        setupColours(env3Col);
+//    }
+//    if(originSystem_ == "Environment Three"){
+//        env3 = true;
+////        setupColours(sensorCol);
+//    }
+//    else{
+//        sens = false;
+//        env1 = false;
+//        env2 = false;
+//        env3 = false;
+//    }
 }

@@ -117,6 +117,7 @@ class E1System : public ParticleSystem {
 public:
     E1System();
     vector<E1Particle> particles;
+    void setupColours();
     void alterSize(E1Particle& cur_);
     void particleInteractions();
     void outputConditions();

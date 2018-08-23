@@ -51,6 +51,36 @@ void ParticleSystem::setup(int width, int height, int k) {
     setupColours();
 }
 
+
+void ParticleSystem::setupColours(){
+    
+    
+}
+
+void ParticleSystem::particleInteractions(){
+    
+}
+
+void ParticleSystem::outputConditions(){
+    
+}
+void ParticleSystem::impactEffect(){
+    
+}
+
+void E1System::setupColours(){
+    ofColor team1Base = ofColor(27,125, 204);
+    
+    team1Col.setBaseColor(team1Base);
+    team1Col.generateAnalogous();
+    
+    for(int i = 0; i < particles.size(); i++){
+        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
+        particles[i].origin = origin;
+        particles[i].externalRad = externalRad;
+    }
+}
+
 Particle& ParticleSystem::operator[](unsigned i) {
 	return particles[i];
 }
@@ -278,55 +308,48 @@ void ParticleSystem::display(){
 
 
 
-
-void StoneSystem::setupColours(){
+void E1System::alterSize(E1Particle& cur_){
     
+    int nearby;
+    region = cur_.r + maxRad;
     
-    team1Col.setBaseColor(baseColour);
-    team1Col.generateAnalogous();
+    maxRad = particles[0].maxSize;
+    vector<Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region);
     
-    for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-        particles[i].origin = origin;
-        particles[i].externalRad = externalRad;
+    //alter size
+    
+    //test
+    nearby = closeNei.size();
+    ofPushStyle();
+    ofFill();
+    ofSetColor(50, cur_.membraneLife);
+    if(nearby > 1){
+        ofDrawCircle(cur_.x, cur_.y, region);
+        cur_.alone = false;
+        //        addAttractionForce(cur_, region, 0.2);
     }
+    else(cur_.alone = true);
     
-}
-
-void StoneSystem::fadeParticles(){
-    
-//    for(int i = 0; i < numToDisplay; i++) {
-//        particles[i].displayParticle();
-//    }
-//
-//    if(active){
-//        if(timer % showParticleSpacing == 0){
-//            numToDisplay ++;
-//            if(numToDisplay >= kParticles){
-//                numToDisplay = kParticles;
-//            }
-//        }
-//    }
-//
-//    if(!active){
-//        if(timer % showParticleSpacing == 0){
-//            numToDisplay --;
-//            if(numToDisplay <= 0){
-//                numToDisplay = 0;
-//            }
-//        }
-//    }
-//
-//    timer ++;
-//
-//    if(timer > 50000)timer = 0;
-    
-}
-
-
-void E1System::alterSize(E1Particle& cur){
+    ofPopStyle();
     
     
+    for(int j = 0; j < closeNei.size(); j ++){
+        float dist = ofDist(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+        float overlap = cur_.r + closeNei[j] -> r;
+        
+        if(overlap < dist){
+            //            addRepulsionForce(cur_, cur_.r, 1);
+            ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+        }
+        if(nearby > 1) {
+            cur_.r -= cur_.membraneStep;
+            cur_.membraneLife --;
+        }
+        else if (nearby <= 1) {
+            cur_.r += cur_.membraneStep;
+            cur_.membraneLife ++;
+        }
+    }
 }
 
 
@@ -369,182 +392,33 @@ void E1System::outputConditions(){
 void E1System::impactEffect(){
     
     if(impact){
+        drawLines = true;
         addRepulsionForce(origin.x, origin.y, 200, 3);
+    }
+    else{
+        drawLines = false;
     }
     
 }
 
 
 void E1System::particleInteractions(){
-//    for(int i = 0; i < particles.size(); i++) {
-//        
-//        E1Particle& cur = particles[i];
-//        // global force on other particles
-//        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-//        // forces on this particle
-//        addAttractionForce(cur, particleNeighborhood, 0.5);
-//        
-//        particles[i].limitSize();
-//        particles[i].limitMembraneLife();
-//        cur.bounceOffWalls(true);
-//        cur.addDampingForce();
-//        
-//        int nearby;
-//        region = cur.r + maxRad;
-//        
-//        maxRad = 40;
-//        
-//        vector<E1Particle*> closeNei = getNeighbors(cur.x, cur.y, region);
-//        
-//        //alter size
-//        
-//        //test
-//        nearby = closeNei.size();
-//        ofPushStyle();
-//        ofFill();
-//        ofSetColor(50, cur.membraneLife);
-//        if(nearby > 1){
-//            ofDrawCircle(cur.x, cur.y, region);
-//            cur.alone = false;
-//            //        addAttractionForce(cur, region, 0.2);
-//        }
-//        else(cur.alone = true);
-//        
-//        ofPopStyle();
-//        
-//        
-//        for(int j = 0; j < closeNei.size(); j ++){
-//            float dist = ofDist(cur.x, cur.y, closeNei[j] -> x, closeNei[j] -> y);
-//            float overlap = cur.r + closeNei[j] -> r;
-//            
-//            if(overlap < dist){
-//                //            addRepulsionForce(cur, cur.r, 1);
-//                ofDrawLine(cur.x, cur.y, closeNei[j] -> x, closeNei[j] -> y);
-//            }
-//            if(nearby > 1) {
-//                cur.r -= cur.membraneStep;
-//                cur.membraneLife --;
-//            }
-//            else if (nearby <= 1) {
-//                cur.r += cur.membraneStep;
-//                cur.membraneLife ++;
-//            }
-//        }
-//    }
-//    
-}
-
-
-
-
-void E2System::receiveCells(vector <float> cells_){
-    cells = cells_;
-}
-
-void E2System::u(){
-//    updateColours();
-//    particles[i].receiveCells(cells);
-    
-}
-
-void E2System::behaviourState(){
-    
     for(int i = 0; i < particles.size(); i++) {
-        E2Particle& cur = particles[i];
-
-        if(state){
-            allocateCellState(cur);
-            cellWallRebound(cur);
-        }
-        if(!state){
-            cur.bounceOffWalls(true);
-            ofSetColor(255, 0, 0);
-            ofDrawRectangle(255,255, 100, 100);
-        }
-    }
-    cout<< "state = " <<state << endl;
-}
-
-
-void E2System::cellWallRebound(E2Particle& particle){
-    
-    // if statements telling the particles to stay within their allocated cell walls
-    
-    if(particle.cellState == 0){
-        particle.bounceOffOuterCell(cells[1]);
-    }
-    
-    else if(particle.cellState == 1){
-        particle.bounceOffInnerCell(cells[1]);
-        particle.bounceOffOuterCell(cells[2]);
-    }
-    else if(particle.cellState == 2){
-        particle.bounceOffInnerCell(cells[2]);
-        particle.bounceOffWalls(true);
-    }
-    
-}
-
-void E2System::allocateCellState(E2Particle& particle){
-    
-    float d = ofDist(particle.x, particle.y, origin.x, origin.y);
-    if(d > 0 && d < cells[1]){
-        particle.cellState = 0;
-    }
-    else if(d > cells[1] && d < cells[2]){
-        particle.cellState = 1;
-
-    }
-    else if(d > cells[2] && d < externalRad){
-        particle.cellState = 2;
-
         
+        E1Particle& cur = particles[i];
+        // global force on other particles
+        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+        // forces on this particle
+        addAttractionForce(cur, particleNeighborhood, 0.5);
+        
+        particles[i].limitSize();
+        particles[i].limitMembraneLife();
+        cur.bounceOffWalls(true);
+        cur.addDampingForce();
+        
+        alterSize(cur);
     }
-}
-
-void E2System::setupColours(){
-    ofColor cell1Base = ofColor(145,49, 191);
-    cell1Col.setBaseColor(cell1Base);
-    cell1Col.generateAnalogous();
     
-    ofColor cell2Base = ofColor(0,49, 220);
-    cell2Col.setBaseColor(cell2Base);
-    cell2Col.generateAnalogous();
-    
-    ofColor cell3Base = ofColor(255,49, 191);
-    cell3Col.setBaseColor(cell3Base);
-    cell3Col.generateAnalogous();
-    
-    
-    for(int i = 0; i < particles.size(); i++){
-        
-        particles[i].colIndex = ofRandom(cell1Col.size());
-        
-        particles[i].col = ofColor(cell1Col[ofRandom(cell1Col.size())]);
-        particles[i].origin = origin;
-        particles[i].externalRad = externalRad;
-    }
-}
-
-void E2System::updateColours(){
-    for(int i = 0; i < particles.size(); i ++){
-        
-        float d = ofDist(particles[i].x, particles[i].y, origin.x, origin.y);
-        
-        if(d > 0 && d < cells[1]){
-            particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
-        }
-        else if(d > cells[1] && d < cells[2]){
-            particles[i].col = ofColor(cell2Col[particles[i].colIndex]);
-        }
-        else if(d > cells[2] && d < externalRad){
-            particles[i].col = ofColor(cell3Col[particles[i].colIndex]);
-        }
-        
-        else{
-            //            particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
-        }
-    }
 }
 
 

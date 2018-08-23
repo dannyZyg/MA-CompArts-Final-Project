@@ -43,6 +43,8 @@ public:
     ofVec2f vel;
     
     bool rebound;
+    
+    float blurOffset;
 
 };
 
@@ -57,7 +59,7 @@ public:
     
     
     float membraneRad;
-    
+    int team;
     bool alone;
     float membraneLife;
     float membraneStep;

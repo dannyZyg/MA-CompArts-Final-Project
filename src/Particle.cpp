@@ -12,12 +12,12 @@ Particle::Particle(){
     
     vel = ofVec2f(0,0);
     
-    
     damping = .01;
     randomOffset = ofRandom(-5, 10);
     mass = 1;
     acceleration = ofVec2f(0,0);
-    maxSpeed = 1;
+    maxSpeed = 5;
+    blurOffset = 5;
     
 }
 
@@ -29,8 +29,12 @@ E1Particle::E1Particle(){
     maxSize = 20;
     life = 255;
     
+    team = ofRandom(2);
     membraneLife = 20;
     membraneStep = 0.1;
+    
+    vel = ofVec2f(ofRandom(-5, 5), ofRandom(-5, 5));
+    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
 }
 
 E2Particle::E2Particle(){
@@ -82,6 +86,8 @@ void Particle::updatePosition() {
     //    vel.x += xf;
     //    vel.y += yf;
     //
+    
+    
     x += vel.x;
     y += vel.y;
     
@@ -90,7 +96,7 @@ void Particle::updatePosition() {
     friction.x = xv;
     friction.y = yv;
     friction.normalize();
-    cF = 0.9;
+    cF = 0.1;
     friction *= cF;
     applyForce(friction);
     
@@ -98,6 +104,10 @@ void Particle::updatePosition() {
     
 //    xf = 0;
 //    yf = 0;
+    
+    if( xv > maxSpeed) xv = maxSpeed;
+    if( yv > maxSpeed) yv = maxSpeed;
+
     
 }
 
@@ -111,7 +121,7 @@ void Particle::bounceOffWalls(bool rebound_) {
     rebound = rebound_;
     
     int d = ofDist(x, y, origin.x, origin.y);
-    if ((d > externalRad - r )){
+    if ((d > externalRad - r - blurOffset )){
         
         ofVec2f out = ofVec2f(x, y);
         ofVec2f offset = ofVec2f(ofRandom( -50, 50), ofRandom(-50, 50));
@@ -141,9 +151,12 @@ void Particle::bounceOffWalls(bool rebound_) {
 //        vel.y *= -1;
         
         collision = true;
-        if(collision == true) addDampingForce();
-        
-        
+//        if(collision == true){
+//            xv *= damping;
+//            yv *= damping;
+//
+//
+//        }
     }
 }
 
@@ -191,41 +204,6 @@ void E1Particle::limitMembraneLife(){
     if(membraneLife > 200) membraneLife = 200;
     
 }
-
-//void E1Particle::bounceOffWalls() {
-//    bool collision = false;
-//
-//
-//    float offset;
-//
-//    if(alone) offset = r;
-//    else if(!alone) offset = membraneRad;
-//
-//    int d = ofDist(x, y, origin.x, origin.y);
-//    if( (d > externalRad - offset )){  //|| (d > 220) || (d == 200)) {
-//
-//        ofVec2f out = ofVec2f(x, y);
-//        ofVec2f ret = origin - out;
-//         ret = ret.normalize();
-//
-//        x += ret.x;
-//        y += ret.y;
-//
-//
-//        xv *= -1;
-//        yv *= -1;
-//
-//        vel.x *= -1;
-//        vel.y *= -1;
-//
-//        //        vel.x *= -1;
-//        //        vel.y *= -1;
-//
-//        collision = true;
-//    }
-//}
-
-
 
 
 // Function that reverses velocity when hitting an outer cell wall
@@ -299,7 +277,7 @@ void E2Particle::returnFromWall(){
     
     
     if(stuckOnWall){
-        ofSetColor(255);
+//        ofSetColor(255);
 //                ofDrawLine(origin.x, origin.y, x, y);
         //        ofPoint cent = ofPoint(origin)
         //        applyForce(- origin);
@@ -308,37 +286,6 @@ void E2Particle::returnFromWall(){
         
     }
 }
-
-
-
-
-
-//void StoneParticle::bounceOffWalls() {
-//    bool collision = false;
-//    
-//    ofVec2f cent = ofVec2f(328, 328);
-//    int d = ofDist(x, y, origin.x, origin.y);
-//    if( (d > externalRad - r )){  //|| (d > 220) || (d == 200)) {
-//        
-//        ofVec2f out = ofVec2f(x, y);
-//        ofVec2f ret = origin - out;
-//        //        ret = ret.normalize();
-//        
-//        //        ret *= 0;
-//        
-//        addDampingForce();
-//        
-//        x += ret.x;
-//        y += ret.y;
-//        
-//        
-//        xv *= -1;
-//        yv *= -1;
-//        
-//        
-//        collision = true;
-//    }
-//}
 
 
 
