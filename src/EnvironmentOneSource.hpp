@@ -52,14 +52,12 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     float startTime;
     bool active;
     
-    string s1, s2, s3, s4;
-    
-//    float setScale;
-//    float setRotation;
-//    float blurOffset;
-//    float blurPasses;
-    bool test;
     float setScale;
+    float setRotation;
+    float blurOffset;
+    float blurPasses;
+    
+    bool test;
     
     void newRules();
 };

@@ -2,6 +2,15 @@
 
 EnvironmentOneSystem::EnvironmentOneSystem(){
     kParticles = 80;
+    
+    particleNeighborhood = 80;
+    particleRepulsion = 0.8;// 0.5;
+    centerAttraction = 0.1; //0.6;
+    
+    drawLines = false;
+    
+    impact = false;
+    maxRad = 20;
         
 }
 
@@ -15,12 +24,6 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
 	bins.resize(xBins * yBins);
     
     
-//    mode = ofxColorPalette::BRIGHTNESS;
-//    brightness = 200;
-//    saturation = 200;
-    
-    
-    
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -31,16 +34,6 @@ void EnvironmentOneSystem::setup(int width, int height, int k) {
         particles.push_back(particle);
         setupColours();
     }
-    
-    particleNeighborhood = 80;
-    particleRepulsion = 0.8;// 0.5;
-    centerAttraction = 0.1; //0.6;
-    
-    drawBalls = true;
-    
-    impact = false;
-    maxRad = 20;
-    
 }
 
 
@@ -50,24 +43,11 @@ void EnvironmentOneSystem::setupColours(){
     team1Col.setBaseColor(team1Base);
     team1Col.generateAnalogous();
 
-    
     for(int i = 0; i < particles.size(); i++){
         particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
-    
-}
-
-
-
-
-void EnvironmentOneSystem::add(E1Particle particle) {
-	particles.push_back(particle);
-}
-
-unsigned EnvironmentOneSystem::size() const {
-	return particles.size();
 }
 
 E1Particle& EnvironmentOneSystem::operator[](unsigned i) {
@@ -258,112 +238,38 @@ void EnvironmentOneSystem::draw() {
     
 }
 
-int EnvironmentOneSystem::getWidth() const {
-	return width;
-}
-
-int EnvironmentOneSystem::getHeight() const {
-	return height;
-}
-
-
 void EnvironmentOneSystem::display(){
 
-    
-//    setTimeStep(timeStep);
     // do this once per frame
     setupForces();
-    
-    
-    if(impact){
-        addRepulsionForce(origin.x, origin.y, 200, 3);
-    }
-    
-    
-    ofPushMatrix();
+    impactEffect();
+//    ofPushMatrix();
     
     // apply per-particle forces
-    if(!drawBalls) {
+    if(drawLines) {
         ofSetColor(24, 124, 174);
-        ofSetLineWidth(0.1);
+        ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     
-    
+    particleInteractions();
 
     
-    for(int i = 0; i < particles.size(); i++) {
-        E1Particle& cur = particles[i];
-        // global force on other particles
-        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        addAttractionForce(cur, particleNeighborhood, 0.5);
-        cur.bounceOffWalls(true);
-        cur.addDampingForce();
-        
-        alterSize(cur);
-        
-        ofFill();
-    }
-    if(!drawBalls) {
+    
+    if(drawLines) {
         glEnd();
     }
     
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
     update();
-    
-    
-    
-    
-    // draw all the particles
-//    if(drawBalls) {
-        for(int i = 0; i < particles.size(); i++) {
-            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            ofSetColor(0, 255, 0);
-            particles[i].displayParticle();
-            particles[i].limitSize();
-            particles[i].limitMembraneLife();
-        }
-//    }
-    
-//////// TRIGGER FOR OUTPUT////////////
-    float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
-    
-    // run the timer for the glow effect
-    glowTimer.run();
-    
-    
-    if(testVal > 4) trigger = true;
-    else(trigger = false);
-    
-    // if these conditions are met, do this once only!
-    
-    if(trigger && !systemOutput) {
-        systemOutput = true;
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(origin, 50);
-        glowTimer.reset();
-        glowTimer.endTime = 5000;
-        sequenceTrigger = true;
-    }
-    
-    // if the timer is active, glow
-    if(!glowTimer.reached){
-        glow = true;
-        
-    }
-    // if not, don't glow
-    if (glowTimer.reached){
-        glow = false;
-    }
-    
-    
-    
-    
-//    particleSystem.display();
-    ofPopMatrix();
 
+    for(int i = 0; i < particles.size(); i++) {
+        particles[i].displayParticle();
+
+    }
+
+    outputConditions();
     
 }
 
@@ -377,16 +283,11 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     maxRad = particles[0].maxSize;
     vector<E1Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region);
     
-    
     //alter size
-    
     
     //test
     nearby = closeNei.size();
-//    string nearbyNum = ofToString(nearby);
     ofPushStyle();
-//    ofSetColor(255);
-//    ofDrawBitmapString(nearbyNum, cur_.x, cur_.y);
     ofFill();
     ofSetColor(50, cur_.membraneLife);
     if(nearby > 1){
@@ -419,10 +320,73 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
 }
 
 
-
-void EnvironmentOneSystem::communicationCondition(){
+void EnvironmentOneSystem::outputConditions(){
     
+    //////// TRIGGER FOR OUTPUT////////////
+    float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
+    
+    // run the timer for the glow effect
+    glowTimer.run();
+    
+    
+    if(testVal > 4) trigger = true;
+    else(trigger = false);
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !systemOutput) {
+        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+    }
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
     
 }
+
+
+void EnvironmentOneSystem::impactEffect(){
+    
+    if(impact){
+        drawLines = true;
+        addRepulsionForce(origin.x, origin.y, 200, 3);
+    }
+    else{
+        drawLines = false;
+    }
+
+}
+
+
+void EnvironmentOneSystem::particleInteractions(){
+    for(int i = 0; i < particles.size(); i++) {
+        
+        E1Particle& cur = particles[i];
+        // global force on other particles
+        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+        // forces on this particle
+        addAttractionForce(cur, particleNeighborhood, 0.5);
+        
+        particles[i].limitSize();
+        particles[i].limitMembraneLife();
+        cur.bounceOffWalls(true);
+        cur.addDampingForce();
+        
+        alterSize(cur);
+    }
+    
+}
+
 
 

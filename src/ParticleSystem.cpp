@@ -3,9 +3,18 @@
 ParticleSystem::ParticleSystem(){
     kParticles = 300;
     particleNeighborhood = 32;
-    
     rebound = true;
     fade = false;
+}
+
+E1System::E1System(){
+    kParticles = 80;
+    particleNeighborhood = 80;
+    particleRepulsion = 0.8;// 0.5;
+    centerAttraction = 0.1; //0.6;
+    drawLines = false;
+    impact = false;
+    maxRad = 20;
 }
 
 StoneSystem::StoneSystem(){
@@ -39,19 +48,7 @@ void ParticleSystem::setup(int width, int height, int k) {
         particles.push_back(particle);
     }
     
-    particleRepulsion = 0.1;
-    centerAttraction = 0.3;
-    drawLines = true;
-    
-//    setupColours();
-}
-
-void ParticleSystem::add(Particle particle) {
-	particles.push_back(particle);
-}
-
-unsigned ParticleSystem::size() const {
-	return particles.size();
+    setupColours();
 }
 
 Particle& ParticleSystem::operator[](unsigned i) {
@@ -241,14 +238,6 @@ void ParticleSystem::draw() {
     
 }
 
-int ParticleSystem::getWidth() const {
-	return width;
-}
-
-int ParticleSystem::getHeight() const {
-	return height;
-}
-
 
 void ParticleSystem::display(){
 
@@ -256,7 +245,7 @@ void ParticleSystem::display(){
     ofPushStyle();
     ofPushMatrix();
     
-//    setTimeStep(timeStep);
+    impactEffect();
     // do this once per frame
     setupForces();
     
@@ -268,15 +257,10 @@ void ParticleSystem::display(){
         ofSetLineWidth(0.1);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
-    for(int i = 0; i < particles.size(); i++) {
-        Particle& cur = particles[i];
-        // global force on other particles
-        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        cur.bounceOffWalls(false);
-        cur.addDampingForce();
-        
-    }
+
+    
+    particleInteractions();
+    
     if(drawLines) {
         glEnd();
     }
@@ -286,7 +270,7 @@ void ParticleSystem::display(){
 
     update();
     
-    
+    outputConditions();
     
     ofPopStyle();
     ofPopMatrix();
@@ -338,6 +322,118 @@ void StoneSystem::fadeParticles(){
 //    if(timer > 50000)timer = 0;
     
 }
+
+
+void E1System::alterSize(E1Particle& cur){
+    
+    
+}
+
+
+void E1System::outputConditions(){
+    
+    //////// TRIGGER FOR OUTPUT////////////
+    float testVal = ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 20);
+    
+    // run the timer for the glow effect
+    glowTimer.run();
+    
+    
+    if(testVal > 4) trigger = true;
+    else(trigger = false);
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !systemOutput) {
+        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+    }
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+}
+
+
+void E1System::impactEffect(){
+    
+    if(impact){
+        addRepulsionForce(origin.x, origin.y, 200, 3);
+    }
+    
+}
+
+
+void E1System::particleInteractions(){
+//    for(int i = 0; i < particles.size(); i++) {
+//        
+//        E1Particle& cur = particles[i];
+//        // global force on other particles
+//        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+//        // forces on this particle
+//        addAttractionForce(cur, particleNeighborhood, 0.5);
+//        
+//        particles[i].limitSize();
+//        particles[i].limitMembraneLife();
+//        cur.bounceOffWalls(true);
+//        cur.addDampingForce();
+//        
+//        int nearby;
+//        region = cur.r + maxRad;
+//        
+//        maxRad = 40;
+//        
+//        vector<E1Particle*> closeNei = getNeighbors(cur.x, cur.y, region);
+//        
+//        //alter size
+//        
+//        //test
+//        nearby = closeNei.size();
+//        ofPushStyle();
+//        ofFill();
+//        ofSetColor(50, cur.membraneLife);
+//        if(nearby > 1){
+//            ofDrawCircle(cur.x, cur.y, region);
+//            cur.alone = false;
+//            //        addAttractionForce(cur, region, 0.2);
+//        }
+//        else(cur.alone = true);
+//        
+//        ofPopStyle();
+//        
+//        
+//        for(int j = 0; j < closeNei.size(); j ++){
+//            float dist = ofDist(cur.x, cur.y, closeNei[j] -> x, closeNei[j] -> y);
+//            float overlap = cur.r + closeNei[j] -> r;
+//            
+//            if(overlap < dist){
+//                //            addRepulsionForce(cur, cur.r, 1);
+//                ofDrawLine(cur.x, cur.y, closeNei[j] -> x, closeNei[j] -> y);
+//            }
+//            if(nearby > 1) {
+//                cur.r -= cur.membraneStep;
+//                cur.membraneLife --;
+//            }
+//            else if (nearby <= 1) {
+//                cur.r += cur.membraneStep;
+//                cur.membraneLife ++;
+//            }
+//        }
+//    }
+//    
+}
+
 
 
 

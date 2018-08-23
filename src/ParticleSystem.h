@@ -11,11 +11,13 @@
 
 class ParticleSystem {
 protected:
-	vector<Particle> particles;
-	vector< vector<Particle*> > bins;
-	int width, height, k, xBins, yBins, binSize;
+    vector<Particle> particles;
+    vector< vector<Particle*> > bins;
+    int width, height, k, xBins, yBins, binSize;
 
 public:
+    
+
 	ParticleSystem();
 
 	void setup(int width, int height, int k);
@@ -93,8 +95,36 @@ public:
     bool rebound;
     
     bool fade;
+    
+
+    bool trigger;
+    bool sequenceTrigger;
+    int destination;
+    int randomPath;
+    bool systemOutput;
+    bool glow;
+    Timer glowTimer;
+    
+    void particleInteractions();
+    void outputConditions();
+    void impactEffect();
+    
+    
 };
 
+class E1System : public ParticleSystem {
+    
+public:
+    E1System();
+    vector<E1Particle> particles;
+    void alterSize(E1Particle& cur_);
+    void particleInteractions();
+    void outputConditions();
+    void impactEffect();
+    float maxRad, minRad;
+    float region;
+//    void communicationCondition();
+};
 
 class E2System : public ParticleSystem {
     public:

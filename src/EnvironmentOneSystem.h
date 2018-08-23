@@ -61,7 +61,7 @@ public:
     float centerAttraction;
 //    float padding;
 //    bool isMousePressed, slowMotion;
-    bool drawBalls;
+    bool drawLines;
     
     void display();
     
@@ -96,9 +96,12 @@ public:
     void alterSize(E1Particle& cur_);
     float maxRad, minRad;
     float region;
-    
-    
     void communicationCondition();
+    
+    void particleInteractions();
+    void outputConditions();
+    void impactEffect();
+    
 };
 
 

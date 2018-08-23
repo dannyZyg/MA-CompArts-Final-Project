@@ -70,7 +70,7 @@ public:
     
     bool impact;
     float angle;
-    ofVec2f target;
+    ofVec2f impactTarget;
     
     
     bool systemOutput;

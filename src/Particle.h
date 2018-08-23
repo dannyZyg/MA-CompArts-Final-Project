@@ -67,6 +67,7 @@ public:
 };
 
 class E2Particle: public Particle {
+    
 public:
     E2Particle();
     void returnFromWall();

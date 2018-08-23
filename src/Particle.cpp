@@ -111,18 +111,28 @@ void Particle::bounceOffWalls(bool rebound_) {
     rebound = rebound_;
     
     int d = ofDist(x, y, origin.x, origin.y);
-    if( (d > externalRad - r )){
+    if ((d > externalRad - r )){
         
         ofVec2f out = ofVec2f(x, y);
+        ofVec2f offset = ofVec2f(ofRandom( -50, 50), ofRandom(-50, 50));
+        ofVec2f newOrigin = origin + offset;
         ofVec2f ret = origin - out;
+        
         if(rebound) ret = ret.normalize();
         
         x += ret.x;
         y += ret.y;
         
+//        x += ofRandom(-5, 5);
+//        y += ofRandom(-5, 5);
+
         
         xv *= -1;
         yv *= -1;
+        
+        
+        
+        
     
         vel.x *= -1;
         vel.y *= -1;
@@ -131,8 +141,9 @@ void Particle::bounceOffWalls(bool rebound_) {
 //        vel.y *= -1;
         
         collision = true;
+        if(collision == true) addDampingForce();
         
-//        addDampingForce();
+        
     }
 }
 

@@ -59,6 +59,9 @@ public:
     ofxColorPalette cell2Col;
     ofxColorPalette cell3Col;
     
+    
+    ofColor cell1Base, cell2Base, cell3Base;
+    
     ofxColorPalette::ColorChannel mode;
     float brightness;
     float saturation;
@@ -71,7 +74,7 @@ public:
     float centerAttraction;
     float padding;
     bool isMousePressed, slowMotion;
-    bool drawBalls;
+    bool drawLines;
     
     void display();
     
@@ -98,8 +101,6 @@ public:
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
     
-    
-    
     bool impact;
     bool sequenceActive;
 //    bool newRules;
@@ -108,4 +109,11 @@ public:
     
     void newRules(int option);
     void presetSelector(string preset);
+    
+    void particleInteractions();
+    void outputConditions();
+    void impactEffect();
+    
+    float lineAlpha;
+    
 };

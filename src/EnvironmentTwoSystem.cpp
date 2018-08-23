@@ -1,8 +1,13 @@
 #include "EnvironmentTwoSystem.h"
 
 EnvironmentTwoSystem::EnvironmentTwoSystem(){
-    
-    
+    kParticles = 300;
+    particleNeighborhood = 32;
+    particleRepulsion = 0.5;
+    centerAttraction = 0;
+    drawLines = true;
+    cellWallsActive = true;
+    lineAlpha = 0;
 }
 
 void EnvironmentTwoSystem::setup(int width, int height, int k) {
@@ -16,11 +21,9 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     
     
     mode = ofxColorPalette::BRIGHTNESS;
-    brightness = 200;
-    saturation = 200;
+//    brightness = 200;
+//    saturation = 200;
     
-    
-    kParticles = 300;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -29,50 +32,27 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
         E2Particle particle = E2Particle();
         
         particles.push_back(particle);
-        
-        
-        
-        
-        //        particleSystem.add(particle);
-//        setupColours();
-        
+        setupColours();
     }
-    
-    
-    
-    padding = 128;
-    timeStep = 100;
-    isMousePressed = false;
-    slowMotion = true;
-    particleNeighborhood = 32;
-    particleRepulsion = 0.5;
-    centerAttraction = 0;
-    drawBalls = true;
-    
-    //     b = BabyParticle();
-    
-    cellWallsActive = true;
 }
 
 
 void EnvironmentTwoSystem::setupColours(){
-    ofColor cell1Base = ofColor(145,49, 191);
+    cell1Base = ofColor(145,49, 191);
     cell1Col.setBaseColor(cell1Base);
     cell1Col.generateAnalogous();
     
-    ofColor cell2Base = ofColor(0,49, 220);
+    cell2Base = ofColor(0,49, 220);
     cell2Col.setBaseColor(cell2Base);
     cell2Col.generateAnalogous();
     
-    ofColor cell3Base = ofColor(255,49, 191);
+    cell3Base = ofColor(255,49, 191);
     cell3Col.setBaseColor(cell3Base);
     cell3Col.generateAnalogous();
-    
     
     for(int i = 0; i < particles.size(); i++){
         
         particles[i].colIndex = ofRandom(cell1Col.size());
-        
         particles[i].col = ofColor(cell1Col[ofRandom(cell1Col.size())]);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
@@ -80,7 +60,6 @@ void EnvironmentTwoSystem::setupColours(){
 }
 
 void EnvironmentTwoSystem::updateColours(){
-    
     
     for(int i = 0; i < particles.size(); i ++){
         
@@ -95,29 +74,7 @@ void EnvironmentTwoSystem::updateColours(){
         else if(d > cells[2] && d < externalRad){
             particles[i].col = ofColor(cell3Col[particles[i].colIndex]);
         }
-        
-        else{
-            //            particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
-        }
-        
-        
     }
-    
-    
-    
-}
-
-
-void EnvironmentTwoSystem::setTimeStep(float timeStep) {
-    this->timeStep = timeStep;
-}
-
-void EnvironmentTwoSystem::add(E2Particle particle) {
-    particles.push_back(particle);
-}
-
-unsigned EnvironmentTwoSystem::size() const {
-    return particles.size();
 }
 
 E2Particle& EnvironmentTwoSystem::operator[](unsigned i) {
@@ -291,10 +248,8 @@ void EnvironmentTwoSystem::update() {
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
         particles[i].receiveCells(cells);
+        particles[i].returnFromWall();
     }
-    //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.02 + 500), -1, 1, 0.2, 1);
-    //    centerAttraction = ofMap(sin(ofGetFrameNum() * 0.02), -1, 1, 0.2, 1);
-//    updateColours();
 }
 
 void EnvironmentTwoSystem::draw() {
@@ -303,35 +258,13 @@ void EnvironmentTwoSystem::draw() {
     for(int i = 0; i < n; i++)
         particles[i].draw();
     glEnd();
-    
-    
 }
-
-int EnvironmentTwoSystem::getWidth() const {
-    return width;
-}
-
-int EnvironmentTwoSystem::getHeight() const {
-    return height;
-}
-
 
 void EnvironmentTwoSystem::display(){
-    
-    newRules(1);
-//    if(ofGetElapsedTimeMillis() > 5000) newRules(2);
-    setTimeStep(timeStep);
+
     // do this once per frame
     setupForces();
-    
-    ofVec2f target;
-    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
-    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
-    
-    if(impact){
-        addRepulsionForce(target.x, target.y, 100, 0.5);
-    }
-    
+    impactEffect();
     
 //    if(newRules){
 //        //change rules
@@ -346,17 +279,24 @@ void EnvironmentTwoSystem::display(){
     ofPushMatrix();
     
     // apply per-particle forces
-    if(!drawBalls) {
-        ofSetColor(24, 124, 174);
-        ofSetLineWidth(0.1);
+    if(drawLines) {
+        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
+        ofColor lineCol = cell2Base.getLerped(cell1Base, lineLerp);
+        
+        
+        ofSetColor(lineCol, lineAlpha);
+        ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
+    
+    
+    particleInteractions();
+    
     for(int i = 0; i < particles.size(); i++) {
         E2Particle& cur = particles[i];
         // global force on other particles
         
-        
-        
+
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
         // forces on this particle
         //        cur.bounceOffWalls();
@@ -372,12 +312,9 @@ void EnvironmentTwoSystem::display(){
         if(!cellWallsActive){
             cur.bounceOffWalls(true);
         }
-        
-        
-        
     }
     
-    if(!drawBalls) {
+    if(drawLines) {
         glEnd();
     }
     
@@ -388,30 +325,47 @@ void EnvironmentTwoSystem::display(){
     }
     update();
     
-    
-    
-    
     // draw all the particles
-    if(drawBalls) {
         for(int i = 0; i < particles.size(); i++) {
-            //            ofDrawCircle(particleSystem[i].x, particleSystem[i].y,particleSystem[i].r); // particleNeighborhood * 0.05);
-            
             particles[i].displayParticle();
-            particles[i].returnFromWall();
         }
-    }
     
-    
-    //    particleSystem.display();
+    outputConditions();
     ofPopMatrix();
+
+}
+
+
+void EnvironmentTwoSystem::particleInteractions(){
+
     
+}
+
+void EnvironmentTwoSystem::outputConditions(){
+    // TRIGGER FOR OUTPUT
     
+
     
+}
+
+
+void EnvironmentTwoSystem::impactEffect(){
     
-    //    b.updatePosition();
-    //    b.displayParticle();
-    //    b.test();
-//    cout<<particles[0].yv<<endl;
+    ofVec2f target;
+    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
+    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
+    
+    if(impact){
+        addRepulsionForce(target.x, target.y, 100, 0.5);
+//        drawLines = true;
+        lineAlpha += 2;
+        if(lineAlpha > 255) lineAlpha = 255;
+    }
+    else{
+        lineAlpha -=2;
+        if (lineAlpha < 0) lineAlpha = 0;
+//        drawLines = false;
+    }
 }
 
 
@@ -451,8 +405,6 @@ void EnvironmentTwoSystem::allocateCellState(E2Particle& particle){
     }
     else if(d > cells[2] && d < externalRad){
         particle.cellState = 2;
-        
-        
     }
 }
 

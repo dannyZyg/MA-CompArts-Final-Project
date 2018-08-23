@@ -1,8 +1,13 @@
 #include "EnvironmentThreeSystem.h"
 
 EnvironmentThreeSystem::EnvironmentThreeSystem(){
-
-        
+    kParticles = 100;
+    particleNeighborhood = 64;
+    particleRepulsion = 0.3;
+    centerAttraction = 0;
+    drawLines = true;
+    angle = 0;
+    impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
 }
 
 void EnvironmentThreeSystem::setup(int width, int height, int k) {
@@ -14,39 +19,21 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
 	yBins = (int) ceilf((float) height / (float) binSize);
 	bins.resize(xBins * yBins);
     
-    
     mode = ofxColorPalette::BRIGHTNESS;
-    brightness = 200;
-    saturation = 200;
+//    brightness = 200;
+//    saturation = 200;
     
     
-    kParticles = 80;
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
         
         E3Particle particle = E3Particle();
-        
-//        E3Particle particle();
-        
         particles.push_back(particle);
-        
-//        particleSystem.add(particle);
-        setupColours();
     }
     
-    padding = 128;
-    timeStep = 100;
-    isMousePressed = false;
-    slowMotion = true;
-    particleNeighborhood = 64;
-    particleRepulsion = 0.3;
-    centerAttraction = 0;
-    drawLines = false;
-    
-    angle = 0;
-    target = ofVec2f(origin.x + 100, origin.y + 100);
+    setupColours();
     
     for(int i = 0; i < kParticles; i ++){
         float seed = ofRandom(1000);
@@ -78,12 +65,9 @@ void EnvironmentThreeSystem::setupColours(){
         
         if(particles[i].team == 0){
             particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-//            particles[i].col = ofColor(team1Base);
-
         }
         else if (particles[i].team == 1){
             particles[i].col = ofColor(team2Col[ofRandom(team2Col.size())]);
-//            particles[i].col = ofColor(team2Base);
         }
             
         particles[i].origin = origin;
@@ -95,14 +79,6 @@ void EnvironmentThreeSystem::setupColours(){
 
 void EnvironmentThreeSystem::setTimeStep(float timeStep) {
 	this->timeStep = timeStep;
-}
-
-void EnvironmentThreeSystem::add(E3Particle particle) {
-	particles.push_back(particle);
-}
-
-unsigned EnvironmentThreeSystem::size() const {
-	return particles.size();
 }
 
 E3Particle& EnvironmentThreeSystem::operator[](unsigned i) {
@@ -276,9 +252,7 @@ void EnvironmentThreeSystem::update() {
 	for(int i = 0; i < n; i++) {
 		particles[i].updatePosition();
 	}
-    
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
-    angle += 10;
 }
 
 void EnvironmentThreeSystem::draw() {
@@ -289,42 +263,55 @@ void EnvironmentThreeSystem::draw() {
 	glEnd();
 }
 
-int EnvironmentThreeSystem::getWidth() const {
-	return width;
-}
-
-int EnvironmentThreeSystem::getHeight() const {
-	return height;
-}
-
-
 void EnvironmentThreeSystem::display(){
 
     // do this once per frame
     setupForces();
-    
+    impactEffect();
     // apply per-particle forces
     if(drawLines) {
         ofSetColor(24, 124, 174);
-        ofSetLineWidth(0.1);
+        ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
     
     
+     particleInteractions();
+    
+    
+    if(drawLines) {
+        glEnd();
+    }
+    
+   
+    
+    // single-pass global forces
+    addAttractionForce(origin.x, origin.y, 200, centerAttraction);
+    update();
+    
+    // draw all the particles
+        for(int i = 0; i < particles.size(); i++) {
+            particles[i].displayParticle();
+        }
+    
+    outputConditions();
+    
+}
+
+void EnvironmentThreeSystem::particleInteractions(){
     for(int i = 0; i < particles.size(); i++) {
         E3Particle& cur = particles[i];
         // global force on other particles
-        
-//        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+    
         
         vector<E3Particle*> nei = getNeighbors(cur.x, cur.y, 50);
         
         vector<E3Particle*> clusters = getNeighbors(cur.x, cur.y, 10);
         
         vector<E3Particle*> global = getNeighbors(cur.x, cur.y, 80);//externalRad/3);
-
+        
         for(int j = 0; j < nei.size(); j ++){
-
+            
             addRepulsionForce(cur, particleNeighborhood, 0.04);
             
             
@@ -356,29 +343,13 @@ void EnvironmentThreeSystem::display(){
             }
         }
         
-    // forces on this particle
-    cur.bounceOffWalls(true);
-    cur.addDampingForce();
+        // forces on this particle
+        cur.bounceOffWalls(true);
+        cur.addDampingForce();
         
     }
-    if(drawLines) {
-        glEnd();
-    }
-    
-    // single-pass global forces
-    addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    update();
-    
-    
-    
-    
-    // draw all the particles
-        for(int i = 0; i < particles.size(); i++) {
-            particles[i].displayParticle();
-        }
     
 }
-
 
 void EnvironmentThreeSystem::outputConditions(){
     // TRIGGER FOR OUTPUT
@@ -417,19 +388,29 @@ void EnvironmentThreeSystem::outputConditions(){
 
 
 void EnvironmentThreeSystem::impactEffect(){
-    ofPushMatrix();
+    
     ofPushStyle();
-    ofTranslate(origin.x, origin.y);
-    ofRotate(angle);
+
+    
+    impactTarget.x = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, origin.x - 300, origin.x + 300);
+    impactTarget.y = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, origin.y - 300, origin.y + 300);
+
+    
     ofSetColor(255, 0, 0   );
     if(impact){
-        //      ofDrawLine(0, 0, 100, 100);
-        ofDrawCircle(200, 200, 5);
-        addRepulsionForce(200, 200, 500, 3);
+//              ofDrawLine(0, 0, 100, 100);
+//        ofDrawCircle(impactTarget, 200);
+        addRepulsionForce(impactTarget.x, impactTarget.y, 200, 3);
+        drawLines = true;
+    }
+    else{
+        drawLines = false;
+        
     }
     ofPopStyle();
-    ofPopMatrix();
+
     
+    angle += 3;
 }
 
 

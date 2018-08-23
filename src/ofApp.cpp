@@ -173,9 +173,9 @@ void ofApp::keyPressed(int key){
     
     if(key == ' ') environmentThree.enviro.sequenceActive = !environmentThree.enviro.sequenceActive;
  
-    if(key == 'B') environmentOne.blur1 = !environmentOne.blur1;
-    if(key == 'N') environmentOne.blur2 = !environmentOne.blur2;
-    if(key == 'A') environmentOne.active = !environmentOne.active;
+    if(key == 'B') environmentTwo.blur1 = !environmentTwo.blur1;
+    if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
+    if(key == 'A') environmentTwo.active = !environmentTwo.active;
 
     
 }

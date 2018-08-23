@@ -16,6 +16,12 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
     width = fbo-> getWidth();
     height = fbo -> getHeight();
     
+    setScale = 1;
+    setRotation = -3.5;
+    blurOffset = 2.5;
+    blurPasses = 1;
+
+
 }
 
 void EnvironmentTwoSource::setup(){
@@ -40,12 +46,12 @@ void EnvironmentTwoSource::setup(){
     enviro.origin = origin;
     enviro.externalRad = rad;
     enviro.setup(width, height, 5);
-    enviro.setupColours();
+//    enviro.setupColours();
     
     debug = false;
     
-    blur1 = false;
-    blur2 = false;
+    blur1 = true;
+    blur2 = true;
     
     int num = 3;
     for(int i = 0; i < num; i ++){
@@ -64,14 +70,33 @@ void EnvironmentTwoSource::setup(){
 
 void EnvironmentTwoSource::update(){
     
-
-    blur.setScale(3);//ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(-PI);//ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+//        setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
+//        setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
+//        blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+//        blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+//
     
     
-    gpuBlur.blurOffset = 3;//5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0);
-    gpuBlur.blurPasses = 0.7;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1);
-    gpuBlur.numBlurOverlays = 3;
+    
+    
+    
+    
+//    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0, 2, true);
+//    if(active) setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, -PI, PI);
+    
+//
+//            cout <<"scale = " << setScale<<endl;
+//            cout <<"rot = " << setRotation<<endl;
+//            cout <<"blurOffset = " << blurOffset<<endl;
+//            cout <<"blurPasses = " << blurPasses<<endl;
+//
+    blur.setScale(setScale);
+    blur.setRotation(setRotation);
+    
+    
+    gpuBlur.blurOffset = blurOffset;
+    gpuBlur.blurPasses = blurPasses;
+    gpuBlur.numBlurOverlays = 5;
     gpuBlur.blurOverlayGain = 150;
     
     

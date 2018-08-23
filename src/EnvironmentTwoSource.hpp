@@ -56,4 +56,9 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     
     bool active;
     
+    float setScale;
+    float setRotation;
+    float blurOffset;
+    float blurPasses;
+    
 };

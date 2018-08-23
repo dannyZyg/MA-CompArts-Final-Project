@@ -47,7 +47,10 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     // debug font
     ofTrueTypeFont font;
     
-    
+    float setScale;
+    float setRotation;
+    float blurOffset;
+    float blurPasses;
 
     
 

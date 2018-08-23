@@ -20,6 +20,11 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
     width =  600;//fbo-> getWidth();
     height = 600;//fbo -> getHeight();
     
+    setScale = 0.8;
+    setRotation = -2.5;
+    blurOffset = 4.2;
+    blurPasses = 0.5;
+    
 }
 
 void EnvironmentThreeSource::setup(){
@@ -48,19 +53,40 @@ void EnvironmentThreeSource::setup(){
     
     gpuBlur.setup(s);
     
-    blur1 = false;
-    blur2 = false;
+    blur1 = true;
+    blur2 = true;
     
     
 }
 
 void EnvironmentThreeSource::update(){
-    blur.setScale(5);//ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    blur.setRotation(PI);//ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
+    
+//    setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
+//    setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
+//    blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+//    blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+//    
+
     
     
-    gpuBlur.blurOffset = 0.5;//5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    gpuBlur.blurPasses = 5;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+
+    
+
+    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0, 2, true);
+    if(active) setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, -PI, PI);
+
+    
+//        cout <<"scale = " << setScale<<endl;
+//        cout <<"rot = " << setRotation<<endl;
+//        cout <<"blurOffset = " << blurOffset<<endl;
+//        cout <<"blurPasses = " << blurPasses<<endl;
+    
+    blur.setScale(setScale);
+    blur.setRotation(setRotation);
+    
+    
+    gpuBlur.blurOffset = blurOffset;
+    gpuBlur.blurPasses = blurPasses;
     gpuBlur.numBlurOverlays = 3;
     gpuBlur.blurOverlayGain = 150;
     
@@ -105,10 +131,8 @@ void EnvironmentThreeSource::draw(){
    
 
    
-    enviro.impactEffect();
-    enviro.display();
 //    enviro.particleInteractions();
-    enviro.outputConditions();
+    enviro.display();
     
     if(blur1)blur.end();
     if(blur1)blur.draw();
@@ -132,15 +156,18 @@ void EnvironmentThreeSource::draw(){
     if(debug){
 
         // Draw white circle over environment and display fbo position label
-
+        ofPushMatrix();
         ofPushStyle();
         ofFill();
         ofSetLineWidth(5);
+        ofSetColor(255, 0, 0);
+        ofDrawRectangle(0, 0, width, height);
         ofSetColor(255);
         ofDrawCircle(origin, rad);
         ofSetColor(0);
         font.drawString("Enviro 3", origin.x - 200, origin.y);
         ofPopStyle();
+        ofPopMatrix();
 
     }
 

@@ -20,6 +20,11 @@ EnvironmentOneSource::EnvironmentOneSource(){
     width = fbo-> getWidth();
     height = fbo -> getHeight();
     
+    setScale = 1.5;
+    setRotation = 1.1;
+    blurOffset = 3.5;
+    blurPasses = 1;
+    
 }
 
 void EnvironmentOneSource::setup(){
@@ -55,31 +60,35 @@ void EnvironmentOneSource::setup(){
 void EnvironmentOneSource::update(){
     
     //float setScale = 1.5;//(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 2, 10);
+//    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 2, 10);
 //    else setScale = 1.5;
     
-//    setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 2, 10);
-    float setRotation = 1.1;// (ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
-    float blurOffset = 3.5; //5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-    float blurPasses = 1;//10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+
     
-//    cout <<"scale = " << setScale<<endl;
-//    cout <<"rot = " << setRotation<<endl;
-//    cout <<"blurOffset = " << blurOffset<<endl;
-//    cout <<"blurPasses = " << blurPasses<<endl;
-
-
+    
+    
+    
+//        setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
+    //    setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
+    //    blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
+    //    blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
+    
+    
+//            cout <<"scale = " << setScale<<endl;
+    //        cout <<"rot = " << setRotation<<endl;
+    //        cout <<"blurOffset = " << blurOffset<<endl;
+    //        cout <<"blurPasses = " << blurPasses<<endl;
     
     blur.setScale(setScale);
     blur.setRotation(setRotation);
     
+    
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
+    gpuBlur.numBlurOverlays = 5;
+    gpuBlur.blurOverlayGain = 150;
     
-    gpuBlur.numBlurOverlays = 3;
-    gpuBlur.blurOverlayGain = 255;
-    
-    enviro.addRepulsionForce(100, 300, 200, 1);
+//    enviro.addRepulsionForce(100, 300, 200, 1);
     
     
     
@@ -165,7 +174,7 @@ void EnvironmentOneSource::newRules(){
     
     if(active){
         
-        enviro.centerAttraction = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, -1.5, 1.5);
+//        enviro.centerAttraction = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, -1.5, 1.5);
         
     }
 

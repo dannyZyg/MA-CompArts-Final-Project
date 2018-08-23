@@ -1,8 +1,6 @@
 #include "StoneParticleSystem.h"
 
-StoneParticleSystem::StoneParticleSystem() :
-	timeStep(100) {
-
+StoneParticleSystem::StoneParticleSystem(){
         
 }
 
@@ -307,7 +305,7 @@ void StoneParticleSystem::display(){
     ofPushStyle();
     ofPushMatrix();
     
-    setTimeStep(timeStep);
+    
     // do this once per frame
     setupForces();
     
