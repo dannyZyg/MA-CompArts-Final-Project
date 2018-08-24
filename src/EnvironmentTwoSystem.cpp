@@ -57,8 +57,7 @@ void EnvironmentTwoSystem::setupColours(){
     
     for(int i = 0; i < particles.size(); i++){
         
-        particles[i].colIndex = ofRandom(cell1Col.size());
-        particles[i].col = ofColor(cell1Col[ofRandom(cell1Col.size())]);
+        particles[i].col = ofColor(cell1Col[particles[i].colIndex]);
         particles[i].origin = origin;
         particles[i].externalRad = externalRad;
     }
@@ -360,6 +359,12 @@ void EnvironmentTwoSystem::display(){
     
         for(int i = 0; i < particles.size(); i++) {
             particles[i].displayParticle();
+            
+            float d = ofDist (particles[i].x, particles[i].y, origin.x, origin.y);
+            if(d > externalRad - 3){
+                
+//                partles[i].applyForce()
+            }
         }
     
     outputConditions();

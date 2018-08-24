@@ -68,10 +68,10 @@ void EnvironmentThreeSystem::setupColours(){
     for(int i = 0; i < particles.size(); i++){
         
         if(particles[i].team == 0){
-            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
+            particles[i].col = ofColor(team1Col[particles[i].colIndex]);
         }
         else if (particles[i].team == 1){
-            particles[i].col = ofColor(team2Col[ofRandom(team2Col.size())]);
+            particles[i].col = ofColor(team2Col[particles[i].colIndex]);
         }
             
         particles[i].origin = origin;
@@ -257,6 +257,8 @@ void EnvironmentThreeSystem::update() {
 		particles[i].updatePosition();
 	}
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.01, 0.5);
+    
+
 }
 
 void EnvironmentThreeSystem::draw() {

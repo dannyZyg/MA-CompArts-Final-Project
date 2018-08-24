@@ -46,6 +46,8 @@ public:
     
     float blurOffset;
 
+    
+    
 };
 
 

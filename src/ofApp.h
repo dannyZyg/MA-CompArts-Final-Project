@@ -20,6 +20,7 @@
 #include "ParticleSystem.h"
 #include "ofxGui.h"
 
+#include "StoneSource.hpp"
 
 #define NUM_BYTES 2
 
@@ -55,7 +56,10 @@ public:
     EnvironmentOneSource environmentOne;
     EnvironmentTwoSource environmentTwo;
     EnvironmentThreeSource environmentThree;
-        
+    
+    StoneSource stoneSourceTest;
+//    SmallStoneSource testStones;
+    
     bool drawTemplate;
     ofImage layout;
   

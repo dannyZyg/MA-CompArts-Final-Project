@@ -55,10 +55,10 @@ void EnvironmentOneSystem::setupColours(){
         particles[i].externalRad = externalRad;
         
         if(particles[i].team == 0){
-            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())], particles[i].life);
+            particles[i].col = ofColor(team1Col[particles[i].colIndex], particles[i].life);
         }
         if(particles[i].team == 1){
-            particles[i].col = ofColor(team2Col[ofRandom(team1Col.size())], particles[i].life);
+            particles[i].col = ofColor(team2Col[particles[i].colIndex], particles[i].life);
         }
     }
 }

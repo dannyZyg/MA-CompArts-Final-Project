@@ -11,12 +11,8 @@
 
 EnvironmentOneSource::EnvironmentOneSource(){
     
-
-
-    
     name = "Environment One";
     allocate(600, 600);
-    
     width = fbo-> getWidth();
     height = fbo -> getHeight();
     
@@ -24,7 +20,6 @@ EnvironmentOneSource::EnvironmentOneSource(){
     setRotation = 1.1;
     blurOffset = 3.5;
     blurPasses = 1;
-    
 }
 
 void EnvironmentOneSource::setup(){

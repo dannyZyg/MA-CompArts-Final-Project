@@ -18,6 +18,7 @@ Particle::Particle(){
     acceleration = ofVec2f(0,0);
     maxSpeed = 5;
     blurOffset = 5;
+    colIndex = ofRandom(5);
     
 }
 
@@ -123,40 +124,32 @@ void Particle::bounceOffWalls(bool rebound_) {
     int d = ofDist(x, y, origin.x, origin.y);
     if ((d > externalRad - r - blurOffset )){
         
+        collision = true;
+        
         ofVec2f out = ofVec2f(x, y);
         ofVec2f offset = ofVec2f(ofRandom( -50, 50), ofRandom(-50, 50));
         ofVec2f newOrigin = origin + offset;
         ofVec2f ret = origin - out;
         
+        
+        
         if(rebound) ret = ret.normalize();
+        
+        if(rebound) applyForce(ret);
         
         x += ret.x;
         y += ret.y;
-        
-//        x += ofRandom(-5, 5);
-//        y += ofRandom(-5, 5);
 
-        
         xv *= -1;
         yv *= -1;
         
-        
-        
-        
-    
         vel.x *= -1;
         vel.y *= -1;
         
-//        vel.x *= -1;
-//        vel.y *= -1;
-        
-        collision = true;
-//        if(collision == true){
-//            xv *= damping;
-//            yv *= damping;
-//
-//
-//        }
+        if(collision && rebound){
+            xv *= 0.9;
+            yv *= 0.9;
+        }
     }
 }
 
@@ -212,10 +205,11 @@ void E2Particle::bounceOffOuterCell(float outer){
     
     float d = ofDist(x, y, origin.x, origin.y);
     if( (d > outer - r)){
-        
+        collision = true;
         ofVec2f posAtEdge = ofVec2f(x, y);
         ofVec2f ret = origin - posAtEdge;
         ret = ret.normalize();
+//        applyForce(ret);
         
         x += ret.x;
         y += ret.y;
@@ -223,7 +217,13 @@ void E2Particle::bounceOffOuterCell(float outer){
         xv *= -1;
         yv *= -1;
         
-        collision = true;
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        if(collision == true){
+            xv *= 0.9;
+            yv *= 0.9;
+        }
     }
 }
 
@@ -233,11 +233,12 @@ void E2Particle::bounceOffInnerCell(float inner){
     
     float d = ofDist(x, y, origin.x, origin.y);
     if( (d < inner + r)){
-        
+        collision = true;
         ofVec2f posAtEdge = ofVec2f(x, y);
         ofVec2f ret = origin - posAtEdge;
         ret *= -1;
         ret = ret.normalize();
+//        applyForce(ret);
         
         x += ret.x;
         y += ret.y;
@@ -245,7 +246,13 @@ void E2Particle::bounceOffInnerCell(float inner){
         xv *= -1;
         yv *= -1;
         
-        collision = true;
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        if(collision == true){
+            xv *= 0.9;
+            yv *= 0.9;
+        }
     }
 }
 

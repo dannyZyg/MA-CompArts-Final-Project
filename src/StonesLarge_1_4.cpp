@@ -18,7 +18,6 @@ StonesLarge_1_4::StonesLarge_1_4(){
 
 }
 
-
 void StonesLarge_1_4::setup(){
     debug = false;
     ofBackground(255);
@@ -75,16 +74,6 @@ void StonesLarge_1_4::update(){
         stones[i].updateColours();
     }
 
-//    cout<<stones[1].timeIntervalPassed<<endl;
-//    cout<<stones[1].timer<<endl;
-
-//    blur.setScale(ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10));
-//    blur.setRotation(ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI));
-//
-//    gpuBlur.blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-//    gpuBlur.blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
-//    gpuBlur.numBlurOverlays = 4;
-//    gpuBlur.blurOverlayGain = 255;
     
     
 }
@@ -127,25 +116,6 @@ void StonesLarge_1_4::draw(){
     }
 
     if(debug) debugMode();
-
-
-    
-//        gpuBlur.endDrawScene();
-//        //calc the fbo blurring, no drawing on screen yet
-//        gpuBlur.performBlur();
-//
-//        //draw the "clean" scene on screen
-//        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//        gpuBlur.drawSceneFBO();
-//
-//        //overlay the blurred fbo on top of the previously drawn clean scene
-//        ofEnableBlendMode(OF_BLENDMODE_ADD);
-//        gpuBlur.drawBlurFbo();
-    
-    
-//        blur.end();
-//        blur.draw();
-    
     
 }
 

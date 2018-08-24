@@ -27,6 +27,9 @@ void ofApp::setup(){
     piMapper.registerFboSource(med_stones_1_4);
     piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
+    
+    piMapper.registerFboSource(stoneSourceTest);
+//    piMapper.registerFboSource(testStones());
 
 //Send large font to all FBO sources
     environmentOne.font = verdana30;
@@ -39,6 +42,8 @@ void ofApp::setup(){
     med_stones_1_4.font = verdana30;
     med_stones_5_8.font = verdana30;
     large_stones.font = verdana30;
+    
+    stoneSourceTest.font = verdana30;
     
 // setup piMapper
 	piMapper.setup();
