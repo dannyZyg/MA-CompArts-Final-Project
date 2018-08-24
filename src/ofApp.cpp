@@ -28,22 +28,22 @@ void ofApp::setup(){
     piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
     
-    piMapper.registerFboSource(stoneSourceTest);
-    piMapper.registerFboSource(testStones);
+//    piMapper.registerFboSource(stoneSourceTest);
+//    piMapper.registerFboSource(testStones);
 
-//Send large font to all FBO sources
+////Send large font to all FBO sources
     environmentOne.font = verdana30;
     environmentTwo.font = verdana30;
     environmentThree.font = verdana30;
-    small_stones_1_4.font = verdana30;
-    small_stones_5_8.font = verdana30;
-    small_stones_9_12.font = verdana30;
-    small_stones_13_16.font = verdana30;
-    med_stones_1_4.font = verdana30;
-    med_stones_5_8.font = verdana30;
-    large_stones.font = verdana30;
-    
-    stoneSourceTest.font = verdana30;
+//    small_stones_1_4.font = verdana30;
+//    small_stones_5_8.font = verdana30;
+//    small_stones_9_12.font = verdana30;
+//    small_stones_13_16.font = verdana30;
+//    med_stones_1_4.font = verdana30;
+//    med_stones_5_8.font = verdana30;
+//    large_stones.font = verdana30;
+//
+//    stoneSourceTest.font = verdana30;
     
     
 // setup piMapper
@@ -77,8 +77,6 @@ void ofApp::setup(){
     env2Timer.setup();
     env3Timer.setup();
     sensorTimer.setup();
-//    s = Scheduler();
-    setupGuis();
 }
 
 void ofApp::update(){
@@ -94,21 +92,15 @@ void ofApp::update(){
     env3Timer.run();
     sensorTimer.run();
     
-//    s.recieveStones(small_stones_5_8.stones[3]);
 }
 
 void ofApp::draw(){
  
-
-    
-    
     float x = testEnvelope.output(env, 50, 100, 100);
     if(testEnvelope.complete) env = false;
     
     
     ofBackground(0);
-//    ofSetColor(255, 0, 0);
-//    ofDrawCircle(300, 300, x, x);
     
     if(drawTemplate) layout.draw(0, 0);
     
@@ -137,12 +129,7 @@ void ofApp::draw(){
     
     
     ofSetColor(255);
-//    if (sequenceActive) ofDrawBitmapString("active", mouseX, mouseY);
     
-    
-//    cout << testVal <<endl;
-    
-    drawGuis();
 }
 
 
@@ -188,7 +175,7 @@ void ofApp::keyPressed(int key){
     if(key == 'K') large_stones.stones[1].env2 = !large_stones.stones[1].env2;
     if(key == 'L') large_stones.stones[1].env3 = !large_stones.stones[1].env3;
     
-    if(key == 'R') testStones.stones[0].env1 = !testStones.stones[0].env1;
+//    if(key == 'R') testStones.stones[0].env1 = !testStones.stones[0].env1;
     
 }
 
@@ -295,12 +282,6 @@ void ofApp::scheduler(){
             E3_to_E2(env3Timer, environmentThree.enviro.randomPath);
         }
     }
-}
-
-// Logic to ensure no sequences choose the same destination at the same time!
-void ofApp::destinationPicker(){
-    
-    
 }
 
 
@@ -702,33 +683,6 @@ void ofApp::serialUpdate(){
         bSendSerialMessage = true;                              // send a message to the arduino to tell it oF is ready for more readings
         countCycles = 0;
     }
-}
-
-
-void ofApp::setupGuis(){
-    
-//    e1gui.setup();
-//    e1gui.add(scale.setup("scale", 0, 0.001, 10.0));
-//    e1gui.add(rotation.setup("rotation", -PI, 0.001, PI));
-//    e1gui.add(offset.setup("offset", 0., 0.001, 1.));
-//    e1gui.add(passes.setup("passes", 0, 0.001, 1.0));
-
-
-}
-void ofApp::drawGuis(){
-    
-    // link variables to gui
-    
-//    environmentOne.setScale = scale;
-//    environmentOne.setRotation= rotation;
-//    environmentOne.blurOffset = offset;
-//    environmentOne.blurPasses = passes;
-    
-//    e1gui.draw();
-
-
-    //    cout<<system1.separateScaler<<endl;
-    
 }
 
 

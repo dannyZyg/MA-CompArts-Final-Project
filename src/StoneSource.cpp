@@ -18,6 +18,10 @@ StoneSource::StoneSource(){
     numCells = fbo->getHeight()/gs;
     rad = gs/2;
     binPower = 5;
+    
+    font.load("verdana.ttf", 80, true, true);
+    font.setLineHeight(34.0f);
+    font.setLetterSpacing(1.035);
 }
 
 void StoneSource::setup(){
@@ -26,45 +30,52 @@ void StoneSource::setup(){
 }
 
 void SmallStones_1_4::setup(){
-    name = "test";
+    name = "Small Stones 1-4";
     setupParticleSystems();
     labelOffset = 1;
+    sizeInitial = "S";
 }
 
 void SmallStones_5_8::setup(){
     name = "Small Stones 5-8";
     setupParticleSystems();
     labelOffset = 5;
+    sizeInitial = "S";
 }
 
 void SmallStones_9_12::setup(){
     name = "Small Stones 9-12";
     setupParticleSystems();
     labelOffset = 9;
+    sizeInitial = "S";
 }
 
 void SmallStones_13_16::setup(){
     name = "Small Stones 13-16";
     setupParticleSystems();
     labelOffset = 13;
+    sizeInitial = "S";
 }
 
 void MediumStones_1_4::setup(){
     name = "Medium Stones 1-4";
     setupParticleSystems();
     labelOffset = 1;
+    sizeInitial = "M";
 }
 
 void MediumStones_5_8::setup(){
     name = "Medium Stones 5-8";
     setupParticleSystems();
     labelOffset = 5;
+    sizeInitial = "M";
 }
 
 void LargeStones_1_4::setup(){
     name = "Large Stones 1-4";
     setupParticleSystems();
     labelOffset = 1;
+    sizeInitial = "L";
 }
 
 void StoneSource::setupParticleSystems(){

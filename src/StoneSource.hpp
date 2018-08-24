@@ -55,12 +55,10 @@ public:
 
 class SmallStones_1_4 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class SmallStones_5_8 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class SmallStones_9_12 : public StoneSource {

@@ -4,21 +4,21 @@
 #include "ofxPiMapper.h"
 #include "StoneParticleSystem.h"
 
-#include "StonesSmall_1_4.hpp"
-#include "StonesSmall_5_8.hpp"
-#include "StonesSmall_9_12.hpp"
-#include "StonesSmall_13_16.hpp"
-#include "StonesMed_1_4.hpp"
-#include "StonesMed_5_8.hpp"
-#include "StonesLarge_1_4.hpp"
+//#include "StonesSmall_1_4.hpp"
+//#include "StonesSmall_5_8.hpp"
+//#include "StonesSmall_9_12.hpp"
+//#include "StonesSmall_13_16.hpp"
+//#include "StonesMed_1_4.hpp"
+//#include "StonesMed_5_8.hpp"
+//#include "StonesLarge_1_4.hpp"
 #include "EnvironmentOneSource.hpp"
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
 #include "Timer.hpp"
 #include "Envelope.hpp"
-#include "Scheduler.hpp"
+//#include "Scheduler.hpp"
 #include "ParticleSystem.h"
-#include "ofxGui.h"
+//#include "ofxGui.h"
 
 #include "StoneSource.hpp"
 
@@ -46,19 +46,27 @@ public:
     // By using a custom source that is derived from FboSource
     // you will be able to see the source listed in sources editor
 
-    StonesSmall_1_4 small_stones_1_4;
-    StonesSmall_5_8 small_stones_5_8;
-    StonesSmall_9_12 small_stones_9_12;
-    StonesSmall_13_16 small_stones_13_16;
-    StonesMed_1_4 med_stones_1_4;
-    StonesMed_5_8 med_stones_5_8;
-    StonesLarge_1_4 large_stones;
+//    StonesSmall_1_4 small_stones_1_4;
+//    StonesSmall_5_8 small_stones_5_8;
+//    StonesSmall_9_12 small_stones_9_12;
+//    StonesSmall_13_16 small_stones_13_16;
+//    StonesMed_1_4 med_stones_1_4;
+//    StonesMed_5_8 med_stones_5_8;
+//    StonesLarge_1_4 large_stones;
     EnvironmentOneSource environmentOne;
     EnvironmentTwoSource environmentTwo;
     EnvironmentThreeSource environmentThree;
     
     StoneSource stoneSourceTest;
     SmallStones_1_4 testStones;
+    
+    SmallStones_1_4 small_stones_1_4;
+    SmallStones_5_8 small_stones_5_8;
+    SmallStones_9_12 small_stones_9_12;
+    SmallStones_13_16 small_stones_13_16;
+    MediumStones_1_4 med_stones_1_4;
+    MediumStones_5_8 med_stones_5_8;
+    LargeStones_1_4 large_stones;
     
     bool drawTemplate;
     ofImage layout;
@@ -150,20 +158,7 @@ public:
 //    int randomPath;
 //    Scheduler s;
     
-    void destinationPicker();
-    
-    
-    
-    
-    ofxPanel e1gui;
-    ofxLabel fps;
-    ofxFloatSlider scale;
-    ofxFloatSlider rotation;
-    ofxFloatSlider offset;
-    ofxFloatSlider passes;
 
-    void setupGuis();
-    void drawGuis();
     
     
 };
