@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include "ofxColorPalette.h"
 #include "ofxBlur.h"
+#include "Timer.hpp"
 
 #define DRAW_FORCES
 #define USE_INVSQRT
@@ -87,6 +88,7 @@ public:
     void newColours(string originSystem_);
     bool env1, env2, env3, sens;
     
+    int e1StartIndex, e2StartIndex, e3StartIndex, sensStartIndex;
     int env1Display, env2Display, env3Display, sensorDisplay;
     int environmentDivision;
     
@@ -97,8 +99,9 @@ public:
     ofColor env3Col;
     ofColor sensorCol;
     
+    void particlesInOut(int start, bool active, int& display);
     
-    
+    Timer activeTimer;
     
 };
 

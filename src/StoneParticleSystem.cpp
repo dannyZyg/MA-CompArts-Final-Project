@@ -21,17 +21,25 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     showParticleSpacing = 5;
     
     numToDisplay = 0;
-    env1Display = 0;
-    env2Display = 0;
-    env3Display = 0;
-    sensorDisplay = 0;
+    
+    activeTimer = Timer();
+    activeTimer.setup();
+    
+    e1StartIndex = 0;
+    e2StartIndex = 31;
+    e3StartIndex = 61;
+    sensStartIndex = 91;
+    env1Display = e1StartIndex;
+    env2Display = e2StartIndex;
+    env3Display = e3StartIndex;
+    sensorDisplay = sensStartIndex;
     
     env1 = false;
     env2 = false;
     env3 = false;
     sens = false;
     
-    kParticles = 50;
+    kParticles = 120;
     for(int i = 0; i < kParticles; i++) {
 
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -66,10 +74,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     
     
 
-    env1Col = ofColor(255, 0, 0);
-    env2Col = ofColor(0, 255, 0);
-    env3Col = ofColor(255, 0, 255);
-    sensorCol = ofColor(255,211, 91);
+
 
     setupColours(baseColour);
     
@@ -80,9 +85,9 @@ void StoneParticleSystem::setupColours(ofColor base_){
     
     ofColor c;
     
-    env1Col = ofColor(255, 0, 0);
-    env2Col = ofColor(0, 255, 0);
-    env3Col = ofColor(255, 0, 255);
+    env1Col = ofColor(27,125, 204);
+    env2Col = ofColor(52,167, 173);
+    env3Col = ofColor(145,49, 191);
     sensorCol = ofColor(255,211, 91);
     
     
@@ -332,69 +337,83 @@ int StoneParticleSystem::getHeight() const {
 
 void StoneParticleSystem::display(){
     
-
+    activeTimer.run();
 //
-    
-    ofPushStyle();
-    ofPushMatrix();
-    
-    
-    // do this once per frame
-    setupForces();
-    
-//    if(sensor && active) drawLines = true;
-//    else drawLines = false;
-    
-    // apply per-particle forces
-    if(drawLines) {
+//    if(env1 || env2 || env3 || sens){
         ofPushStyle();
-        ofSetColor(24, 124, 174);
-        ofSetLineWidth(2);
-        glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
-        ofPopStyle();
-    }
-    
-//    ofPushStyle();
-//    ofSetColor(255, 0, 0);
-//    setupColours(baseColour);
-    
-    fadeParticles();
-//    fadeParticles(1, env2);
-    
-//    ofPopStyle();
-    
-    for(int i = 0; i < particles.size(); i++) {
-//        particles[i].displayParticle();
-        StoneParticle& cur = particles[i];
-        // global force on other particles
-        addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        cur.bounceOffWalls(false);
-        cur.addDampingForce();
+        ofPushMatrix();
         
-    }
-    if(drawLines) {
-        glEnd();
-    }
-    
-    // single-pass global forces
-    addAttractionForce(origin.x, origin.y, 200, centerAttraction);
-    if(isMousePressed) {
-    addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
-    }
-    update();
+        
+        // do this once per frame
+        setupForces();
+        
+        //    if(sensor && active) drawLines = true;
+        //    else drawLines = false;
+        
+        // apply per-particle forces
+        if(drawLines) {
+            ofPushStyle();
+            ofSetColor(24, 124, 174);
+            ofSetLineWidth(2);
+            glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
+            ofPopStyle();
+        }
+        
+        //    ofPushStyle();
+        //    ofSetColor(255, 0, 0);
+        //    setupColours(baseColour);
+        
+        //    fadeParticles();
+        particlesInOut(e1StartIndex, env1, env1Display);
+        particlesInOut(e2StartIndex, env2, env2Display);
+        particlesInOut(e3StartIndex, env3, env3Display);
+        particlesInOut(sensStartIndex, sens, sensorDisplay);
+        
+        //    cout << "e dis = " << env3Display << endl;
+        
+        //    fadeParticles(1, env2);
+        
+        //    ofPopStyle();
+        
+        for(int i = 0; i < particles.size(); i++) {
+            //        particles[i].displayParticle();
+            StoneParticle& cur = particles[i];
+            // global force on other particles
+            addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+            // forces on this particle
+            cur.bounceOffWalls(false);
+            cur.addDampingForce();
+            
+        }
+        if(drawLines) {
+            glEnd();
+        }
+        
+        // single-pass global forces
+        addAttractionForce(origin.x, origin.y, 200, centerAttraction);
+        if(isMousePressed) {
+            addRepulsionForce(ofGetMouseX(), ofGetMouseY(), 200, 1);
+        }
+        update();
+        
+        
+        
+        ofPopStyle();
+        ofPopMatrix();
+        
+        
+        
+        
+//    }
     
 
-    
-    ofPopStyle();
-    ofPopMatrix();
     
 
 //    cout<<particles.size()<<endl;
+
     timer ++;
     
     if(timer > 50000)timer = 0;
-    
 
 }
 
@@ -404,6 +423,11 @@ void StoneParticleSystem::reset(){
     
     particles.clear();
 }
+
+
+
+
+
 
 
 void StoneParticleSystem::fadeParticles(){
@@ -430,9 +454,9 @@ void StoneParticleSystem::fadeParticles(){
         }
     }
     
-    timer ++;
-    
-    if(timer > 50000)timer = 0;
+//    timer ++;
+//    
+//    if(timer > 50000)timer = 0;
     
 }
 
@@ -446,7 +470,33 @@ void StoneParticleSystem::originSystem(string originSystem_){
 }
 
 
+void StoneParticleSystem::particlesInOut(int start, bool active, int& display){
+    
+    float max = start + 30;
+    
+    for(int i = start; i < display; i++) {
+        particles[i].displayParticle();
+    }
 
+    if(active){
+        if(timer % showParticleSpacing == 0){
+            display ++;
+            if(display >= max){
+                display = max;
+            }
+        }
+    }
+
+    if(!active){
+        if(timer % showParticleSpacing == 0){
+            display --;
+            if(display <= start){
+                display = start;
+            }
+        }
+    }
+    
+}
 
 void StoneParticleSystem::newColours(string originSystem_){
     

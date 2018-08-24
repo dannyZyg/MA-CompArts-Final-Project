@@ -8,12 +8,10 @@
 #include "StoneSource.hpp"
 
 StoneSource::StoneSource(){
-    
-    name = "Stone Source";
+//    name = "Stone Source";
     width = 800;
     height = 800;
     allocate(width, height);
-    
 }
 
 //SmallStoneSource::SmallStoneSource(string name){
@@ -27,6 +25,7 @@ StoneSource::StoneSource(){
 
 
 void StoneSource::setup(){
+    setName();
     debug = false;
     ofBackground(255);
     gs = width/2;
@@ -55,6 +54,15 @@ void StoneSource::setup(){
         
         stones[i].active = true;
     }
+}
+
+
+void StoneSource::setName(){
+    name = "Stone Source YESSS";
+}
+
+void SmallStoneSource::setName(){
+    name = "small stone";
 }
 
 void StoneSource::update(){

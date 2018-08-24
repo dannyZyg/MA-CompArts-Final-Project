@@ -66,8 +66,6 @@ public:
     float membraneLife;
     float membraneStep;
     
-    
-
 };
 
 class E2Particle: public Particle {

@@ -29,7 +29,7 @@ void ofApp::setup(){
     piMapper.registerFboSource(large_stones);
     
     piMapper.registerFboSource(stoneSourceTest);
-//    piMapper.registerFboSource(testStones());
+    piMapper.registerFboSource(testStones);
 
 //Send large font to all FBO sources
     environmentOne.font = verdana30;
@@ -182,6 +182,10 @@ void ofApp::keyPressed(int key){
     if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
     if(key == 'A') environmentThree.active = !environmentThree.active;
 
+    if(key == 'H') large_stones.stones[1].sens = !large_stones.stones[1].sens;
+    if(key == 'J') large_stones.stones[1].env1 = !large_stones.stones[1].env1;
+    if(key == 'K') large_stones.stones[1].env2 = !large_stones.stones[1].env2;
+    if(key == 'L') large_stones.stones[1].env3 = !large_stones.stones[1].env3;
     
 }
 
@@ -339,13 +343,21 @@ void ofApp::triggerStone(Timer& t, StoneParticleSystem& stone, int timing){
     
     //turn on the stone
     if(t.timer > timeSpacing * timing){
-        stone.active = true;
+        if(sender == "Environment One") stone.env1 = true;
+        if(sender == "Environment Two") stone.env2 = true;
+        if(sender == "Environment Three") stone.env3 = true;
+        if(sender == "Sensor") stone.sens = true;
+//        stone.active = true;
 //        if(t.timer == sensorTimer.timer) stone.sensor = true;
 //        else stone.sensor = false;
     }
     //turn off the stone
     if(t.timer > timeSpacing * timing + t.activeStoneTime){
-        stone.active = false;
+        stone.env1 = false;
+        stone.env2 = false;
+        stone.env3 = false;
+        stone.sens = false;
+
     }
 }
 

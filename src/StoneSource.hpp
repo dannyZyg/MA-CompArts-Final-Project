@@ -20,6 +20,9 @@ class StoneSource : public ofx::piMapper::FboSource{
 public:
     
     StoneSource();
+    
+//    string name = "Stone Source";
+    
     void setup();
     void update();
     void draw();
@@ -44,12 +47,13 @@ public:
     bool active;
     string sizeInitial;
     
+    void setName();
 };
 
 class SmallStoneSource : public StoneSource {
     
-    SmallStoneSource();
-    
+//    SmallStoneSource();
+    void setName();
 };
 
 

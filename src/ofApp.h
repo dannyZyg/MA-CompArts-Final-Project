@@ -58,7 +58,7 @@ public:
     EnvironmentThreeSource environmentThree;
     
     StoneSource stoneSourceTest;
-//    SmallStoneSource testStones;
+    SmallStoneSource testStones;
     
     bool drawTemplate;
     ofImage layout;

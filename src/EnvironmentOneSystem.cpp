@@ -238,6 +238,18 @@ void EnvironmentOneSystem::update() {
         particles[i].membraneRad = region;
 	}
     
+    
+    
+//    for(int i = 0; i < particles.size(); i++){
+//        if(particles[i].team == 0){
+//            particles[i].col = ofColor(team1Col[particles[i].colIndex], particles[i].life);
+//        }
+//        if(particles[i].team == 1){
+//            particles[i].col = ofColor(team2Col[particles[i].colIndex], particles[i].life);
+//        }
+//    }
+    
+    
 //    particleRepulsion = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
 //    particleRepulsion = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0.2, 1);
 
@@ -304,7 +316,7 @@ void EnvironmentOneSystem::alterSize(E1Particle& cur_){
     nearby = closeNei.size();
     ofPushStyle();
     ofFill();
-    ofSetColor(100, cur_.membraneLife);
+    ofSetColor(125, cur_.membraneLife);
     if(nearby > 1){
             ofDrawCircle(cur_.x, cur_.y, region);
             cur_.alone = false;
@@ -415,15 +427,22 @@ void EnvironmentOneSystem::particleInteractions(){
         
         if(cur.r > maxRad - 5) outputCondition ++;
         
-        
+// team swap
         for(int j = 0; j < membranes.size(); j ++){
             if(cur.team == !membranes[j] -> team){
-                if(cur.membraneLife > 100 && membranes[j] -> membraneLife > 100){
+                if(cur.membraneLife > 30 && membranes[j] -> membraneLife > 30){
 //                    cur.col = ofColor(255, 0, 0);
+                    
+                    ofColor c1, c2;
+                    
+                    c1 = cur.col;
+                    c2 = membranes[j] -> col;
+                    
+                    cur.col = c2;
+                    membranes[j] -> col = c1;
+            
                 }
             }
-            
-            
         }
         
         
