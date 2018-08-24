@@ -371,7 +371,7 @@ void EnvironmentThreeSystem::particleInteractions(){
         
     }
     
-    cout<< "e3 output con" << outputCondition << endl;
+//    cout<< "e3 output con" << outputCondition << endl;
     
 }
 

@@ -353,6 +353,7 @@ void ofApp::triggerStone(Timer& t, StoneParticleSystem& stone, int timing){
     }
     //turn off the stone
     if(t.timer > timeSpacing * timing + t.activeStoneTime){
+        stone.releaseTimer.reset();
         stone.env1 = false;
         stone.env2 = false;
         stone.env3 = false;

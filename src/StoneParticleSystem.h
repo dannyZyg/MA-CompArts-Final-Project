@@ -99,9 +99,18 @@ public:
     ofColor env3Col;
     ofColor sensorCol;
     
-    void particlesInOut(int start, bool active, int& display);
+//    int team;
+        void particlesInOut(int start, bool active, int& display);
+
+//    void particlesInOut(int start, bool active, int& display, int team_);
     
     Timer activeTimer;
+    Timer releaseTimer;
+    
+    void pushPopParticles();
+    
+    void addParticle(int team_);
+    
     
 };
 

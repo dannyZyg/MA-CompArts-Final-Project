@@ -95,6 +95,6 @@ class StoneParticle: public Particle {
 public:
     StoneParticle();
 //    void bounceOffWalls();
-    
+    int team;
 };
 
