@@ -24,6 +24,7 @@ public:
 //    string name = "Stone Source";
     
     void setup();
+    void setupParticleSystems();
     void update();
     void draw();
     void sequence1();
@@ -48,11 +49,42 @@ public:
     string sizeInitial;
     
     void setName();
+    
+    int labelOffset;
 };
 
-class SmallStoneSource : public StoneSource {
-    
-//    SmallStoneSource();
+class SmallStones_1_4 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class SmallStones_5_8 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class SmallStones_9_12 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class SmallStones_13_16 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class MediumStones_1_4 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class MediumStones_5_8 : public StoneSource {
+    void setup();
+    void setName();
+};
+
+class LargeStones_1_4 : public StoneSource {
+    void setup();
     void setName();
 };
 

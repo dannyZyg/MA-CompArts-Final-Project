@@ -8,30 +8,66 @@
 #include "StoneSource.hpp"
 
 StoneSource::StoneSource(){
-//    name = "Stone Source";
     width = 800;
     height = 800;
     allocate(width, height);
-}
-
-//SmallStoneSource::SmallStoneSource(string name){
-//
-//    name = "Small Stone Source";
-//    width = 800;
-//    height = 800;
-//    allocate(width, height);
-//    sizeInitial = "s";
-//}
-
-
-void StoneSource::setup(){
-    setName();
+    
     debug = false;
     ofBackground(255);
     gs = width/2;
     numCells = fbo->getHeight()/gs;
     rad = gs/2;
     binPower = 5;
+}
+
+void StoneSource::setup(){
+    name = "generic stone";
+    setupParticleSystems();
+}
+
+void SmallStones_1_4::setup(){
+    name = "test";
+    setupParticleSystems();
+    labelOffset = 1;
+}
+
+void SmallStones_5_8::setup(){
+    name = "Small Stones 5-8";
+    setupParticleSystems();
+    labelOffset = 5;
+}
+
+void SmallStones_9_12::setup(){
+    name = "Small Stones 9-12";
+    setupParticleSystems();
+    labelOffset = 9;
+}
+
+void SmallStones_13_16::setup(){
+    name = "Small Stones 13-16";
+    setupParticleSystems();
+    labelOffset = 13;
+}
+
+void MediumStones_1_4::setup(){
+    name = "Medium Stones 1-4";
+    setupParticleSystems();
+    labelOffset = 1;
+}
+
+void MediumStones_5_8::setup(){
+    name = "Medium Stones 5-8";
+    setupParticleSystems();
+    labelOffset = 5;
+}
+
+void LargeStones_1_4::setup(){
+    name = "Large Stones 1-4";
+    setupParticleSystems();
+    labelOffset = 1;
+}
+
+void StoneSource::setupParticleSystems(){
     
     for(int i = 0; i < numCells; i++){
         for(int k = 0; k < numCells; k++){
@@ -51,18 +87,8 @@ void StoneSource::setup(){
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
-        
         stones[i].active = true;
     }
-}
-
-
-void StoneSource::setName(){
-    name = "Stone Source YESSS";
-}
-
-void SmallStoneSource::setName(){
-    name = "small stone";
 }
 
 void StoneSource::update(){
@@ -120,7 +146,7 @@ void StoneSource::debugMode(){
         ofSetColor(255);
         ofDrawCircle(origins[i], rad);
         ofSetColor(0);
-        font.drawString(sizeInitial + ofToString(i + 1),origins[i].x - 100, origins[i].y);
+        font.drawString(sizeInitial + ofToString(i + labelOffset), origins[i].x - 100, origins[i].y);
         ofPopStyle();
     }
 }

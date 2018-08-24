@@ -45,6 +45,7 @@ void ofApp::setup(){
     
     stoneSourceTest.font = verdana30;
     
+    
 // setup piMapper
 	piMapper.setup();
 
@@ -159,7 +160,7 @@ void ofApp::keyPressed(int key){
     
     if(key == '/') drawTemplate = !drawTemplate;
     
-    if(key == 'd') {
+    if(key == 'D') {
         debug = !debug;
         
         environmentOne.debug = !debug;
@@ -186,6 +187,8 @@ void ofApp::keyPressed(int key){
     if(key == 'J') large_stones.stones[1].env1 = !large_stones.stones[1].env1;
     if(key == 'K') large_stones.stones[1].env2 = !large_stones.stones[1].env2;
     if(key == 'L') large_stones.stones[1].env3 = !large_stones.stones[1].env3;
+    
+    if(key == 'R') testStones.stones[0].env1 = !testStones.stones[0].env1;
     
 }
 
