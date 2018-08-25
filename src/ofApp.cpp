@@ -28,6 +28,11 @@ void ofApp::setup(){
     piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
     
+    
+    piMapper.registerFboSource(e1test);
+    piMapper.registerFboSource(e2test);
+    piMapper.registerFboSource(es);
+
 //    piMapper.registerFboSource(stoneSourceTest);
 //    piMapper.registerFboSource(testStones);
 

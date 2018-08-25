@@ -49,12 +49,7 @@ public:
 	int getHeight() const;
     
     
-    ofxColorPalette team1Col;
-    ofxColorPalette team2Col;
-    
-    ofxColorPalette::ColorChannel mode;
-    float brightness;
-    float saturation;
+
 
     int kParticles;
 //    float timeStep;
@@ -99,6 +94,16 @@ public:
     ofColor env3Col;
     ofColor sensorCol;
     
+    vector <ofxColorPalette> teamCols;
+    
+    ofxColorPalette team1Col, team2Col, team3Col, team4Col;
+    
+    ofxColorPalette::ColorChannel mode;
+    float brightness;
+    float saturation;
+    
+    
+    
 //    int team;
         void particlesInOut(int start, bool active, int& display);
 
@@ -110,7 +115,7 @@ public:
     void pushPopParticles();
     
     void addParticle(int team_);
-    
+    int team;
     
 };
 

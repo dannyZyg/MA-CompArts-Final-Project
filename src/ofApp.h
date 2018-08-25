@@ -19,6 +19,7 @@
 //#include "Scheduler.hpp"
 #include "ParticleSystem.h"
 //#include "ofxGui.h"
+#include "EnvironmentSource.hpp"
 
 #include "StoneSource.hpp"
 
@@ -59,6 +60,9 @@ public:
     
     StoneSource stoneSourceTest;
     SmallStones_1_4 testStones;
+    EnvironmentTestSource e1test;
+    EnvironmentTest2Source e2test;
+    EnvironmentSource es;
     
     SmallStones_1_4 small_stones_1_4;
     SmallStones_5_8 small_stones_5_8;

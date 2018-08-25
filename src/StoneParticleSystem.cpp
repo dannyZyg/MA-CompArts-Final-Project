@@ -89,23 +89,36 @@ void StoneParticleSystem::setupColours(ofColor base_){
     
     ofColor c;
     
-    env1Col = ofColor(27,125, 204);
-    env2Col = ofColor(52,167, 173);
-    env3Col = ofColor(145,49, 191);
-    sensorCol = ofColor(255,211, 91);
+    for(int i = 0; i < 4; i ++){
+        ofxColorPalette c;
+        teamCols.push_back(c);
+    }
     
+    teamCols[0].setBaseColor(ofColor(27,125, 204));
+    teamCols[1].setBaseColor(ofColor(52,167, 173));
+    teamCols[2].setBaseColor(ofColor(145,49, 191));
+    teamCols[3].setBaseColor(ofColor(255,211, 91));
+
     
-    team1Col.setBaseColor(base_);
-    team1Col.generateAnalogous();
+//    teamCols[1] = ofColor(52,167, 173);
+//    teamCols[2] = ofColor(145,49, 191);
+//    teamCols[3] = ofColor(255,211, 91);
+
+    for(int i = 0; i < teamCols.size(); i ++){
+        teamCols[i].generateAnalogous();
+    }
     
     for(int i = 0; i < particles.size(); i++){
-        particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-        if(i >= 0 && i < 30) c = env1Col;
-        if(i > 30 && i < 60) c = env2Col;
-        if(i > 60 && i < 90) c = env3Col;
-        if(i > 90) c = sensorCol;
         
-        particles[i].col = c;
+        if(i >= 0 && i < 30) particles[i].team = 0;
+        if(i > 30 && i < 60) particles[i].team = 1;
+        if(i > 60 && i < 90) particles[i].team = 2;
+        if(i > 90) particles[i].team = 3;
+        
+//        if(particles[i].team == 0) particles[i].col = ofColor(team1Col[particles[i].col])
+        ofxColorPalette& c = teamCols[particles[i].team];
+        particles[i].col = ofColor(c[particles[i].colIndex]);
+
     }
     
 }
@@ -390,6 +403,13 @@ void StoneParticleSystem::display(){
             // forces on this particle
             cur.bounceOffWalls(false);
             cur.addDampingForce();
+            
+//            vector<StoneParticle*> nei = getNeighbors(cur.x, cur.y, 50);
+//            for(int j = 0; j < nei.size(); j ++){
+//                if (cur.team == nei[j] -> team){
+//                    ofDrawLine(cur.x, cur.y, nei[j] ->x, nei[j] ->y);
+//                }
+//            }
             
         }
         if(drawLines) {
