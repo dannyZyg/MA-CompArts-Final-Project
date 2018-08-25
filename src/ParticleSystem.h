@@ -8,8 +8,6 @@
 #define USE_INVSQRT
 #define USE_SMOOTH_FORCES
 
-
-
 class ParticleSystem {
 protected:
 
@@ -36,7 +34,7 @@ public:
     void addAttractionForce(float x, float y, float radius, float scale);
     void addForce(const Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
-    void update();
+    virtual void update();
     
     void draw();
     int getWidth() const;

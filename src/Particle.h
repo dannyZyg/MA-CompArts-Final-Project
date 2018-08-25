@@ -48,7 +48,14 @@ public:
 
 
     int team;
-
+    float minSize, maxSize;
+    void limitSize();
+    void limitMembraneLife();
+    
+    float membraneRad;
+    float membraneLife;
+    float membraneStep;
+    bool alone;
     
 };
 
@@ -57,15 +64,9 @@ class E1Particle: public Particle {
 public:
     E1Particle();
     
-    float minSize, maxSize;
-    void limitSize();
-    void limitMembraneLife();
-    
-    float membraneRad;
-    bool alone;
-    float membraneLife;
-    float membraneStep;
 
+
+    
     
 };
 

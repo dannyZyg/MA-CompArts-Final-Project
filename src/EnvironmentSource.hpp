@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "FboSource.h"
-#include "EnvironmentOneSystem.h"
+//#include "EnvironmentOneSystem.h"
 #include "EnvironmentTwoSystem.h"
 #include "ParticleSystem.h"
 #include "E1System.hpp"
@@ -63,7 +63,7 @@ public:
     bool test;
     void newRules();
 //    EnvironmentOneSystem enviro;
-    E3System enviro;
+    E1System enviro;
 
 };
 

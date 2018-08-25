@@ -7,6 +7,24 @@
 
 #include "E3System.hpp"
 
+E3System::E3System(){
+    kParticles = 100;
+    particleNeighborhood = 64;
+    particleRepulsion = 0.3;
+    centerAttraction = 0;
+    drawLines = false;
+    angle = 0;
+    impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
+    
+    //    lineAlpha = 0;
+    
+    outputThreshold = 200;
+    
+    rebound = true;
+    trigger = false;
+    glow = false;
+
+}
 void E3System::setupParticles(){
     for(int i = 0; i < kParticles; i++) {
         

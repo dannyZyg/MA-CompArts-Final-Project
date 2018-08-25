@@ -21,6 +21,13 @@ Particle::Particle(){
     colIndex = ofRandom(5);
     team = ofRandom(2);
     
+    
+    minSize = 4;
+    maxSize = 20;
+    life = 255;
+    membraneLife = 20;
+    membraneStep = 0.1;
+    
 }
 
 
@@ -33,7 +40,7 @@ E1Particle::E1Particle(){
     
     team = ofRandom(2);
     membraneLife = 20;
-    membraneStep = 0.1;
+    membraneStep = 1;
     
     vel = ofVec2f(ofRandom(-5, 5), ofRandom(-5, 5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
@@ -189,12 +196,12 @@ void Particle::applyForce(ofVec2f force){
 }
 
 
-void E1Particle::limitSize(){
+void Particle::limitSize(){
     if(r < minSize) r = minSize;
     if(r > maxSize) r = maxSize;
 }
 
-void E1Particle::limitMembraneLife(){
+void Particle::limitMembraneLife(){
     if(membraneLife < 20) membraneLife = 20;
     if(membraneLife > 200) membraneLife = 200;
     

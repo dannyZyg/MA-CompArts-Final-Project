@@ -11,9 +11,13 @@
 
 #include <stdio.h>
 #include "FboSource.h"
-#include "EnvironmentThreeSystem.h"
+//#include "EnvironmentThreeSystem.h"
 #include "ofxBlur.h"
 #include "ofxFboBlur.h"
+
+#include "E3System.hpp"
+
+
 
 #endif /* EnvironmentThreeSource_hpp */
 
@@ -33,7 +37,7 @@ class EnvironmentThreeSource : public ofx::piMapper::FboSource{
     ofVec2f origin;
     float rad;
     
-    EnvironmentThreeSystem enviro;
+    E3System enviro;
     bool debug;
     
     ofxBlur blur;

@@ -11,9 +11,6 @@
 
 EnvironmentThreeSource::EnvironmentThreeSource(){
     
-
-
-    
     name = "Environment Three";
     allocate(600, 600);
     

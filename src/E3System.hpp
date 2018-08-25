@@ -18,6 +18,7 @@
 
 class E3System : public ParticleSystem{
 public:
+    E3System();
     virtual void setupParticles() override;
     virtual void particleInteractions() override;
     virtual void outputConditions() override;

@@ -12,8 +12,9 @@
 
 #include <stdio.h>
 #include "FboSource.h"
-#include "EnvironmentOneSystem.h"
+//#include "EnvironmentOneSystem.h"
 //#include "ParticleSystem.h"
+#include "E1System.hpp"
 #include "ofxFboBlur.h"
 #include "ofxBlur.h"
 
@@ -35,7 +36,7 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     ofVec2f origin;
     float rad;
     
-    EnvironmentOneSystem enviro;
+    E1System enviro;
     
     bool debug;
     
