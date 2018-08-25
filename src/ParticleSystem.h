@@ -12,62 +12,81 @@
 
 class ParticleSystem {
 protected:
-    //    float timeStep;
-    vector<E1Particle> particles;
-    vector< vector<E1Particle*> > bins;
-    int width, height, k, xBins, yBins, binSize;
+
     
 public:
+    
+    vector<Particle> particles;
+    vector< vector<Particle*> > bins;
+    int width, height, k, xBins, yBins, binSize;
     ParticleSystem();
     
-    void setup(int width, int height, int k);
-    //    void setTimeStep(float timeStep);
-    
-    void add(E1Particle particle);
-    vector<E1Particle*> getNeighbors(E1Particle& particle, float radius);
-    vector<E1Particle*> getNeighbors(float x, float y, float radius);
-    vector<E1Particle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
+    virtual void setup(int width, int height, int k);
+    void add(Particle particle);
+    vector<Particle*> getNeighbors(Particle& particle, float radius);
+    vector<Particle*> getNeighbors(float x, float y, float radius);
+    vector<Particle*> getRegion(unsigned minX, unsigned minY, unsigned maxX, unsigned maxY);
     unsigned size() const;
-    E1Particle& operator[](unsigned i);
+    Particle& operator[](unsigned i);
     
     void setupForces();
-    void addRepulsionForce(const E1Particle& particle, float radius, float scale);
+    void addRepulsionForce(const Particle& particle, float radius, float scale);
     void addRepulsionForce(float x, float y, float radius, float scale);
-    void addAttractionForce(const E1Particle& particle, float radius, float scale);
+    void addAttractionForce(const Particle& particle, float radius, float scale);
     void addAttractionForce(float x, float y, float radius, float scale);
-    void addForce(const E1Particle& particle, float radius, float scale);
+    void addForce(const Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
     void update();
     
     void draw();
-    void setupColours();
-    
     int getWidth() const;
     int getHeight() const;
     
-    
-    ofxColorPalette team1Col;
-    ofxColorPalette team2Col;
-    
+    virtual void setupParticles();
+    void setupColours();
+    vector <ofxColorPalette> teamCols;
+    ofColor team1Base, team2Base, team3Base, team4Base;
     ofxColorPalette::ColorChannel mode;
-    //    float brightness;
-    //    float saturation;
+    float brightness;
+    float saturation;
     
-    
+    float lineAlpha;
     
     int kParticles;
-    //    float timeStep;
-    float particleNeighborhood, particleRepulsion;
-    float centerAttraction;
-    //    float padding;
-    //    bool isMousePressed, slowMotion;
+    float particleNeighborhood;
+    float centerAttraction, particleRepulsion, particleAttraction;
     bool drawLines;
     
     void display();
     
     ofVec2f origin;
     float externalRad;
+    float angle;
+    ofVec2f impactTarget;
+
+    vector <float> noiseSeed;
     
+    Timer glowTimer;
+    Timer outputTimer;
+    
+    bool rebound;
+    bool trigger;
+    bool sequenceTrigger;
+    bool sequenceActive;
+    bool impact;
+    bool systemOutput;
+    bool glow;
+    
+    int destination;
+    int randomPath;
+    int outputCondition;
+    int outputThreshold;
+    int clusterCount;
+    
+    virtual void particleInteractions();
+    virtual void outputConditions();
+    virtual void impactEffect();
+
     
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
@@ -83,35 +102,4 @@ public:
         return 1. / (1. + expf((x - .5) * sharpness * -12));
     }
     
-    bool impact;
-    bool sequenceActive;
-    bool trigger;
-    bool sequenceTrigger;
-    int destination;
-    int randomPath;
-    bool systemOutput;
-    bool glow;
-    Timer glowTimer;
-    
-    void alterSize(E1Particle& cur_);
-    float maxRad, minRad;
-    float region;
-    void communicationCondition();
-    
-    void particleInteractions();
-    void outputConditions();
-    void impactEffect();
-    
-    
-    float outputThreshold;
-    float outputCondition;
-    
-    bool colourSwitch();
-    
 };
-
-
-
-
-
-

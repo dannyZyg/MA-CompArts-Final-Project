@@ -21,6 +21,7 @@
 		2E088EDC6E32D190998D8241 /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8558ACA2B5E9FD75C455CA2 /* Vec3.cpp */; };
 		2E9E05C9FFCE15172A701335 /* SettingsLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33DD6E4350FD51C68B7E65F0 /* SettingsLoader.cpp */; };
 		3022E5442131B654005ACFE2 /* E1System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5422131B654005ACFE2 /* E1System.cpp */; };
+		3022E5472131FE14005ACFE2 /* E3System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5452131FE14005ACFE2 /* E3System.cpp */; };
 		30232793212C96F700D867F7 /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278B212C96F700D867F7 /* Envelope.cpp */; };
 		30232794212C96F700D867F7 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278C212C96F700D867F7 /* Particle.cpp */; };
 		30232795212C96F700D867F7 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278D212C96F700D867F7 /* ParticleSystem.cpp */; };
@@ -190,6 +191,8 @@
 		2F04FFB9BAC4575E214C0DED /* CmdManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CmdManager.h; path = ../../../addons/ofxPiMapper/src/Commands/CmdManager.h; sourceTree = SOURCE_ROOT; };
 		3022E5422131B654005ACFE2 /* E1System.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = E1System.cpp; sourceTree = "<group>"; };
 		3022E5432131B654005ACFE2 /* E1System.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = E1System.hpp; sourceTree = "<group>"; };
+		3022E5452131FE14005ACFE2 /* E3System.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = E3System.cpp; sourceTree = "<group>"; };
+		3022E5462131FE14005ACFE2 /* E3System.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = E3System.hpp; sourceTree = "<group>"; };
 		30232789212C96F600D867F7 /* Envelope.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Envelope.hpp; sourceTree = "<group>"; };
 		3023278B212C96F700D867F7 /* Envelope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
 		3023278C212C96F700D867F7 /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
@@ -790,6 +793,8 @@
 				30232790212C96F700D867F7 /* ParticleSystem.h */,
 				3022E5422131B654005ACFE2 /* E1System.cpp */,
 				3022E5432131B654005ACFE2 /* E1System.hpp */,
+				3022E5452131FE14005ACFE2 /* E3System.cpp */,
+				3022E5462131FE14005ACFE2 /* E3System.hpp */,
 				3023278F212C96F700D867F7 /* Timer.cpp */,
 				3023278E212C96F700D867F7 /* Timer.hpp */,
 				3029CC80210CD89D00E55228 /* EnvironmentOneSource.cpp */,
@@ -1022,6 +1027,7 @@
 				3800542E2A9FC9F9F4D07001 /* ofxFboBlur.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
+				3022E5472131FE14005ACFE2 /* E3System.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
 				30C40CA1210F77180063369E /* EnvironmentThreeSource.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,

@@ -399,7 +399,7 @@ void EnvironmentTwoSystem::outputConditions(){
     
     
 //    cout <<"trigger " <<trigger << endl;
-    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
+//    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
     if(scaledCells[0] > outputThreshold) trigger = true;
     else(trigger = false);
     

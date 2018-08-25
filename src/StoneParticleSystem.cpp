@@ -86,9 +86,7 @@ void StoneParticleSystem::setup(int width, int height, int k) {
 
 
 void StoneParticleSystem::setupColours(ofColor base_){
-    
-    ofColor c;
-    
+        
     for(int i = 0; i < 4; i ++){
         ofxColorPalette c;
         teamCols.push_back(c);

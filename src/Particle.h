@@ -73,6 +73,7 @@ class E2Particle: public Particle {
     
 public:
     E2Particle();
+    
     void returnFromWall();
     void bounceOffOuterCell(float outer);
     void bounceOffInnerCell(float inner);
@@ -86,10 +87,6 @@ public:
 class E3Particle: public Particle {
 public:
     E3Particle();
-    
-    
-     int team;
-    
 };
 
 class StoneParticle: public Particle {

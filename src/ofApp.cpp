@@ -242,7 +242,7 @@ void ofApp::scheduler(){
 //        E3_to_E1(randomPath);
     }
     
-    cout<< "t2 pct = " <<env2Timer.pct << endl;
+//    cout<< "t2 pct = " <<env2Timer.pct << endl;
 
 //ENVIRONMENT COMMUNICATION//
     

@@ -19,7 +19,7 @@ Particle::Particle(){
     maxSpeed = 5;
     blurOffset = 5;
     colIndex = ofRandom(5);
-//    team = ofRandom(4);
+    team = ofRandom(2);
     
 }
 
@@ -55,6 +55,7 @@ E2Particle::E2Particle(){
 
 E3Particle::E3Particle(){
     r = ofRandom (4, 12);
+//    r = 30;
     xv = ofRandom(-3, 3);
     yv = ofRandom(-3, 3);
     team = ofRandom(2);

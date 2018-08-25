@@ -17,8 +17,12 @@
 #include "EnvironmentTwoSystem.h"
 #include "ParticleSystem.h"
 #include "E1System.hpp"
+#include "E3System.hpp"
 #include "ofxFboBlur.h"
 #include "ofxBlur.h"
+
+
+
 #endif /* EnvironmentSource_hpp */
 
 class EnvironmentSource : public ofx::piMapper::FboSource{
@@ -59,7 +63,7 @@ public:
     bool test;
     void newRules();
 //    EnvironmentOneSystem enviro;
-    ParticleSystem enviro;
+    E3System enviro;
 
 };
 
