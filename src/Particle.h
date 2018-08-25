@@ -46,7 +46,9 @@ public:
     
     float blurOffset;
 
-    
+
+    int team;
+
     
 };
 
@@ -59,12 +61,11 @@ public:
     void limitSize();
     void limitMembraneLife();
     
-    
     float membraneRad;
-    int team;
     bool alone;
     float membraneLife;
     float membraneStep;
+
     
 };
 
@@ -95,6 +96,6 @@ class StoneParticle: public Particle {
 public:
     StoneParticle();
 //    void bounceOffWalls();
-    int team;
+//    int team;
 };
 

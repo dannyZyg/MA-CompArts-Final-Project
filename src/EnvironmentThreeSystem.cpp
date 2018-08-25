@@ -47,6 +47,11 @@ void EnvironmentThreeSystem::setup(int width, int height, int k) {
     glowTimer.setup();
     trigger = false;
     glow = false;
+    
+    outputTimer = Timer();
+    outputTimer.setup();
+    outputTimer.endTime = 30000;
+    
 }
 
 
@@ -271,6 +276,9 @@ void EnvironmentThreeSystem::draw() {
 
 void EnvironmentThreeSystem::display(){
 
+    outputTimer.run();
+//    cout << outputTimer.reached << endl;
+    
     // do this once per frame
     setupForces();
     impactEffect();
@@ -381,8 +389,13 @@ void EnvironmentThreeSystem::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
-    if(outputCondition > outputThreshold) trigger = true;
+    if(outputCondition > outputThreshold || outputTimer.reached) trigger = true;
     else(trigger = false);
+    
+//    if(outputTimer.reached) trigger = true;
+//    else if(!outputTimer.reached) trigger = false;
+    
+//    cout<<"trig "<<trigger << endl;
     
     // if these conditions are met, do this once only!
     
@@ -393,7 +406,9 @@ void EnvironmentThreeSystem::outputConditions(){
         glowTimer.reset();
         glowTimer.endTime = 5000;
         sequenceTrigger = true;
+        outputTimer.reset();
     }
+    
     
     // if the timer is active, glow
     if(!glowTimer.reached){

@@ -122,7 +122,6 @@ void EnvironmentSource::update(){
     newRules();
     
     
-    
 }
 
 void EnvironmentSource::draw(){

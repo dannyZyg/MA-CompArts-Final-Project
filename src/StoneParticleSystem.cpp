@@ -95,7 +95,9 @@ void StoneParticleSystem::setupColours(ofColor base_){
     }
     
     teamCols[0].setBaseColor(ofColor(27,125, 204));
-    teamCols[1].setBaseColor(ofColor(52,167, 173));
+//    teamCols[1].setBaseColor(ofColor(52,167, 173));
+    teamCols[1].setBaseColor(ofColor(255,0, 0));
+
     teamCols[2].setBaseColor(ofColor(145,49, 191));
     teamCols[3].setBaseColor(ofColor(255,211, 91));
 

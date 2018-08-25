@@ -15,7 +15,8 @@
 #include "FboSource.h"
 #include "EnvironmentOneSystem.h"
 #include "EnvironmentTwoSystem.h"
-//#include "ParticleSystem.h"
+#include "ParticleSystem.h"
+#include "E1System.hpp"
 #include "ofxFboBlur.h"
 #include "ofxBlur.h"
 #endif /* EnvironmentSource_hpp */
@@ -57,21 +58,22 @@ public:
     
     bool test;
     void newRules();
-    EnvironmentOneSystem enviro;
+//    EnvironmentOneSystem enviro;
+    ParticleSystem enviro;
 
 };
 
 class EnvironmentTestSource : public EnvironmentSource{
 //    EnvironmentOneSystem enviro;
     void setup();
-    e1v2test enviro;
+//    e1v2test enviro;
 
     
 };
 
 class EnvironmentTest2Source : public EnvironmentSource{
     void setup();
-    EnvironmentTwoSystem enviro;
+//    EnvironmentTwoSystem enviro;
 
 };
 //

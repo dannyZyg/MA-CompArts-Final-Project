@@ -9,6 +9,7 @@ EnvironmentTwoSystem::EnvironmentTwoSystem(){
     drawLines = true;
     cellWallsActive = true;
     lineAlpha = 0;
+    outputThreshold = 0.5;
 }
 
 void EnvironmentTwoSystem::setup(int width, int height, int k) {
@@ -38,6 +39,13 @@ void EnvironmentTwoSystem::setup(int width, int height, int k) {
     
     glowTimer.setup();
     glow = false;
+    
+    outputTimer = Timer();
+    outputTimer.setup();
+    
+    setFreeTimer = Timer();
+    setFreeTimer.setup();
+    setFreeTimer.endTime = 10000;
     
 }
 
@@ -274,6 +282,8 @@ void EnvironmentTwoSystem::display(){
 
 //    presetSelector("p3");
     
+    outputTimer.run();
+    setFreeTimer.run();
     
     // do this once per frame
     setupForces();
@@ -369,6 +379,9 @@ void EnvironmentTwoSystem::display(){
     
     outputConditions();
     ofPopMatrix();
+    
+//    cout<<"cell wall " <<scaledCells[0]<<endl;
+    
 
 }
 
@@ -380,6 +393,49 @@ void EnvironmentTwoSystem::particleInteractions(){
 
 void EnvironmentTwoSystem::outputConditions(){
     // TRIGGER FOR OUTPUT
+    
+    // run the timer for the glow effect
+    glowTimer.run();
+    
+    
+//    cout <<"trigger " <<trigger << endl;
+    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
+    if(scaledCells[0] > outputThreshold) trigger = true;
+    else(trigger = false);
+    
+    //    if(outputTimer.reached) trigger = true;
+    //    else if(!outputTimer.reached) trigger = false;
+    
+    //    cout<<"trig "<<trigger << endl;
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !systemOutput) {
+        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+        outputTimer.reset();
+    }
+    
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+    // reset the cluster tally
+    outputCondition = 0;
+    
+    
+    
     
 
     
@@ -408,6 +464,14 @@ void EnvironmentTwoSystem::impactEffect(){
 
 void EnvironmentTwoSystem::receiveCells(vector <float> cells_){
     cells = cells_;
+    
+    scaledCells = cells_;
+    
+    for(int i = 0; i < cells.size(); i ++){
+        scaledCells[i] = ofMap(scaledCells[i], -50, 50, 0, 1);
+    }
+    
+    
 }
 
 

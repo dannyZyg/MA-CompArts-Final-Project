@@ -84,10 +84,14 @@ public:
     
     vector <float> cells;
     void receiveCells(vector <float> cells_);
+    vector <float> scaledCells;
     
     bool cellWallsActive;
     
+    float outputCondition, outputThreshold;
     
+    bool trigger;
+    bool sequenceTrigger;
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
         int i = *(int*)&x; // store floating-point bits in integer
@@ -106,6 +110,8 @@ public:
 //    bool newRules;
     bool systemOutput;
     Timer glowTimer;
+    Timer outputTimer;
+    Timer setFreeTimer;
     bool glow;
     bool generateRules;
     
@@ -120,4 +126,10 @@ public:
     
     float lineAlpha;
     bool pingFromWalls;
+    
+    float clusterCount;
+    
+    int randomPath;
+    int destination;
+    
 };

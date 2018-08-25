@@ -99,7 +99,8 @@ void EnvironmentTwoSource::update(){
     gpuBlur.numBlurOverlays = 5;
     gpuBlur.blurOverlayGain = 150;
     
-    
+//    float noise2 = ofSignedNoise(ofGetFrameNum() * 0.01) * 1.2;
+//    cout<< "noise = " << noise2 << endl;
     // for all cell boundaries, contract and expand with perlin noise
     for(int i = 0; i < cells.size(); i ++){
         float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;

@@ -19,6 +19,7 @@ Particle::Particle(){
     maxSpeed = 5;
     blurOffset = 5;
     colIndex = ofRandom(5);
+//    team = ofRandom(4);
     
 }
 

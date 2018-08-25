@@ -242,12 +242,12 @@ void ofApp::scheduler(){
 //        E3_to_E1(randomPath);
     }
     
-
+    cout<< "t2 pct = " <<env2Timer.pct << endl;
 
 //ENVIRONMENT COMMUNICATION//
     
 // Environment One
-// Conditions under which to allow a sequence to start
+    // Conditions under which to allow a sequence to start
     if(environmentOne.enviro.sequenceTrigger && !environmentOne.enviro.sequenceActive){
         // if these conditions are met, do the following once only!
         environmentOne.enviro.randomPath = ofRandom(3); // choose random stone path
@@ -262,13 +262,34 @@ void ofApp::scheduler(){
         if(environmentOne.enviro.destination == 0){
             E1_to_E2(env1Timer, environmentOne.enviro.randomPath);
         }
-        if(environmentThree.enviro.destination == 1){
+        if(environmentOne.enviro.destination == 1){
             E1_to_E3(env1Timer, environmentOne.enviro.randomPath);
+        }
+    }
+    
+// Environment Two
+    // Conditions under which to allow a sequence to start
+    if(environmentTwo.enviro.sequenceTrigger && !environmentTwo.enviro.sequenceActive){
+        // if these conditions are met, do the following once only!
+        environmentTwo.enviro.randomPath = ofRandom(3); // choose random stone path
+        environmentTwo.enviro.destination = ofRandom(2); // choose random destination enviro
+        environmentTwo.enviro.sequenceActive = true; // condition to start the sequence
+        environmentTwo.enviro.sequenceTrigger = false; // reset the trigger condition
+        env2Timer.reset(); // start a fresh timer
+        env2Timer.activeStoneTime = ofRandom(1000, 5000); // chose how long the stones are active
+    }
+    // Then display the sequence while the bool is true
+    if(environmentTwo.enviro.sequenceActive){
+        if(environmentTwo.enviro.destination == 0){
+            E2_to_E1(env2Timer, environmentTwo.enviro.randomPath);
+        }
+        if(environmentThree.enviro.destination == 1){
+            E2_to_E3(env2Timer, environmentTwo.enviro.randomPath);
         }
     }
 
 // Environment Three
-// Conditions under which to allow a sequence to start
+    // Conditions under which to allow a sequence to start
     if(environmentThree.enviro.sequenceTrigger && !environmentThree.enviro.sequenceActive){
         // if these conditions are met, do the following once only!
         environmentThree.enviro.randomPath = ofRandom(3); // choose random stone path
@@ -278,7 +299,7 @@ void ofApp::scheduler(){
         env3Timer.reset(); // start a fresh timer
         env3Timer.activeStoneTime = ofRandom(1000, 5000); // chose how long the stones are active
     }
-// Then display the sequence while the bool is true
+    // Then display the sequence while the bool is true
     if(environmentThree.enviro.sequenceActive){
         if(environmentThree.enviro.destination == 0){
             E3_to_E1(env3Timer, environmentThree.enviro.randomPath);
