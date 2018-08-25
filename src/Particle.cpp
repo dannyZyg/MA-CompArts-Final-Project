@@ -26,7 +26,7 @@ Particle::Particle(){
     maxSize = 20;
     life = 255;
     membraneLife = 20;
-    membraneStep = 0.1;
+    membraneStep = 10;
     
 }
 
@@ -40,7 +40,7 @@ E1Particle::E1Particle(){
     
     team = ofRandom(2);
     membraneLife = 20;
-    membraneStep = 1;
+    membraneStep = 10;
     
     vel = ofVec2f(ofRandom(-5, 5), ofRandom(-5, 5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
@@ -209,7 +209,7 @@ void Particle::limitMembraneLife(){
 
 
 // Function that reverses velocity when hitting an outer cell wall
-void E2Particle::bounceOffOuterCell(float outer){
+void Particle::bounceOffOuterCell(float outer){
     bool collision = false;
     
     float d = ofDist(x, y, origin.x, origin.y);
@@ -237,7 +237,7 @@ void E2Particle::bounceOffOuterCell(float outer){
 }
 
 // Function that reverses velocity when hitting an inner cell wall
-void E2Particle::bounceOffInnerCell(float inner){
+void Particle::bounceOffInnerCell(float inner){
     bool collision = false;
     
     float d = ofDist(x, y, origin.x, origin.y);
@@ -265,11 +265,11 @@ void E2Particle::bounceOffInnerCell(float inner){
     }
 }
 
-void E2Particle::receiveCells(vector <float> cells_){
+void Particle::receiveCells(vector <float> cells_){
     cells = cells_;
 }
 
-void E2Particle::returnFromWall(){
+void Particle::returnFromWall(){
     float distFromOrigin = ofDist(origin.x, origin.y, x, y);
     //    distFromWall = ofDist(externalRad, distFromOrigin);
     bool trigger;

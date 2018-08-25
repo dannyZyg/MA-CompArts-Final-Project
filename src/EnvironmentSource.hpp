@@ -18,6 +18,7 @@
 #include "ParticleSystem.h"
 #include "E1System.hpp"
 #include "E3System.hpp"
+#include "E2System.hpp"
 #include "ofxFboBlur.h"
 #include "ofxBlur.h"
 
@@ -63,7 +64,10 @@ public:
     bool test;
     void newRules();
 //    EnvironmentOneSystem enviro;
-    E1System enviro;
+    E2System enviro;
+    
+    vector <float> cells;
+    vector <float> noiseSeed;
 
 };
 

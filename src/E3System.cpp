@@ -12,7 +12,7 @@ E3System::E3System(){
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
-    drawLines = false;
+    drawLines = true;
     angle = 0;
     impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
     
@@ -47,9 +47,6 @@ void E3System::setupParticles(){
 }
 
 void E3System::particleInteractions(){
-    
-    
-    cout << particles[0].team << endl;
     
     
     for(int i = 0; i < particles.size(); i++) {
@@ -173,14 +170,11 @@ void E3System::impactEffect(){
         //              ofDrawLine(0, 0, 100, 100);
         //        ofDrawCircle(impactTarget, 200);
         addRepulsionForce(impactTarget.x, impactTarget.y, 200, 3);
-        drawLines = true;
-        lineAlpha += 2;
+
     }
     else{
-        drawLines = false;
-        lineAlpha -= 2;
     }
-    //    ofPopStyle();
-    if(lineAlpha > 255) lineAlpha = 255;
-    if (lineAlpha < 0) lineAlpha = 0;
+  
 }
+
+

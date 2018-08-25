@@ -57,6 +57,19 @@ public:
     float membraneStep;
     bool alone;
     
+    void receiveCells(vector <float> cells_);
+    vector <float> cells;
+    
+    
+    void returnFromWall();
+    void bounceOffOuterCell(float outer);
+    void bounceOffInnerCell(float inner);
+    Timer wallTimer;
+    bool stuckOnWall;
+    float distFromWall;
+    
+    
+    
 };
 
 
@@ -75,14 +88,7 @@ class E2Particle: public Particle {
 public:
     E2Particle();
     
-    void returnFromWall();
-    void bounceOffOuterCell(float outer);
-    void bounceOffInnerCell(float inner);
-    vector <float> cells;
-    void receiveCells(vector <float> cells_);
-    Timer wallTimer;
-    bool stuckOnWall;
-    float distFromWall;
+
 };
 
 class E3Particle: public Particle {

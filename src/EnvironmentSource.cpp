@@ -50,6 +50,19 @@ void EnvironmentSource::setup(){
     blur2 = true;
     startTime = 0;
     //    active = true;
+    
+    
+    
+    int num = 3;
+    for(int i = 0; i < num; i ++){
+        float r = rad / num * i;
+        cells.push_back(r);
+        
+        float seed = ofRandom(1000);
+        noiseSeed.push_back(seed);
+    }
+    
+    
 }
 
 void EnvironmentTestSource::setup(){
@@ -104,8 +117,13 @@ void EnvironmentSource::update(){
     
     //    enviro.addRepulsionForce(100, 300, 200, 1);
     
+    for(int i = 0; i < cells.size(); i ++){
+        float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;
+        cells[i] += noise;
+    }
     
-    
+    enviro.receiveCells(cells);
+    enviro.updateColours();
     
     if(active){
         //        startTime = 0;
@@ -178,6 +196,17 @@ void EnvironmentSource::draw(){
         
         
     }
+    
+    
+    //  draw the noisy circle guide
+    
+    for(int i = 0; i < cells.size(); i ++){
+        ofSetColor(255);
+        ofNoFill();
+        ofDrawCircle(origin, cells[i]);
+        ofDrawBitmapString(ofToString(i), origin.x + cells[i], origin.y);
+    }
+    
 }
 
 void EnvironmentSource::newRules(){

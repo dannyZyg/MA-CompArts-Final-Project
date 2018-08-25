@@ -94,6 +94,10 @@ void ParticleSystem::outputConditions(){
     //Placeholder function which will be overrided by child classes
 }
 
+void ParticleSystem::seedWithRandomValues(){
+    //Placeholder function which will be overrided by child classes
+}
+
 Particle& ParticleSystem::operator[](unsigned i) {
     return particles[i];
 }
@@ -282,12 +286,22 @@ void ParticleSystem::display(){
 
     // do this once per frame
     setupForces();
+    
     impactEffect();
+    fadeConnectingLines();
+    seedWithRandomValues();
+    
     // apply per-particle forces
     if(drawLines) {
 //        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
 //        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
-        ofSetColor(255);
+        
+        
+//        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
+//        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
+//
+//        ofSetColor(lineCol, lineAlpha);
+        ofSetColor(255, lineAlpha);
         ofSetLineWidth(2);
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
@@ -313,6 +327,17 @@ void ParticleSystem::display(){
 
     outputConditions();
 
+}
+
+void ParticleSystem::fadeConnectingLines(){
+    if(impact){
+        lineAlpha += 2;
+    }
+    else{
+        lineAlpha -= 1;
+    }
+    if(lineAlpha > 255) lineAlpha = 255;
+    if (lineAlpha < 0) lineAlpha = 0;
 }
 
 

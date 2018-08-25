@@ -48,6 +48,8 @@ public:
     float brightness;
     float saturation;
     
+    void fadeConnectingLines();
+    
     float lineAlpha;
     
     int kParticles;
@@ -74,6 +76,7 @@ public:
     bool impact;
     bool systemOutput;
     bool glow;
+    bool randomVals;
     
     int destination;
     int randomPath;
@@ -84,6 +87,7 @@ public:
     virtual void particleInteractions();
     virtual void outputConditions();
     virtual void impactEffect();
+    virtual void seedWithRandomValues();
 
     
     inline float InvSqrt(float x){

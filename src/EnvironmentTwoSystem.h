@@ -82,9 +82,10 @@ public:
     ofVec2f origin;
     float externalRad;
     
+      vector <float> scaledCells;
     vector <float> cells;
     void receiveCells(vector <float> cells_);
-    vector <float> scaledCells;
+  
     
     bool cellWallsActive;
     

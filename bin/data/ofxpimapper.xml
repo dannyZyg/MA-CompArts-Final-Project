@@ -1394,49 +1394,4 @@
             <perspectiveWarping>1</perspectiveWarping>
         </properties>
     </surface>
-    <surface type="5">
-        <vertices>
-            <vertex>
-                <x>697.000000000</x>
-                <y>548.000000000</y>
-            </vertex>
-            <vertex>
-                <x>682.846801758</x>
-                <y>735.711181641</y>
-            </vertex>
-            <vertex>
-                <x>991.153076172</x>
-                <y>735.711181641</y>
-            </vertex>
-            <vertex>
-                <x>991.153076172</x>
-                <y>562.288818359</y>
-            </vertex>
-        </vertices>
-        <texCoords>
-            <texCoord>
-                <x>0.046666667</x>
-                <y>-0.016666668</y>
-            </texCoord>
-            <texCoord>
-                <x>1.046666622</x>
-                <y>-0.016666668</y>
-            </texCoord>
-            <texCoord>
-                <x>1.046666622</x>
-                <y>0.983333349</y>
-            </texCoord>
-            <texCoord>
-                <x>0.046666667</x>
-                <y>0.983333349</y>
-            </texCoord>
-        </texCoords>
-        <source>
-            <source-type>fbo</source-type>
-            <source-name>Environment test</source-name>
-        </source>
-        <properties>
-            <perspectiveWarping>1</perspectiveWarping>
-        </properties>
-    </surface>
 </surfaces>

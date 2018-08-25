@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "FboSource.h"
 #include "EnvironmentTwoSystem.h"
+#include "E2System.hpp"
 #include "ParticleSystem.h"
 #include "ofxBlur.h"
 #include "ofxFboBlur.h"
@@ -33,7 +34,7 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     ofVec2f origin;
     float rad;
     
-    EnvironmentTwoSystem enviro;
+    E2System enviro;
     
     
     vector <float> cells;

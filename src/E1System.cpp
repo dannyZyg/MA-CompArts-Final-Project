@@ -15,7 +15,7 @@ E1System::E1System(){
     particleRepulsion = 0.9;// 0.5;
     centerAttraction = 0.1; //0.6;
     
-    drawLines = false;
+    drawLines = true;
     
     impact = false;
     maxRad = 20;
@@ -140,20 +140,16 @@ void E1System::outputConditions(){
 void E1System::impactEffect(){
     
     if(impact){
-        drawLines = true;
         addRepulsionForce(origin.x, origin.y, 200, 3);
     }
     else{
-        drawLines = false;
+        
     }
     
 }
 
 
 void E1System::particleInteractions(){
-    
-    
-    
     
     //Send an output signal if a certain number of particles reach a particular size
     outputCondition = 0;
