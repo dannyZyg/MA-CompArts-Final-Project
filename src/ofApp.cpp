@@ -238,7 +238,7 @@ void ofApp::scheduler(){
     }
 
     if(sensorSequenceActive){
-        sensorToSystem(sensorTimer, 1);
+        sensorToSystem(sensorTimer, 2);
 //        E3_to_E1(randomPath);
     }
     
@@ -310,11 +310,7 @@ void ofApp::sequenceComplete(Timer& t, int timing){
         if(t.timer == sensorTimer.timer){
             sensorSequenceActive = false;
         }
-        
-        
-
     }
-    
 }
 
 
@@ -612,17 +608,9 @@ void ofApp::E3_to_E2(Timer& t, int variation){
 
 
 void ofApp::sensorToSystem(Timer& t, int variation){
+    
+// Communication with environment one
     if(variation == 0){
-        triggerStone(t, small_stones_13_16.stones[1], 0);
-        triggerStone(t, small_stones_13_16.stones[0], 1);
-        triggerStone(t, med_stones_5_8.stones[3], 2);
-        triggerStone(t, large_stones.stones[3], 3);
-        triggerStone(t, small_stones_13_16.stones[2], 4);
-        triggerEnviro2(t, 5);
-        sequenceComplete(t, 6);
-
-    }
-    if(variation == 1){
         triggerStone(t, small_stones_13_16.stones[1], 0);
         triggerStone(t, small_stones_13_16.stones[0], 1);
         triggerStone(t, small_stones_9_12.stones[2], 2);
@@ -630,6 +618,76 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(t, small_stones_9_12.stones[1], 4);
         triggerEnviro1(t, 5);
         sequenceComplete(t, 6);
+    }
+    
+    if(variation == 1){
+        triggerStone(t, small_stones_13_16.stones[1], 0);
+        triggerStone(t, small_stones_13_16.stones[0], 1);
+        triggerStone(t, med_stones_5_8.stones[3], 2);
+        triggerStone(t, large_stones.stones[2], 3);
+        triggerStone(t, med_stones_5_8.stones[1], 4);
+        triggerStone(t, small_stones_5_8.stones[2], 5);
+        triggerEnviro1(t, 6);
+        sequenceComplete(t, 7);
+    }
+    
+// Communication with environment two
+    if(variation == 2){
+        triggerStone(t, small_stones_13_16.stones[1], 0);
+        triggerStone(t, small_stones_13_16.stones[0], 1);
+        triggerStone(t, med_stones_5_8.stones[3], 2);
+        triggerStone(t, large_stones.stones[3], 3);
+        triggerStone(t, small_stones_13_16.stones[2], 4);
+        triggerEnviro2(t, 5);
+        sequenceComplete(t, 6);
+    }
+    
+    if(variation == 3){
+        triggerStone(t, small_stones_9_12.stones[3], 0);
+        triggerStone(t, small_stones_9_12.stones[2], 1);
+        triggerStone(t, small_stones_13_16.stones[0], 2);
+        triggerStone(t, med_stones_5_8.stones[3], 3);
+        triggerStone(t, large_stones.stones[2], 4);
+        triggerStone(t, med_stones_5_8.stones[1], 5);
+        triggerStone(t, small_stones_5_8.stones[2], 6);
+        triggerEnviro2(t, 7);
+        sequenceComplete(t, 8);
+    }
+    
+// Communication with environment three
+    if(variation == 4){
+        triggerStone(t, small_stones_9_12.stones[3], 0);
+        triggerStone(t, small_stones_9_12.stones[2], 1);
+        triggerStone(t, small_stones_13_16.stones[0], 2);
+        triggerStone(t, med_stones_5_8.stones[3], 3);
+        triggerStone(t, large_stones.stones[2], 4);
+        triggerStone(t, med_stones_5_8.stones[1], 6);
+        triggerStone(t, med_stones_5_8.stones[0], 7);
+        triggerStone(t, large_stones.stones[1], 8);
+        triggerStone(t, med_stones_1_4.stones[3], 9);
+        triggerStone(t, med_stones_1_4.stones[2], 10);
+        triggerStone(t, small_stones_5_8.stones[1], 11);
+        triggerEnviro3(t, 12);
+        sequenceComplete(t, 13);
+        
+    }
+    
+    if(variation == 5){
+        triggerStone(t, small_stones_13_16.stones[1], 0);
+        triggerStone(t, small_stones_13_16.stones[0], 1);
+        triggerStone(t, med_stones_5_8.stones[3], 2);
+        triggerStone(t, large_stones.stones[2], 3);
+        triggerStone(t, med_stones_5_8.stones[2], 4);
+        triggerStone(t, small_stones_9_12.stones[0], 5);
+        triggerStone(t, small_stones_5_8.stones[3], 6);
+        triggerStone(t, med_stones_5_8.stones[0], 7);
+        triggerStone(t, large_stones.stones[1], 8);
+        triggerStone(t, med_stones_1_4.stones[3], 9);
+        triggerStone(t, med_stones_1_4.stones[2], 10);
+        triggerStone(t, small_stones_5_8.stones[1], 11);
+        triggerEnviro3(t, 12);
+        sequenceComplete(t, 13);
+        
     }
 }
 

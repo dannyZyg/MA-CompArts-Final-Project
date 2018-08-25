@@ -270,6 +270,7 @@ void EnvironmentOneSystem::display(){
     // do this once per frame
     setupForces();
     impactEffect();
+    
 //    ofPushMatrix();
     
     // apply per-particle forces

@@ -393,7 +393,7 @@ void EnvironmentTwoSystem::impactEffect(){
     target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
     if(impact){
-        addRepulsionForce(target.x, target.y, 100, 0.5);
+        addRepulsionForce(target.x, target.y, 250, 3);
 //        drawLines = true;
         lineAlpha += 2;
         if(lineAlpha > 255) lineAlpha = 255;
