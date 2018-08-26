@@ -69,6 +69,7 @@ public:
     float distFromWall;
     
     
+    void collectStuckParticles();
     
 };
 

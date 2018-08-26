@@ -5,7 +5,7 @@ ParticleSystem::ParticleSystem(){
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
-    drawLines = false;
+    drawLines = true;
     angle = 0;
     impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
     
@@ -293,20 +293,37 @@ void ParticleSystem::display(){
     
     // apply per-particle forces
     if(drawLines) {
-//        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
-//        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
+        
+        clusterCount = 0;
+    
+        for(int i = 0; i < particles.size(); i ++){
+            vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 50);
+            for(int j = 0; j < nei.size(); j ++){
+                float d = ofDist(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+                if(d < 5) clusterCount ++;
+            }
+            if(clusterCount > 500) addRepulsionForce(particles[i], 20, 0.7);
+        }
+        
+        
+        
+        
+        
+        
+        
+        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
+        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
         
         
 //        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
 //        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
 //
-//        ofSetColor(lineCol, lineAlpha);
-        ofSetColor(255, lineAlpha);
+        ofSetColor(lineCol, lineAlpha);
+//        ofSetColor(255, lineAlpha);
         ofSetLineWidth(2);
+        
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
     }
-
-
     particleInteractions();
 
 
@@ -334,10 +351,13 @@ void ParticleSystem::fadeConnectingLines(){
         lineAlpha += 2;
     }
     else{
-        lineAlpha -= 1;
+        lineAlpha -= 2;
     }
     if(lineAlpha > 255) lineAlpha = 255;
     if (lineAlpha < 0) lineAlpha = 0;
+    
+//    lineAlpha = ofMap(ofGetMouseX(), 0 , ofGetWidth(), 0, 255);
+    
 }
 
 

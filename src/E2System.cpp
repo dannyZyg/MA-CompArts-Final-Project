@@ -14,7 +14,7 @@ E2System::E2System(){
     particleRepulsion = 0.5;
     centerAttraction = 0;
     particleAttraction = 0;
-    drawLines = true;
+//    drawLines = true;
     cellWallsActive = true;
     lineAlpha = 0;
     outputThreshold = 0.5;

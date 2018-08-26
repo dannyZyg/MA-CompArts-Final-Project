@@ -23,5 +23,6 @@ public:
     virtual void particleInteractions() override;
     virtual void outputConditions() override;
     virtual void impactEffect() override;
+    void drawTeamLines();
     
 };

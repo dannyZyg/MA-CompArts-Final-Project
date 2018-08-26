@@ -15,7 +15,7 @@ E1System::E1System(){
     particleRepulsion = 0.9;// 0.5;
     centerAttraction = 0.1; //0.6;
     
-    drawLines = true;
+//    drawLines = true;
     
     impact = false;
     maxRad = 20;

@@ -174,6 +174,7 @@ void Particle::draw() {
 
 
 void Particle::displayParticle(){
+    collectStuckParticles();
     ofSetColor(col);
     ofDrawCircle(x, y, r);
     
@@ -301,6 +302,51 @@ void Particle::returnFromWall(){
         
         
     }
+}
+
+
+void Particle::collectStuckParticles(){
+    
+    
+    
+    bool collision = false;
+    
+    int d = ofDist(x, y, origin.x, origin.y);
+    if ((d > externalRad )){
+        
+//        collision = true;
+        
+        ofVec2f out = ofVec2f(x, y);
+        ofVec2f offset = ofVec2f(ofRandom( -50, 50), ofRandom(-50, 50));
+        ofVec2f newOrigin = origin + offset;
+        ofVec2f ret = origin - out;
+        
+//        ret.normalize();
+//        ret *= 10;
+        applyForce(ret);
+        
+//        if(rebound) ret = ret.normalize();
+        
+//        if(rebound) applyForce(ret);
+        
+        x += ret.x;
+        y += ret.y;
+        
+        xv *= -1;
+        yv *= -1;
+        
+        vel.x *= -1;
+        vel.y *= -1;
+        
+        if(collision && rebound){
+            xv *= 0.9;
+            yv *= 0.9;
+        }
+    }
+    
+    
+    
+    
 }
 
 

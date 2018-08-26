@@ -12,14 +12,14 @@ E3System::E3System(){
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
-    drawLines = true;
+//    drawLines = true;
     angle = 0;
     impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
     
-    //    lineAlpha = 0;
+//    lineAlpha = 0;
     
     outputThreshold = 200;
-    
+    drawLines = true;
     rebound = true;
     trigger = false;
     glow = false;
@@ -49,32 +49,40 @@ void E3System::setupParticles(){
 void E3System::particleInteractions(){
     
     
+    
     for(int i = 0; i < particles.size(); i++) {
-        Particle& cur = particles[i];
+//        Particle& particles[i] = particles[i];
         // global force on other particles
         
+//        cout <<particles[i].team << endl;
+        vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 50);
         
-        vector<Particle*> nei = getNeighbors(cur.x, cur.y, 50);
+        vector<Particle*> clusters = getNeighbors(particles[i].x, particles[i].y, 10);
         
-        vector<Particle*> clusters = getNeighbors(cur.x, cur.y, 10);
-        
-        vector<Particle*> global = getNeighbors(cur.x, cur.y, 80);//externalRad/3);
+        vector<Particle*> global = getNeighbors(particles[i].x, particles[i].y, 80);//externalRad/3);
         
         for(int j = 0; j < nei.size(); j ++){
             
-            addRepulsionForce(cur, particleNeighborhood, 0.04);
+            addRepulsionForce(particles[i], particleNeighborhood, 0.04);
             
             
-            if(cur.team != nei[j] -> team){
+            if(particles[i].team != nei[j] -> team){
                 ofPushStyle();
-                ofSetColor(255);
-                ofDrawLine(cur.x, cur.y, nei[j] -> x, nei[j] -> y);
-                addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
+//                ofSetColor(255, 0, 0);
+//                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+                addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
                 ofPopStyle();
             }
             
-            if(cur.team == nei[j] -> team){
-                addAttractionForce(cur, particleNeighborhood, 0.06);
+            if(particles[i].team == nei[j] -> team){
+                addAttractionForce(particles[i], particleNeighborhood, 0.06);
+                
+                ofPushStyle();
+//                ofSetColor(0, 255, 0);
+//                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+//                addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
+                ofPopStyle();
+                
             }
         }
         
@@ -82,8 +90,8 @@ void E3System::particleInteractions(){
         //Send an output if the particles are clusered to a certain degree
         
         for(int j = 0; j < clusters.size(); j ++){
-            if(cur.team == clusters[j] -> team){
-                float d = ofDist(cur.x, cur.y, clusters[j] -> x, clusters[j] -> y);
+            if(particles[i].team == clusters[j] -> team){
+                float d = ofDist(particles[i].x, particles[i].y, clusters[j] -> x, clusters[j] -> y);
                 if(d < 10){
                     outputCondition ++;
                 }
@@ -96,21 +104,49 @@ void E3System::particleInteractions(){
             if(glow){
                 ofPushStyle();
                 float alpha = ofMap(sin(ofGetFrameNum() * 0.01 + noiseSeed[i]), -1, 1, 0, 200);
-                ofColor c = cur.col;
+                ofColor c = particles[i].col;
                 ofSetColor(c, alpha);
-                ofDrawLine(cur.x, cur.y, global[j] -> x, global[j] -> y);
+//                ofDrawLine(particles[i].x, particles[i].y, global[j] -> x, global[j] -> y);
                 ofPopStyle();
             }
         }
         
         // forces on this particle
-        cur.bounceOffWalls(rebound);
-        cur.addDampingForce();
+        particles[i].bounceOffWalls(rebound);
+        particles[i].addDampingForce();
         
     }
     
     //    cout<< "e3 output con" << outputCondition << endl;
     
+}
+
+void E3System::drawTeamLines(){
+    
+    for(int i = 0; i < particles.size(); i++) {
+
+        vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 50);
+        
+
+        for(int j = 0; j < nei.size(); j ++){
+            
+            if(particles[i].team != nei[j] -> team){
+                ofPushStyle();
+                ofSetColor(255, 0, 0);
+                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+                ofPopStyle();
+            }
+            
+            if(particles[i].team == nei[j] -> team){
+                ofPushStyle();
+                ofSetColor(0, 255, 0);
+                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+                ofPopStyle();
+                
+            }
+        }
+    
+    }
 }
 
 void E3System::outputConditions(){
@@ -157,7 +193,6 @@ void E3System::outputConditions(){
 
 
 void E3System::impactEffect(){
-    
     //    ofPushStyle();
     
     
