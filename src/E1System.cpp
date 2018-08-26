@@ -13,10 +13,8 @@ E1System::E1System(){
     
     particleNeighborhood = 80;
     particleRepulsion = 0.9;// 0.5;
-    centerAttraction = 0.1; //0.6;
-    
-//    drawLines = true;
-    
+    centerAttraction = 0; //0.6;
+    drawLines = true;
     impact = false;
     maxRad = 20;
     
@@ -26,15 +24,18 @@ E1System::E1System(){
 }
 
 void E1System::setupParticles(){
+    
     for(int i = 0; i < kParticles; i++) {
-        
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
-        E1Particle particle = E1Particle();
+        Particle particle = Particle();
         particle.origin = origin;
         particle.externalRad = externalRad;
+        particle.setupE1();
         particles.push_back(particle);
     }
+    
+    
     
     team1Base = ofColor(27,125, 204);
     team2Base = ofColor(0,125, 90);
@@ -54,27 +55,142 @@ void E1System::update() {
     }    
 }
 
-void E1System::alterSize(Particle cur_){
+void E1System::particleInteractions(){
+    
+    //Send an output signal if a certain number of particles reach a particular size
+    outputCondition = 0;
+    
+    float sinsz = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, -10, 10);
+//    cout <<sinsz <<endl;
+    for(int i = 0; i < particles.size(); i++) {
+    
+        
+        
+        // alter size
+        
+//        alterSize(particles[i]);
+        
+        
+    
+        
+        // global force on other particles
+        addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
+        // forces on this particle
+        addAttractionForce(particles[i], particleNeighborhood, particleAttraction);
+        
+        particles[i].limitSize();
+        particles[i].limitMembraneLife();
+        particles[i].bounceOffWalls(true);
+        particles[i].addDampingForce();
+        
+//        alterSize(particles[i]);
+        
+        
+//                if(!particles[i].alone) {
+//                    particles[i].r -= 0.1;
+//                    particles[i].membraneLife ++;
+//                }
+//                else if (particles[i].alone) {
+//                    particles[i].r += 2;
+//                    particles[i].membraneLife -= 2;
+//                }
+//        cout<<particles[i].alone<<endl;
+
+        
+        
+        if(particles[i].r > maxRad - 5) outputCondition ++;
+        
+        
+        
+        // team swap
+        vector<Particle*> membranes = getNeighbors(particles[i].x, particles[i].y, region);// particles[i].membraneRad + maxRad);
+        
+//        cout<<particles[i].membraneLife<<endl;
+        
+        for(int j = 0; j < membranes.size(); j ++){
+            if(particles[i].team == !membranes[j] -> team){
+                if(particles[i].membraneLife > 15 && membranes[j] -> membraneLife > 15){
+                    //                    cur.col = ofColor(255, 0, 0);
+//                    ofSetColor(255, 0, 0);
+//                    ofDrawLine(particles[i].x, particles[i].y, membranes[j] -> x, membranes[j] -> y);
+
+//                    ofColor c1, c2;
+//
+//                    c1 = particles[i].col;
+//                    c2 = membranes[j] -> col;
+//
+//                    particles[i].col = c2;
+//                    membranes[j] -> col = c1;
+//
+                }
+            }
+        }
+//        particles[i].r += sinsz;
+    }
+    
+    
+}
+
+
+
+void E1System::drawMembranes(){
+    
+//    int nearby;
+//
+//    maxRad = particles[0].maxSize;
+////    vector<Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region + 10);
+//
+//    ofPushStyle();
+//    ofFill();
+//    for(int i = 0; i < particles.size(); i ++){
+//        region = particles[i].r + maxRad;
+//        ofSetColor(255);
+//        ofDrawCircle(particles[i].x, particles[i].y, region);
+//    }
+//
+//    ofPopStyle();
+    
+    
+    for(int i = 0; i < particles.size(); i ++){
+        alterSize(particles[i]);
+    }
+    
+    
+}
+
+
+
+
+
+void E1System::alterSize(Particle& cur_){
     
     int nearby;
-    region = cur_.r + maxRad;
+    region = 45;
     
     maxRad = particles[0].maxSize;
-    vector<Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region + 10);
+    vector<Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region);
     
     //alter size
     
     //test
     nearby = closeNei.size();
+    
+//    cout<<nearby<<endl;
+    
     ofPushStyle();
     ofFill();
-    ofSetColor(200, cur_.membraneLife);
+    ofSetColor(125, cur_.membraneLife);
     if(nearby > 1){
         ofDrawCircle(cur_.x, cur_.y, region);
         cur_.alone = false;
         //        addAttractionForce(cur_, region, 0.2);
     }
-    else(cur_.alone = true);
+    else{
+        cur_.alone = true;
+    }
+    
+    
+    cout<< cur_.membraneLife<<endl;
     
     ofPopStyle();
     
@@ -85,7 +201,18 @@ void E1System::alterSize(Particle cur_){
         
         if(overlap < dist){
             //            addRepulsionForce(cur_, cur_.r, 1);
-            ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+//            ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
+            
+            ofColor c1, c2;
+
+            c1 = cur_.col;
+            c2 = closeNei[j] -> col;
+
+            cur_.col = c2;
+            closeNei[j] -> col = c1;
+            
+            
+            
         }
         if(!cur_.alone) {
             cur_.r -= cur_.membraneStep;
@@ -93,7 +220,7 @@ void E1System::alterSize(Particle cur_){
         }
         else if (cur_.alone) {
             cur_.r += cur_.membraneStep;
-            cur_.membraneLife -= 2;
+            cur_.membraneLife -= 4;
         }
     }
 }
@@ -149,51 +276,7 @@ void E1System::impactEffect(){
 }
 
 
-void E1System::particleInteractions(){
-    
-    //Send an output signal if a certain number of particles reach a particular size
-    outputCondition = 0;
-    for(int i = 0; i < particles.size(); i++) {
-        
-//        E1Particle& cur = particles[i];
-        
-        vector<Particle*> membranes = getNeighbors(particles[i].x, particles[i].y, particles[i].membraneRad + maxRad);
-        
-        // global force on other particles
-        addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        addAttractionForce(particles[i], particleNeighborhood, 0.5);
-        
-        particles[i].limitSize();
-        particles[i].limitMembraneLife();
-        particles[i].bounceOffWalls(true);
-        particles[i].addDampingForce();
-        
-        alterSize(particles[i]);
-        
-        if(particles[i].r > maxRad - 5) outputCondition ++;
-        
-        // team swap
-        for(int j = 0; j < membranes.size(); j ++){
-            if(particles[i].team == !membranes[j] -> team){
-                if(particles[i].membraneLife > 30 && membranes[j] -> membraneLife > 30){
-                    //                    cur.col = ofColor(255, 0, 0);
-                    
-                    ofColor c1, c2;
-                    
-                    c1 = particles[i].col;
-                    c2 = membranes[j] -> col;
-                    
-                    particles[i].col = c2;
-                    membranes[j] -> col = c1;
-                    
-                }
-            }
-        }
-        
-        
-    }
-    
-    
-}
+
+
+
 

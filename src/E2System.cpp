@@ -26,9 +26,10 @@ void E2System::setupParticles(){
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
-        E2Particle particle = E2Particle();
+        Particle particle = Particle();
         particle.origin = origin;
         particle.externalRad = externalRad;
+        particle.setupE2();
         particles.push_back(particle);
     }
     

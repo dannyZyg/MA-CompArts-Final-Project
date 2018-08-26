@@ -26,7 +26,10 @@ public:
     virtual void particleInteractions() override;
     virtual void outputConditions() override;
     virtual void impactEffect() override;
-    void alterSize(Particle cur_);
+    void alterSize(Particle& cur_);
+    
+    
+    void drawMembranes();
     
     float maxRad, minRad;
     float region;

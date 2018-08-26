@@ -30,9 +30,10 @@ void E3System::setupParticles(){
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
-        E3Particle particle = E3Particle();
+        Particle particle = Particle();
         particle.origin = origin;
         particle.externalRad = externalRad;
+        particle.setupE3();
         particles.push_back(particle);
     }
     

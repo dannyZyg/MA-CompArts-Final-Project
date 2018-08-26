@@ -19,6 +19,10 @@ public:
     Particle();
 	Particle(float x_, float y_);
     
+    void setupE1();
+    void setupE2();
+    void setupE3();
+    
 	void updatePosition();
 	void resetForce();
     void bounceOffWalls(bool rebound_);
@@ -70,15 +74,16 @@ public:
     
     
     void collectStuckParticles();
-    
+    float minMembraneLife, maxMembraneLife;
 };
 
 
 class E1Particle: public Particle {
+    
 public:
     E1Particle();
     
-
+    float testVal;
 
     
     

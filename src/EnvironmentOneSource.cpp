@@ -122,7 +122,8 @@ void EnvironmentOneSource::draw(){
     
     ofSetColor(0, 255, 0);
     enviro.display();
-    
+    enviro.drawMembranes();
+
     
     if(blur1){
         blur.end();

@@ -8,8 +8,6 @@ Particle::Particle(){
     
     xv = ofRandom(-3, 3);
     yv = ofRandom(-3, 3);
-
-    
     vel = ofVec2f(0,0);
     
     damping = .01;
@@ -23,15 +21,17 @@ Particle::Particle(){
     
     
     minSize = 4;
-    maxSize = 20;
+    maxSize = 50;
     life = 255;
     membraneLife = 20;
-    membraneStep = 10;
+    membraneStep = 1;
+    membraneRad = 20;
+
     
 }
 
 
-E1Particle::E1Particle(){
+void Particle::setupE1(){
 
     r = ofRandom (3, 15);
     minSize = 4;
@@ -40,13 +40,17 @@ E1Particle::E1Particle(){
     
     team = ofRandom(2);
     membraneLife = 20;
-    membraneStep = 10;
+    membraneStep = 1;
+    membraneRad = 20;
+    minMembraneLife = 20;
+    maxMembraneLife = 80;
+    
     
     vel = ofVec2f(ofRandom(-5, 5), ofRandom(-5, 5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
 }
 
-E2Particle::E2Particle(){
+void Particle::setupE2(){
     xv = ofRandom(-3, 3);
     yv = ofRandom(-3, 3);
     wallTimer = Timer();
@@ -60,7 +64,7 @@ E2Particle::E2Particle(){
     
 }
 
-E3Particle::E3Particle(){
+void Particle::setupE3(){
     r = ofRandom (4, 12);
 //    r = 30;
     xv = ofRandom(-3, 3);
@@ -203,8 +207,8 @@ void Particle::limitSize(){
 }
 
 void Particle::limitMembraneLife(){
-    if(membraneLife < 20) membraneLife = 20;
-    if(membraneLife > 200) membraneLife = 200;
+    if(membraneLife < minMembraneLife) membraneLife = minMembraneLife;
+    if(membraneLife > maxMembraneLife) membraneLife = maxMembraneLife;
     
 }
 
