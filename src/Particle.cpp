@@ -23,7 +23,7 @@ Particle::Particle(){
     minSize = 4;
     maxSize = 50;
     life = 255;
-    membraneLife = 20;
+    membraneLife = 0;
     membraneStep = 1;
     membraneRad = 20;
 
@@ -41,7 +41,7 @@ void Particle::setupE1(){
     team = ofRandom(2);
     membraneLife = 20;
     membraneStep = 1;
-    membraneRad = 20;
+    membraneRad = 30;
     minMembraneLife = 20;
     maxMembraneLife = 80;
     
@@ -71,6 +71,8 @@ void Particle::setupE3(){
     yv = ofRandom(-3, 3);
     team = ofRandom(2);
     damping = .01;
+    
+    membraneRad = 0;
     
 }
 
@@ -123,6 +125,7 @@ void Particle::updatePosition() {
     if( yv > maxSpeed) yv = maxSpeed;
 
     
+        
 }
 
 void Particle::resetForce() {
@@ -135,7 +138,8 @@ void Particle::bounceOffWalls(bool rebound_) {
     rebound = rebound_;
     
     int d = ofDist(x, y, origin.x, origin.y);
-    if ((d > externalRad - r - blurOffset )){
+    
+    if ((d > externalRad - r - blurOffset)){
         
         collision = true;
         
@@ -178,7 +182,7 @@ void Particle::draw() {
 
 
 void Particle::displayParticle(){
-    collectStuckParticles();
+//    collectStuckParticles();
     ofSetColor(col);
     ofDrawCircle(x, y, r);
     
@@ -316,25 +320,23 @@ void Particle::collectStuckParticles(){
     bool collision = false;
     
     int d = ofDist(x, y, origin.x, origin.y);
-    if ((d > externalRad )){
+    if ((d >= externalRad )){
         
-//        collision = true;
+        collision = true;
         
         ofVec2f out = ofVec2f(x, y);
-        ofVec2f offset = ofVec2f(ofRandom( -50, 50), ofRandom(-50, 50));
-        ofVec2f newOrigin = origin + offset;
         ofVec2f ret = origin - out;
         
 //        ret.normalize();
 //        ret *= 10;
-        applyForce(ret);
+        applyForce(origin);
         
 //        if(rebound) ret = ret.normalize();
         
 //        if(rebound) applyForce(ret);
         
-        x += ret.x;
-        y += ret.y;
+//        x += ret.x;
+//        y += ret.y;
         
         xv *= -1;
         yv *= -1;
@@ -342,9 +344,8 @@ void Particle::collectStuckParticles(){
         vel.x *= -1;
         vel.y *= -1;
         
-        if(collision && rebound){
-            xv *= 0.9;
-            yv *= 0.9;
+        if(collision){
+//            addDampingForce();
         }
     }
     

@@ -205,7 +205,7 @@ void E2System::impactEffect(){
     target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
     
     if(impact){
-        addRepulsionForce(target.x, target.y, 250, 2);
+        addRepulsionForce(target.x, target.y, 250, 1);
 
     }
     else{

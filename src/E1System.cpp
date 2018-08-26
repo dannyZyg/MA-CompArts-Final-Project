@@ -51,8 +51,8 @@ void E1System::update() {
     int n = particles.size();
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
-        particles[i].membraneRad = region;
-    }    
+//        particles[i].membraneRad = region;
+    }
 }
 
 void E1System::particleInteractions(){
@@ -181,7 +181,7 @@ void E1System::alterSize(Particle& cur_){
     ofFill();
     ofSetColor(125, cur_.membraneLife);
     if(nearby > 1){
-        ofDrawCircle(cur_.x, cur_.y, region);
+        ofDrawCircle(cur_.x, cur_.y, cur_.membraneRad);
         cur_.alone = false;
         //        addAttractionForce(cur_, region, 0.2);
     }

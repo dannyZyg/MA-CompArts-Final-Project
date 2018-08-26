@@ -76,7 +76,15 @@ void E3System::particleInteractions(){
             }
             
             if(particles[i].team == nei[j] -> team){
-                addAttractionForce(particles[i], particleNeighborhood, 0.06);
+                
+                float d1 = ofDist(particles[i].x, particles[i].y, origin.x, origin.y);
+                float d2 = ofDist(nei[j] -> x, nei[j] -> y, origin.x, origin.y);
+
+                if(d1 <= externalRad && d2 <= externalRad && clusterCount < 350){
+                    addAttractionForce(particles[i], particleNeighborhood, 0.06);
+                }
+                
+                
                 
                 ofPushStyle();
 //                ofSetColor(0, 255, 0);
@@ -133,15 +141,15 @@ void E3System::drawTeamLines(){
             
             if(particles[i].team != nei[j] -> team){
                 ofPushStyle();
-                ofSetColor(255, 0, 0);
+                ofSetColor(255);
                 ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
                 ofPopStyle();
             }
             
             if(particles[i].team == nei[j] -> team){
                 ofPushStyle();
-                ofSetColor(0, 255, 0);
-                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
+//                ofSetColor(0, 255, 0);
+//                ofDrawLine(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
                 ofPopStyle();
                 
             }
@@ -205,7 +213,7 @@ void E3System::impactEffect(){
     if(impact){
         //              ofDrawLine(0, 0, 100, 100);
         //        ofDrawCircle(impactTarget, 200);
-        addRepulsionForce(impactTarget.x, impactTarget.y, 200, 3);
+        addRepulsionForce(impactTarget.x, impactTarget.y, 200, 1);
 
     }
     else{

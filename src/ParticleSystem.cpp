@@ -302,11 +302,12 @@ void ParticleSystem::display(){
                 float d = ofDist(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
                 if(d < 5) clusterCount ++;
             }
+            
             if(clusterCount > 500) addRepulsionForce(particles[i], 20, 0.7);
         }
         
         
-        
+        cout <<"cluster ct = " << clusterCount << endl;
         
         
         
