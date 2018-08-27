@@ -236,13 +236,13 @@ void ofApp::scheduler(){
     }
 
     if(sensorSequenceActive){
-        sensorToSystem(sensorTimer, 3);
+        sensorToSystem(sensorTimer, 5);
 //        E3_to_E1(randomPath);
     }
     
 //    cout<< "t2 pct = " <<env2Timer.pct << endl;
 
-//ENVIRONMENT COMMUNICATION//
+//////////ENVIRONMENT COMMUNICATION//
     
 // Environment One
     // Conditions under which to allow a sequence to start
@@ -264,7 +264,7 @@ void ofApp::scheduler(){
             E1_to_E3(env1Timer, environmentOne.enviro.randomPath);
         }
     }
-    
+
 // Environment Two
     // Conditions under which to allow a sequence to start
     if(environmentTwo.enviro.sequenceTrigger && !environmentTwo.enviro.sequenceActive){
@@ -358,11 +358,10 @@ void ofApp::triggerStone(Timer& t, StoneParticleSystem& stone, int timing){
     //turn off the stone
     if(t.timer > timeSpacing * timing + t.activeStoneTime){
         stone.releaseTimer.reset();
-        stone.env1 = false;
-        stone.env2 = false;
-        stone.env3 = false;
-        stone.sens = false;
-
+        if(sender == "Environment One") stone.env1 = false;
+        if(sender == "Environment Two") stone.env2 = false;
+        if(sender == "Environment Three") stone.env3 = false;
+        if(sender == "Sensor") stone.sens = false;
     }
 }
 

@@ -297,17 +297,18 @@ void ParticleSystem::display(){
         clusterCount = 0;
     
         for(int i = 0; i < particles.size(); i ++){
-            vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 50);
+            vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 10);
             for(int j = 0; j < nei.size(); j ++){
                 float d = ofDist(particles[i].x, particles[i].y, nei[j] -> x, nei[j] -> y);
-                if(d < 5) clusterCount ++;
+                if(d < 3) clusterCount ++;
             }
             
-            if(clusterCount > 500) addRepulsionForce(particles[i], 20, 0.7);
+            if(nei.size() > 20 || clusterCount > 200) addRepulsionForce(particles[i], 20, 0.7);
+//            cout <<"nei size = " << nei.size() << endl;
+
         }
         
         
-//        cout <<"cluster ct = " << clusterCount << endl;
         
         
         

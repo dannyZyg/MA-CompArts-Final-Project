@@ -110,9 +110,9 @@ void StoneParticleSystem::setupColours(ofColor base_){
     
     for(int i = 0; i < particles.size(); i++){
         
-        if(i >= 0 && i < 30) particles[i].team = 0;
-        if(i > 30 && i < 60) particles[i].team = 1;
-        if(i > 60 && i < 90) particles[i].team = 2;
+        if(i >= 0 && i <= 30) particles[i].team = 0;
+        if(i > 30 && i <= 60) particles[i].team = 1;
+        if(i > 60 && i <= 90) particles[i].team = 2;
         if(i > 90) particles[i].team = 3;
         
 //        if(particles[i].team == 0) particles[i].col = ofColor(team1Col[particles[i].col])
@@ -497,7 +497,7 @@ void StoneParticleSystem::originSystem(string originSystem_){
 }
 
 
-void StoneParticleSystem::particlesInOut(int start, bool active, int& display){
+void StoneParticleSystem::particlesInOut(int start, bool active, float& display){
     
     float max = start + 30;
     
@@ -506,21 +506,25 @@ void StoneParticleSystem::particlesInOut(int start, bool active, int& display){
     }
     
     if(active){
-        if(timer % showParticleSpacing == 0){
-            display ++;
+        
+        display += 0.1;
+        
+//        if(timer % showParticleSpacing == 0){
+//            display ++;
             if(display >= max){
                 display = max;
             }
-        }
+//        }
     }
     
     if(!active){
-        if(timer % showParticleSpacing == 0){
-            display --;
+//        if(timer % showParticleSpacing == 0){
+//            display --;
+        display -= 0.1;
             if(display <= start){
                 display = start;
             }
-        }
+//        }
     }
     
 }

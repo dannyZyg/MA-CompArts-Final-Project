@@ -99,7 +99,6 @@ void EnvironmentThreeSource::update(){
     }
     
 //    cout<<enviro.lineAlpha <<endl;
-    cout << "enviro 3 active = " << active << endl;
     
     
 }
@@ -129,8 +128,6 @@ void EnvironmentThreeSource::draw(){
 //    enviro.particleInteractions();
     enviro.drawTeamLines();
     enviro.display();
-    
-    cout << "env3 impact = " << enviro.impact << endl;
     
     if(blur1)blur.end();
     if(blur1)blur.draw();

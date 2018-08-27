@@ -84,7 +84,7 @@ public:
     bool env1, env2, env3, sens;
     
     int e1StartIndex, e2StartIndex, e3StartIndex, sensStartIndex;
-    int env1Display, env2Display, env3Display, sensorDisplay;
+    float env1Display, env2Display, env3Display, sensorDisplay;
     int environmentDivision;
     
     
@@ -105,7 +105,7 @@ public:
     
     
 //    int team;
-        void particlesInOut(int start, bool active, int& display);
+        void particlesInOut(int start, bool active, float& display);
 
 //    void particlesInOut(int start, bool active, int& display, int team_);
     

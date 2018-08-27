@@ -75,10 +75,7 @@ void E1System::particleInteractions(){
         
     
         
-        // global force on other particles
-        addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        addAttractionForce(particles[i], particleNeighborhood, particleAttraction);
+
         
         particles[i].limitSize();
         particles[i].limitMembraneLife();
@@ -110,6 +107,18 @@ void E1System::particleInteractions(){
 //        cout<<particles[i].membraneLife<<endl;
         
         for(int j = 0; j < membranes.size(); j ++){
+            
+//            cout<< "membrane size" << membranes.size()<< endl;
+            // global force on other particles
+            addRepulsionForce(particles[i], particleNeighborhood, particleRepulsion);
+            // forces on this particle
+            
+            if(membranes.size() < 3){
+                addAttractionForce(particles[i], particleNeighborhood, particleAttraction);
+            }
+            
+            
+            
             if(particles[i].team == !membranes[j] -> team){
                 if(particles[i].membraneLife > 15 && membranes[j] -> membraneLife > 15){
                     //                    cur.col = ofColor(255, 0, 0);
@@ -130,7 +139,7 @@ void E1System::particleInteractions(){
 //        particles[i].r += sinsz;
     }
     
-    
+//    cout <<"clusters " <<clusterCount << endl;
 }
 
 
@@ -219,11 +228,11 @@ void E1System::alterSize(Particle& cur_){
         }
         if(!cur_.alone) {
             cur_.r -= cur_.membraneStep;
-            cur_.membraneLife ++;
+            cur_.membraneLife += cur_.membraneStep;
         }
         else if (cur_.alone) {
             cur_.r += cur_.membraneStep;
-            cur_.membraneLife -= 4;
+            cur_.membraneLife -= cur_.membraneStep;
         }
     }
 }
@@ -284,16 +293,20 @@ void E1System::seedWithRandomValues(){
     if(randomVals){
         //change rules
         
+        float tempMemStep = ofRandom(0.01, 0.5);
+        float tempMemRad = ofRandom(5, 25);
+        float tempMaxMemLife = ofRandom(20, 150);
+        
         particleRepulsion = ofRandom(0.1, 1.2);
-        particleAttraction = ofRandom(0.1, 0.5);
-        centerAttraction = ofRandom(-0.2 , 0.2);
+        particleAttraction = ofRandom(0.1, 0.4);
+        centerAttraction = ofRandom(-0.2 , 0.4);
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = ofRandom(3);
             particles[i].vel.x = ofRandom(-2, 2);
             particles[i].vel.y = ofRandom(-2, 2);
-            particles[i].membraneRad = ofRandom(15, 30);
-            particles[i].membraneStep = ofRandom(0.1, 2);
-            particles[i].maxMembraneLife = ofRandom(80, 200);
+            particles[i].membraneRad = tempMemRad;
+            particles[i].membraneStep = tempMemStep;
+            particles[i].maxMembraneLife = tempMaxMemLife;
         }
         
         
