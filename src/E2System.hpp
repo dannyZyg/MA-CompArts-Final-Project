@@ -24,13 +24,13 @@ public:
     virtual void impactEffect() override;
     void updateColours();
     virtual void update() override;
-    virtual void seedWithRandomValues() override;
-    void newRules(int option);
-    void presetSelector(string preset);
+    void seedWithRandomValues() override;
+//    void newRules(int option);
+    void presetSelector(string preset) override;
     void receiveCells(vector <float> cells_);
     void cellWallRebound(Particle& particle);
     void allocateCellState(Particle& particle);
-    void animateCells();
+    void animateCellWalls();
     void drawCells();
     bool pingFromWalls;
     bool cellWallsActive;

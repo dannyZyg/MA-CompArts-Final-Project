@@ -101,7 +101,7 @@ void EnvironmentTwoSource::update(){
     
 //    float noise2 = ofSignedNoise(ofGetFrameNum() * 0.01) * 1.2;
 //    cout<< "noise = " << noise2 << endl;
-    // for all cell boundaries, contract and expand with perlin noise
+//     for all cell boundaries, contract and expand with perlin noise
     for(int i = 0; i < cells.size(); i ++){
         float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;
         cells[i] += noise;
@@ -186,7 +186,8 @@ void EnvironmentTwoSource::draw(){
 //    ofNoFill();
 //    ofDrawCircle(origin, rad);
     
-//    drawCellDebug();
+    bool drawCellWalls = false;
+    if(drawCellWalls) drawCellDebug();
     
     
     

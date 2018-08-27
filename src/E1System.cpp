@@ -16,10 +16,12 @@ E1System::E1System(){
     centerAttraction = 0; //0.6;
     drawLines = true;
     impact = false;
+    colourExchange = true;
     maxRad = 20;
     
     outputThreshold = 10;
     outputCondition = 0;
+    
     
 }
 
@@ -154,8 +156,6 @@ void E1System::drawMembranes(){
     for(int i = 0; i < particles.size(); i ++){
         alterSize(particles[i]);
     }
-    
-    
 }
 
 
@@ -190,7 +190,7 @@ void E1System::alterSize(Particle& cur_){
     }
     
     
-    cout<< cur_.membraneLife<<endl;
+//    cout<< cur_.membraneLife<<endl;
     
     ofPopStyle();
     
@@ -203,15 +203,18 @@ void E1System::alterSize(Particle& cur_){
             //            addRepulsionForce(cur_, cur_.r, 1);
 //            ofDrawLine(cur_.x, cur_.y, closeNei[j] -> x, closeNei[j] -> y);
             
-            ofColor c1, c2;
-
-            c1 = cur_.col;
-            c2 = closeNei[j] -> col;
-
-            cur_.col = c2;
-            closeNei[j] -> col = c1;
-            
-            
+           
+            //swap colours if in range
+            if(colourExchange){
+                ofColor c1, c2;
+                
+                c1 = cur_.col;
+                c2 = closeNei[j] -> col;
+                
+                cur_.col = c2;
+                closeNei[j] -> col = c1;
+            }
+  
             
         }
         if(!cur_.alone) {
@@ -275,6 +278,35 @@ void E1System::impactEffect(){
     
 }
 
+
+
+void E1System::seedWithRandomValues(){
+    if(randomVals){
+        //change rules
+        
+        particleRepulsion = ofRandom(0.1, 1.2);
+        particleAttraction = ofRandom(0.1, 0.5);
+        centerAttraction = ofRandom(-0.2 , 0.2);
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = ofRandom(3);
+            particles[i].vel.x = ofRandom(-2, 2);
+            particles[i].vel.y = ofRandom(-2, 2);
+            particles[i].membraneRad = ofRandom(15, 30);
+            particles[i].membraneStep = ofRandom(0.1, 2);
+            particles[i].maxMembraneLife = ofRandom(80, 200);
+        }
+        
+        
+   
+
+        
+        cout<< particleRepulsion <<endl;
+
+        
+        randomVals = false;
+        colourExchange = ofRandom(2);
+    }
+}
 
 
 

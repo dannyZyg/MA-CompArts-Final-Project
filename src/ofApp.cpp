@@ -195,6 +195,7 @@ void ofApp::mousePressed(int x, int y, int button){
     env = !env;
     cout<< "env = " << envTest << endl;
     environmentTwo.enviro.randomVals = true;
+    environmentOne.enviro.randomVals = true;
 
 }
 
@@ -218,8 +219,6 @@ void ofApp::debugDisplay(){
 //    ofDrawCircle(environmentOne.origin.x, environmentOne.origin.y, environmentOne.rad);
 //    verdana30.drawString("Env 1", environmentOne.origin.x, environmentOne.origin.y);
 //    ofPopStyle();
-    
-    
 }
 
 void ofApp::scheduler(){
@@ -229,7 +228,6 @@ void ofApp::scheduler(){
     
     if(ofGetElapsedTimeMillis() > 2000 && tempVal < 100) sensorTrigger = true;
   
-    
     else(sensorTrigger = false);
     if(sensorTrigger && !sensorSequenceActive){
         sensorSequenceActive = true;
@@ -238,7 +236,7 @@ void ofApp::scheduler(){
     }
 
     if(sensorSequenceActive){
-        sensorToSystem(sensorTimer, 2);
+        sensorToSystem(sensorTimer, 3);
 //        E3_to_E1(randomPath);
     }
     

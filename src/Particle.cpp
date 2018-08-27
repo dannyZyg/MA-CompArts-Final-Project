@@ -26,7 +26,7 @@ Particle::Particle(){
     membraneLife = 0;
     membraneStep = 1;
     membraneRad = 20;
-
+    noiseSeed = ofRandom(1000);
     
 }
 
@@ -84,6 +84,9 @@ StoneParticle::StoneParticle(){
 void Particle::updatePosition() {
     //     f = ma, m = 1, f = a, v = int(a)
     
+    
+    noisyMovement();
+    
     xv += xf;// apply forces
     yv += yf;// apply forces
     
@@ -124,7 +127,7 @@ void Particle::updatePosition() {
     if( xv > maxSpeed) xv = maxSpeed;
     if( yv > maxSpeed) yv = maxSpeed;
 
-    
+  
         
 }
 
@@ -348,12 +351,15 @@ void Particle::collectStuckParticles(){
 //            addDampingForce();
         }
     }
-    
-    
-    
-    
 }
 
 
+void Particle::noisyMovement(){
+    
+    float xNoised = ofSignedNoise(ofGetFrameNum() * 0.001 + noiseSeed) * 0.5;
+    float yNoised = ofSignedNoise(ofGetFrameNum() * 0.001 + noiseSeed + 500) * 0.5;
 
+    xv += xNoised;
+    yv += yNoised;
+}
 

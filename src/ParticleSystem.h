@@ -88,8 +88,10 @@ public:
     virtual void outputConditions();
     virtual void impactEffect();
     virtual void seedWithRandomValues();
-
     
+    void newRules(int option);
+    virtual void presetSelector(string preset);
+
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;
         int i = *(int*)&x; // store floating-point bits in integer

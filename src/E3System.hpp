@@ -24,5 +24,6 @@ public:
     virtual void outputConditions() override;
     virtual void impactEffect() override;
     void drawTeamLines();
+//    void seedWithRandomValues() override;
     
 };

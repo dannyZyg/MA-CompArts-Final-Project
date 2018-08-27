@@ -72,9 +72,14 @@ public:
     bool stuckOnWall;
     float distFromWall;
     
+    int noiseSeed;
     
     void collectStuckParticles();
     float minMembraneLife, maxMembraneLife;
+    
+    void noisyMovement();
+    
+    
 };
 
 

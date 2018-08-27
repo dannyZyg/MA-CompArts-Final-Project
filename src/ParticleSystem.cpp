@@ -307,7 +307,7 @@ void ParticleSystem::display(){
         }
         
         
-        cout <<"cluster ct = " << clusterCount << endl;
+//        cout <<"cluster ct = " << clusterCount << endl;
         
         
         
@@ -361,5 +361,39 @@ void ParticleSystem::fadeConnectingLines(){
     
 }
 
+void ParticleSystem::newRules(int option){
+    
+    // predefined behaviours
+    if(option == 0) presetSelector("p1");
+    if(option == 1) presetSelector("p2");
+    if(option == 2) presetSelector("p3");
+    
+    //random behaviours
+    if(option == 3) presetSelector("r1");
+    if(option == 4) presetSelector("r2");
+    if(option == 5) presetSelector("r3");
+}
+
+
+void ParticleSystem::presetSelector(string preset){
+    
+    if(preset == "p1"){
+    }
+    
+    if(preset == "p2"){
+    }
+    
+    if(preset == "p3"){
+    }
+    
+    if(preset == "r1"){
+    }
+    
+    if(preset == "r2"){
+    }
+    
+    if(preset == "r3"){
+    }
+}
 
 
