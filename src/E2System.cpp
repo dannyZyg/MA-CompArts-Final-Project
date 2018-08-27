@@ -17,7 +17,8 @@ E2System::E2System(){
 //    drawLines = true;
     cellWallsActive = true;
     lineAlpha = 0;
-    outputThreshold = 0.5;
+    outputThreshold = 80;
+    
 }
 
 
@@ -84,20 +85,22 @@ void E2System::updateColours(){
     }
 }
 
-void E2System::update() {
-    int n = particles.size();
-    for(int i = 0; i < n; i++) {
-        particles[i].updatePosition();
-        particles[i].receiveCells(cells);
-//        animateCells();
-        if(pingFromWalls) particles[i].returnFromWall();
-    }
-}
+//void E2System::update() {
+//    int n = particles.size();
+//    for(int i = 0; i < n; i++) {
+//
+//    }
+//}
 
 void E2System::particleInteractions(){
     
     for(int i = 0; i < particles.size(); i++) {
         Particle& cur = particles[i];
+        
+//        particles[i].updatePosition();
+        particles[i].receiveCells(cells);
+        if(pingFromWalls) particles[i].returnFromWall();
+        
         // global force on other particles
         
         addAttractionForce(cur, particleNeighborhood, particleAttraction);
@@ -126,10 +129,15 @@ void E2System::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
+//    cout << cells[1] << endl;
     
     //    cout <<"trigger " <<trigger << endl;
     //    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
-    if(cells[0] > outputThreshold) trigger = true;
+    
+//    if(cells[1] < outputThreshold) trigger = true;
+    
+    
+    if(ofGetMouseX() < 100) trigger = true;
     else(trigger = false);
     
     //    if(outputTimer.reached) trigger = true;
@@ -139,26 +147,22 @@ void E2System::outputConditions(){
     
     // if these conditions are met, do this once only!
     
-    if(trigger && !systemOutput) {
-        systemOutput = true;
+    if(trigger && !sequenceActive) {
         ofSetColor(0, 255, 0);
         ofDrawCircle(origin, 50);
-        glowTimer.reset();
-        glowTimer.endTime = 5000;
         sequenceTrigger = true;
-        outputTimer.reset();
     }
     
     
-    // if the timer is active, glow
-    if(!glowTimer.reached){
-        glow = true;
-        
-    }
-    // if not, don't glow
-    if (glowTimer.reached){
-        glow = false;
-    }
+//    // if the timer is active, glow
+//    if(!glowTimer.reached){
+//        glow = true;
+//        
+//    }
+//    // if not, don't glow
+//    if (glowTimer.reached){
+//        glow = false;
+//    }
     
     // reset the cluster tally
     outputCondition = 0;

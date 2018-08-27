@@ -49,13 +49,13 @@ void E1System::setupParticles(){
     }
 }
 
-void E1System::update() {
-    int n = particles.size();
-    for(int i = 0; i < n; i++) {
-        particles[i].updatePosition();
-//        particles[i].membraneRad = region;
-    }
-}
+//void E1System::update() {
+//    int n = particles.size();
+//    for(int i = 0; i < n; i++) {
+//        particles[i].updatePosition();
+////        particles[i].membraneRad = region;
+//    }
+//}
 
 void E1System::particleInteractions(){
     
@@ -247,29 +247,32 @@ void E1System::outputConditions(){
     glowTimer.run();
     
     
-    if(outputCondition > outputThreshold) trigger = true;
-    else(trigger = false);
-    
-    // if these conditions are met, do this once only!
-    
-    if(trigger && !systemOutput) {
-        systemOutput = true;
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(origin, 50);
-        glowTimer.reset();
-        glowTimer.endTime = 5000;
-        sequenceTrigger = true;
-    }
-    
-    // if the timer is active, glow
-    if(!glowTimer.reached){
-        glow = true;
+    if(calibration){
+        if(outputCondition > outputThreshold) trigger = true;
+        else(trigger = false);
         
+        // if these conditions are met, do this once only!
+        
+        if(trigger && !sequenceActive) {
+            systemOutput = true;
+            ofSetColor(0, 255, 0);
+            ofDrawCircle(origin, 50);
+            glowTimer.reset();
+            glowTimer.endTime = 5000;
+            sequenceTrigger = true;
+        }
+        
+        // if the timer is active, glow
+        if(!glowTimer.reached){
+            glow = true;
+            
+        }
+        // if not, don't glow
+        if (glowTimer.reached){
+            glow = false;
+        }
     }
-    // if not, don't glow
-    if (glowTimer.reached){
-        glow = false;
-    }
+    
     
     
     

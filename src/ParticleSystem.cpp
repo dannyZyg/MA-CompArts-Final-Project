@@ -16,6 +16,7 @@ ParticleSystem::ParticleSystem(){
     rebound = true;
     trigger = false;
     glow = false;
+    sequenceActive = false;
 }
 
 void ParticleSystem::setup(int width, int height, int k) {
@@ -268,7 +269,17 @@ void ParticleSystem::update() {
     int n = particles.size();
     for(int i = 0; i < n; i++) {
         particles[i].updatePosition();
+        
+        if(ofGetElapsedTimeMillis() < 15000) calibration = false;
+        else calibration = true;
+        
     }
+    
+    
+
+
+    
+    
 }
 
 void ParticleSystem::draw() {

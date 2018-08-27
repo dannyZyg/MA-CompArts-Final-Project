@@ -77,6 +77,9 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     environmentDivision = 30;
     
     
+    rebound = false;
+    
+    
     
     
     
@@ -358,6 +361,10 @@ void StoneParticleSystem::display(){
     
     releaseTimer.run();
     
+    
+//    if(sens) rebound = true;
+//    else rebound = false;
+    
     //
     if(env1 || env2 || env3 || sens || !releaseTimer.reached){
         ofPushStyle();
@@ -401,7 +408,7 @@ void StoneParticleSystem::display(){
             // global force on other particles
             addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
             // forces on this particle
-            cur.bounceOffWalls(false);
+            cur.bounceOffWalls(rebound);
             cur.addDampingForce();
             
 //            vector<StoneParticle*> nei = getNeighbors(cur.x, cur.y, 50);
@@ -507,24 +514,24 @@ void StoneParticleSystem::particlesInOut(int start, bool active, float& display)
     
     if(active){
         
-        display += 0.1;
+//        display += 0.1;
         
-//        if(timer % showParticleSpacing == 0){
-//            display ++;
+        if(timer % showParticleSpacing == 0){
+            display ++;
             if(display >= max){
                 display = max;
             }
-//        }
+        }
     }
     
     if(!active){
-//        if(timer % showParticleSpacing == 0){
-//            display --;
-        display -= 0.1;
+        if(timer % showParticleSpacing == 0){
+            display --;
+//        display -= 0.1;
             if(display <= start){
                 display = start;
             }
-//        }
+        }
     }
     
 }

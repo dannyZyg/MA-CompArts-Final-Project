@@ -22,7 +22,7 @@ class E1System : public ParticleSystem {
 public:
     E1System();
     void setupParticles() override;
-    void update() override;
+//    void update() override;
     void particleInteractions() override;
     void outputConditions() override;
     void impactEffect() override;

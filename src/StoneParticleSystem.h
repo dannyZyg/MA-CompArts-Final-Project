@@ -117,6 +117,9 @@ public:
     void addParticle(int team_);
     int team;
     
+    bool rebound;
+    
+    
 };
 
 inline float InvSqrt(float x){

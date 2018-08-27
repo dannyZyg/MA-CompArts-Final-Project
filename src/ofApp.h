@@ -125,11 +125,11 @@ public:
     
 //    vector<StoneParticleSystem&> systems;
     
-    void triggerStone(Timer& t, StoneParticleSystem& stone, int timing);
-    void sequenceComplete(Timer& t, int timing);
+    void triggerStone(string sender, Timer& t, StoneParticleSystem& stone, int timing);
+    void sequenceComplete(string sender, Timer& t, int timing);
     int count;
     
-    
+    Timer stoneTimer;
     
     void triggerEnviro1(Timer& t, int timing);
     void triggerEnviro2(Timer& t, int timing);
@@ -146,7 +146,8 @@ public:
     
     float activeLength;
     
-    
+    int sensorPath;
+    int lastSensorPath;
     float sequenceSpacingStart;
     
     float timerSequenceSpacing;
@@ -163,6 +164,6 @@ public:
 //    Scheduler s;
     
 
-    
+    bool sensorSequenceGo;
     
 };

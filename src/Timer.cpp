@@ -55,5 +55,6 @@ void Timer::run(){
 void Timer::reset(){
     startTime = ofGetElapsedTimeMillis();
     reached = false;
+//    cout << "timerReset" << endl;
 }
 

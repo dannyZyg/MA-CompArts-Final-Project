@@ -34,7 +34,7 @@ public:
     void addAttractionForce(float x, float y, float radius, float scale);
     void addForce(const Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
-    virtual void update();
+    void update();
     
     void draw();
     int getWidth() const;
@@ -83,6 +83,9 @@ public:
     int outputCondition;
     int outputThreshold;
     int clusterCount;
+    
+    
+    bool calibration;
     
     virtual void particleInteractions();
     virtual void outputConditions();
