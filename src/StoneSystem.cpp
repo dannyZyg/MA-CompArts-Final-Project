@@ -16,7 +16,7 @@ StoneSystem::StoneSystem(){
     activeTimer.setup();
     releaseTimer.setup();
     
-    releaseTimer.endTime = 2000;
+    releaseTimer.endTime = 5000;
     
     e1StartIndex = 0;
     e2StartIndex = 31;
@@ -35,7 +35,7 @@ StoneSystem::StoneSystem(){
     kParticles = 120;
 
     particleNeighborhood = 32;
-    particleRepulsion = 0.2;
+    particleRepulsion = 0.1;
     centerAttraction = 0;
     
     active = false;
@@ -44,6 +44,7 @@ StoneSystem::StoneSystem(){
     drawLines = false;
     rebound = false;
     environmentDivision = 30;
+    activateDraw = false;
     
 }
 
@@ -80,8 +81,28 @@ void StoneSystem::display(){
     
     releaseTimer.run();
     
+//    timerForDrawDeactivation(env1, e1Reset);
+//    timerForDrawDeactivation(env2, e2Reset);
+//    timerForDrawDeactivation(env3, e3Reset);
+//    timerForDrawDeactivation(sens, sensReset);
+    
+    if(releaseTimer.reached){
+//        e1Reset = false;
+//        e2Reset = false;
+//        e3Reset = false;
+//        sensReset = false;
+    }
+    
+//    if(env1 || env2 || env3 || sens) releaseTimer.reset();
+//
+//    if(!releaseTimer.reached) activateDraw = true;
+//    else activateDraw = false;
+    
+    
+    
+    activateDraw = false;
     //If a system has sent a signal, allow the following, otherwise save CPU.
-    if(env1 || env2 || env3 || sens || !releaseTimer.reached){
+    if(activateDraw){
         ofPushStyle();
         ofPushMatrix();
         
@@ -131,6 +152,13 @@ void StoneSystem::display(){
     
     timer ++;
     if(timer > 50000)timer = 0;
+    
+//    ofSetColor(255);
+//    if(!releaseTimer.reached) ofDrawCircle(origin, 50);
+//    string pct = ofToString(releaseTimer.pct);
+//    ofSetColor(255, 0, 0);
+//    ofDrawBitmapString(pct, origin.x, origin.y);
+    
 }
 
 
@@ -155,6 +183,7 @@ void StoneSystem::particlesInOut(int start, bool active, float& display){
     }
     
     if(active){
+        
         if(timer % showParticleSpacing == 0){
             display ++;
             if(display >= max){
@@ -194,4 +223,15 @@ void StoneSystem::addParticle(int team_){
     
     particles.push_back(p);
     
+}
+
+
+void StoneSystem::timerForDrawDeactivation(bool& systemBool, bool& resetBool){
+
+    if(systemBool){
+        if(!resetBool){
+            releaseTimer.reset();
+            resetBool = true;
+        }
+    }
 }

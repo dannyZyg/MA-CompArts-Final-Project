@@ -221,6 +221,9 @@ void E3System::impactEffect(){
         addRepulsionForce(impactTarget.x, impactTarget.y, 200, 1);
 
     }
+    
+    
+//    presetSelector("p1");
 }
 
 
@@ -229,7 +232,7 @@ void E3System::presetSelector(string preset){
     // cell walls active. Outside cells retreat from outer wall.
     if(preset == "p1"){
         particleRepulsion = 0.5;
-        centerAttraction = 0;
+        centerAttraction = 0.9;
         
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 0.4;

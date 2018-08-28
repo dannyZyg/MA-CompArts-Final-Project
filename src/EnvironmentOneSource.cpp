@@ -44,7 +44,7 @@ void EnvironmentOneSource::setup(){
     
     enviro.origin = origin;
     enviro.externalRad = rad;
-    enviro.setup(width, height, 5);
+    enviro.setup(width, height, 4);
     
     blur1 = true;
     blur2 = true;

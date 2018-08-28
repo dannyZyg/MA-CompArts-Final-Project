@@ -225,7 +225,7 @@ void E1System::outputConditions(){
 void E1System::impactEffect(){
 
     if(impact){
-        addRepulsionForce(origin.x, origin.y, 200, 3);
+        addRepulsionForce(origin.x, origin.y, 150, 3);
     }
 }
 

@@ -10,7 +10,7 @@ Particle::Particle(){
     yv = ofRandom(-3, 3);
     vel = ofVec2f(0,0);
     
-    damping = .01;
+    damping = .04;
     randomOffset = ofRandom(-5, 10);
     mass = 1;
     acceleration = ofVec2f(0,0);
@@ -46,7 +46,7 @@ void Particle::setupE1(){
     maxMembraneLife = 80;
     
     
-    vel = ofVec2f(ofRandom(-5, 5), ofRandom(-5, 5));
+    vel = ofVec2f(ofRandom(-2, 2), ofRandom(-2, 2));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
 }
 
@@ -57,7 +57,7 @@ void Particle::setupE2(){
     wallTimer.setup();
     wallTimer.endTime = 3000;
     stuckOnWall = false;
-    damping = .02;
+    damping = .04;
     
     vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
@@ -67,50 +67,59 @@ void Particle::setupE2(){
 void Particle::setupE3(){
     r = ofRandom (4, 12);
 //    r = 30;
-    xv = ofRandom(-3, 3);
-    yv = ofRandom(-3, 3);
+    xv = ofRandom(-1, 1);
+    yv = ofRandom(-1, 1);
     team = ofRandom(2);
-    damping = .01;
+    damping = .04;
     
     membraneRad = 0;
+    
+    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     
 }
 
 void Particle::setupStoneParticle(){
     r = ofRandom (5, 12);
+    vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
+    if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     
+    xv = ofRandom(-1, 1);
+    yv = ofRandom(-1, 1);
 }
 
 void Particle::updatePosition() {
     //     f = ma, m = 1, f = a, v = int(a)
     
     
-    noisyMovement();
-    
+//    noisyMovement();
+//
     xv += xf;// apply forces
     yv += yf;// apply forces
-    
-//    acceleration.x += xf;// apply forces
-//    acceleration.y += yf;// apply forces
-    
+//
+////    acceleration.x += xf;// apply forces
+////    acceleration.y += yf;// apply forces
+//
     x += xv;//
     y += yv;//
-    
-    
+//
+
     xv += acceleration.x;
     yv += acceleration.y;
-    
-    
-    //
-    //    vel.x += xf;
-    //    vel.y += yf;
-    //
-    
-    
+//
+//
+//    //
+//    //    vel.x += xf;
+//    //    vel.y += yf;
+//    //
+//
+//
     x += vel.x;
     y += vel.y;
     
-    
+    vel.limit(maxSpeed);
+//
+//
 //     Add friction
     friction.x = xv;
     friction.y = yv;
@@ -118,16 +127,8 @@ void Particle::updatePosition() {
     cF = 0.1;
     friction *= cF;
     applyForce(friction);
-    
-    acceleration *= 0;
-    
-//    xf = 0;
-//    yf = 0;
-    
-    if( xv > maxSpeed) xv = maxSpeed;
-    if( yv > maxSpeed) yv = maxSpeed;
 
-  
+    acceleration *= 0;
         
 }
 
@@ -167,8 +168,8 @@ void Particle::bounceOffWalls(bool rebound_) {
         vel.y *= -1;
         
         if(collision && rebound){
-            xv *= 0.9;
-            yv *= 0.9;
+//            xv *= 0.9;
+//            yv *= 0.9;
         }
     }
 }
@@ -317,8 +318,6 @@ void Particle::returnFromWall(){
 
 
 void Particle::collectStuckParticles(){
-    
-    
     
     bool collision = false;
     

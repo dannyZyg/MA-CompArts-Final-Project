@@ -233,6 +233,10 @@ void ofApp::scheduler(){
     }
 
     
+//    cout<< "activate draw = " << small_stones_1_4.stones[0].activateDraw << endl;
+//    cout << "release pct" << small_stones_1_4.stones[0].releaseTimer.pct << endl;
+    
+    
 //    if(sensorTrigger && !environmentTwo.enviro.sequenceActive){
 //        env2Timer.reset();
 //        environmentTwo.enviro.sequenceActive = true;

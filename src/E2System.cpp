@@ -93,9 +93,15 @@ void E2System::updateColours(){
 //}
 
 void E2System::particleInteractions(){
+//    int numOutside = 0;
     
     for(int i = 0; i < particles.size(); i++) {
         Particle& cur = particles[i];
+        
+//        float d = ofDist(cur.x, cur.y, origin.x, origin.y);
+//        if (d > externalRad + 10) numOutside ++;
+//
+        
         
 //        particles[i].updatePosition();
         particles[i].receiveCells(cells);
@@ -120,7 +126,8 @@ void E2System::particleInteractions(){
             cur.bounceOffWalls(true);
         }
     }
-    
+//    cout << "Num Outside " << numOutside << endl;
+
 }
 
 void E2System::outputConditions(){
@@ -166,7 +173,6 @@ void E2System::outputConditions(){
     
     // reset the cluster tally
     outputCondition = 0;
-    
     
     
     

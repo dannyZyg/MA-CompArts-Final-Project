@@ -24,6 +24,7 @@ public:
     void particlesInOut(int start, bool active, float& display);
     void pushPopParticles();
     void addParticle(int team_);
+    void timerForDrawDeactivation(bool& systemBool, bool& resetBool);
     
     Timer activeTimer;
     Timer releaseTimer;
@@ -35,8 +36,10 @@ public:
     float env1Display, env2Display, env3Display, sensorDisplay;
 
     bool env1, env2, env3, sens;
+    bool e1Reset, e2Reset, e3Reset, sensReset;
     bool active;
     bool timeIntervalPassed;
-
+    bool activateDraw;
+    bool timerTrigger;
     
 };

@@ -45,7 +45,7 @@ void EnvironmentTwoSource::setup(){
     
     enviro.origin = origin;
     enviro.externalRad = rad;
-    enviro.setup(width, height, 5);
+    enviro.setup(width, height, 4);
 //    enviro.setupColours();
     
     debug = false;

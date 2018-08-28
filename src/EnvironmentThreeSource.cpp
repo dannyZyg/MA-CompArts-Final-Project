@@ -32,7 +32,7 @@ void EnvironmentThreeSource::setup(){
     
     enviro.origin = origin;
     enviro.externalRad = rad;
-    enviro.setup(width, height, 5);
+    enviro.setup(width, height, 4);
     debug = false;
     
     blur.setup(width,height, 8, .1, 4);
