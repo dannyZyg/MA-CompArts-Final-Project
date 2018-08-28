@@ -23,6 +23,7 @@ public:
 	StoneParticleSystem();
 
 	void setup(int width, int height, int k);
+    void setupParticles();
 	void setTimeStep(float timeStep);
 
 	void addParticle();
@@ -42,7 +43,7 @@ public:
 	void update();
 
 	void draw();
-    void setupColours(ofColor base_);
+    void setupColours();
     void updateColours();
 	
 	int getWidth() const;
@@ -68,31 +69,35 @@ public:
     float externalRad;
     bool sensor;
     
-    bool active;
+  
     bool drawLines;
     ofColor baseColour;
-    
+    ofColor team1Base, team2Base, team3Base, team4Base;
+
+    Timer activeTimer;
+    Timer releaseTimer;
     int numToDisplay;
     bool timeIntervalPassed;
     unsigned int timer;
     
     int showParticleSpacing;
-    
-    
-    void originSystem(string originSystem_);
-    void newColours(string originSystem_);
-    bool env1, env2, env3, sens;
-    
     int e1StartIndex, e2StartIndex, e3StartIndex, sensStartIndex;
     float env1Display, env2Display, env3Display, sensorDisplay;
     int environmentDivision;
     
     
     
-    ofColor env1Col;
-    ofColor env2Col;
-    ofColor env3Col;
-    ofColor sensorCol;
+    void originSystem(string originSystem_);
+    void newColours(string originSystem_);
+    bool env1, env2, env3, sens;
+      bool active;
+
+    
+    
+//    ofColor env1Col;
+//    ofColor env2Col;
+//    ofColor env3Col;
+//    ofColor sensorCol;
     
     vector <ofxColorPalette> teamCols;
     
@@ -105,16 +110,14 @@ public:
     
     
 //    int team;
-        void particlesInOut(int start, bool active, float& display);
 
 //    void particlesInOut(int start, bool active, int& display, int team_);
     
-    Timer activeTimer;
-    Timer releaseTimer;
-    
+  
+    void particlesInOut(int start, bool active, float& display);
     void pushPopParticles();
-    
     void addParticle(int team_);
+    
     int team;
     
     bool rebound;

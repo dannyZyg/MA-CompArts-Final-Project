@@ -31,6 +31,7 @@
 		3039353B2118FBFB00913419 /* EnvironmentTwoSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 303935352118FBFB00913419 /* EnvironmentTwoSystem.cpp */; };
 		3039353C2118FBFB00913419 /* EnvironmentTwoSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 303935372118FBFB00913419 /* EnvironmentTwoSource.cpp */; };
 		304A6B9521301EFA00FBCDE5 /* StoneSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */; };
+		30A0106B213561C000688084 /* StoneSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30A01069213561C000688084 /* StoneSystem.cpp */; };
 		30C40CA1210F77180063369E /* EnvironmentThreeSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */; };
 		30F19DE2212C4C46004E8E0F /* StoneParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30F19DE1212C4C45004E8E0F /* StoneParticleSystem.cpp */; };
 		30F9C9F92131538400E25596 /* EnvironmentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30F9C9F72131538400E25596 /* EnvironmentSource.cpp */; };
@@ -211,6 +212,8 @@
 		304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StoneSource.cpp; sourceTree = "<group>"; };
 		304A6B9421301EFA00FBCDE5 /* StoneSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StoneSource.hpp; sourceTree = "<group>"; };
 		3074E4094F76555C299E5D8E /* ClearSurfacesCmd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClearSurfacesCmd.h; path = ../../../addons/ofxPiMapper/src/Commands/ClearSurfacesCmd.h; sourceTree = SOURCE_ROOT; };
+		30A01069213561C000688084 /* StoneSystem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StoneSystem.cpp; sourceTree = "<group>"; };
+		30A0106A213561C000688084 /* StoneSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StoneSystem.hpp; sourceTree = "<group>"; };
 		30C40C9F210F77180063369E /* EnvironmentThreeSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentThreeSource.hpp; sourceTree = "<group>"; };
 		30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentThreeSource.cpp; sourceTree = "<group>"; };
 		30ED82F4A70B5B95CCEF7744 /* SelNextSurfaceCmd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SelNextSurfaceCmd.h; path = ../../../addons/ofxPiMapper/src/Commands/SelNextSurfaceCmd.h; sourceTree = SOURCE_ROOT; };
@@ -794,6 +797,8 @@
 				3022E54921320E83005ACFE2 /* E2System.hpp */,
 				3022E5452131FE14005ACFE2 /* E3System.cpp */,
 				3022E5462131FE14005ACFE2 /* E3System.hpp */,
+				30A01069213561C000688084 /* StoneSystem.cpp */,
+				30A0106A213561C000688084 /* StoneSystem.hpp */,
 				3023278F212C96F700D867F7 /* Timer.cpp */,
 				3023278E212C96F700D867F7 /* Timer.hpp */,
 				3029CC80210CD89D00E55228 /* EnvironmentOneSource.cpp */,
@@ -1014,6 +1019,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A0106B213561C000688084 /* StoneSystem.cpp in Sources */,
 				30F9C9F92131538400E25596 /* EnvironmentSource.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,

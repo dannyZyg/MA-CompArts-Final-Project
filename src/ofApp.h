@@ -2,7 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxPiMapper.h"
-#include "StoneParticleSystem.h"
+//#include "StoneParticleSystem.h"
+#include "StoneSystem.hpp"
 
 //#include "StonesSmall_1_4.hpp"
 //#include "StonesSmall_5_8.hpp"
@@ -125,7 +126,7 @@ public:
     
 //    vector<StoneParticleSystem&> systems;
     
-    void triggerStone(string sender, Timer& t, StoneParticleSystem& stone, int timing);
+    void triggerStone(string sender, Timer& t, StoneSystem& stone, int timing);
     void sequenceComplete(string sender, Timer& t, int timing);
     int count;
     

@@ -89,12 +89,12 @@ void StoneSource::setupParticleSystems(){
     }
     
     for(int i = 0; i < origins.size(); i ++){
-        StoneParticleSystem s;
+        StoneSystem s;
         stones.push_back(s);
     }
     
     for(int i = 0; i < stones.size(); i ++){
-        stones[i].baseColour = ofColor(47,191, 57);
+//        stones[i].baseColour = ofColor(47,191, 57);
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
@@ -106,7 +106,7 @@ void StoneSource::update(){
     
     for(int i = 0; i < stones.size(); i ++){
         //        stones[i].update();
-        stones[i].updateColours();
+//        stones[i].updateColours();
     }
 }
 

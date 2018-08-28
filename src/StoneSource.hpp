@@ -10,7 +10,8 @@
 
 #include <stdio.h>
 #include "ofMain.h"
- #include "StoneParticleSystem.h"
+// #include "StoneParticleSystem.h"
+#include "StoneSystem.hpp"
 #include "FboSource.h"
 
 #endif /* StoneSource_hpp */
@@ -32,7 +33,7 @@ public:
     void reset();
     void debugMode();
     vector <ofVec2f> origins;
-    vector <StoneParticleSystem> stones;
+    vector <StoneSystem> stones;
     float gs;
     float numCells;
     float cellSize;

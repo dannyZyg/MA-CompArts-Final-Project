@@ -356,6 +356,14 @@ void ParticleSystem::display(){
     }
 
     outputConditions();
+    
+    
+    
+    if(impact){
+        ofSetColor(255, 0, 0);
+        ofDrawCircle(origin, 60);
+        
+    }
 
 }
 

@@ -57,7 +57,7 @@ public:
     float centerAttraction, particleRepulsion, particleAttraction;
     bool drawLines;
     
-    void display();
+    virtual void display();
     
     ofVec2f origin;
     float externalRad;

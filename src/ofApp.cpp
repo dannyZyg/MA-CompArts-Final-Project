@@ -47,9 +47,7 @@ void ofApp::setup(){
 //    med_stones_1_4.font = verdana30;
 //    med_stones_5_8.font = verdana30;
 //    large_stones.font = verdana30;
-//
 //    stoneSourceTest.font = verdana30;
-    
     
 // setup piMapper
 	piMapper.setup();
@@ -108,10 +106,6 @@ void ofApp::update(){
 
 void ofApp::draw(){
  
-    float x = testEnvelope.output(env, 50, 100, 100);
-    if(testEnvelope.complete) env = false;
-    
-    
     ofBackground(0);
     
     if(drawTemplate) layout.draw(0, 0);
@@ -149,10 +143,6 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 	piMapper.keyPressed(key);
     
-//    if(key == 'b') stones_1_4.sequence1();
-//    if(key == 'n') stones_1_4.sequence2();
-//    if(key == 'm') stones_1_4.reset();
-    
     //display the circle
     if(key == 'w') displayCircleTemplate = !displayCircleTemplate;
 //    if(key == )\
@@ -176,22 +166,11 @@ void ofApp::keyPressed(int key){
         cout << "DEBUG = " << debug << endl;
     }
     
-    if(key == ' ') environmentThree.enviro.sequenceActive = !environmentThree.enviro.sequenceActive;
  
     if(key == 'B') environmentTwo.blur1 = !environmentTwo.blur1;
     if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
     if(key == 'A') environmentThree.active = !environmentThree.active;
 
-    if(key == 'H') large_stones.stones[1].sens = !large_stones.stones[1].sens;
-    if(key == 'J') large_stones.stones[1].env1 = !large_stones.stones[1].env1;
-    if(key == 'K') large_stones.stones[1].env2 = !large_stones.stones[1].env2;
-    if(key == 'L') large_stones.stones[1].env3 = !large_stones.stones[1].env3;
-    
-//    if(key == 'R') testStones.stones[0].env1 = !testStones.stones[0].env1;
-    if(key == 'Y') env2Timer.reset();
-    if(key == 'U') environmentTwo.enviro.trigger = !environmentTwo.enviro.trigger;
-    
-    
 }
 
 void ofApp::keyReleased(int key){
@@ -252,6 +231,7 @@ void ofApp::scheduler(){
 
     if(sensorSequenceActive){
         sensorToSystem(sensorTimer, sensorPath);
+//        sensorToSystem(sensorTimer, 5);
     }
 
     
@@ -357,14 +337,11 @@ void ofApp::sequenceComplete(string sender, Timer& t, int timing){
         //check which timer/environment is being addressed and turn of the relative sequenceActive state
         if(sender == "Environment One"){
             environmentOne.enviro.sequenceActive = false;
-//            environmentOne.enviro.systemOutput = false;
         }
         if(sender == "Environment Two"){
-//            environmentTwo.enviro.systemOutput = false;
             environmentTwo.enviro.sequenceActive = false;
         }
         if(sender == "Environment Three"){
-//            environmentThree.enviro.systemOutput = false;
             environmentThree.enviro.sequenceActive = false;
         }
         if(sender == "Sensor"){
@@ -375,7 +352,7 @@ void ofApp::sequenceComplete(string sender, Timer& t, int timing){
 
 
 // function which triggers a stone on and off at the right time in a given sequence
-void ofApp::triggerStone(string sender, Timer& t, StoneParticleSystem& stone, int timing){
+void ofApp::triggerStone(string sender, Timer& t, StoneSystem& stone, int timing){
     
 //    // check which environment/sensor sent the signal and inform the stone
 //    if(t.timer == env1Timer.timer) sender = "Environment One";
@@ -383,7 +360,7 @@ void ofApp::triggerStone(string sender, Timer& t, StoneParticleSystem& stone, in
 //    if(t.timer == env3Timer.timer) sender = "Environment Three";
 //    if(t.timer == sensorTimer.timer) sender = "Sensor";
 //    newColours(sender, stone);
-    stone.originSystem(sender);
+//    stone.originSystem(sender);
     
     //turn on the stone
     if(t.timer > timeSpacing * timing){

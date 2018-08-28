@@ -2,18 +2,6 @@
 
 StoneParticleSystem::StoneParticleSystem(){
     
-}
-
-void StoneParticleSystem::setup(int width, int height, int k) {
-    this->width = width;
-    this->height = height;
-    this->k = k;
-    binSize = 1 << k;
-    xBins = (int) ceilf((float) width / (float) binSize);
-    yBins = (int) ceilf((float) height / (float) binSize);
-    bins.resize(xBins * yBins);
-    
-    
     mode = ofxColorPalette::BRIGHTNESS;
     brightness = 200;
     saturation = 200;
@@ -44,21 +32,6 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     sens = false;
     
     kParticles = 120;
-    for(int i = 0; i < kParticles; i++) {
-        
-        float x = ofRandom(origin.x - 100, origin.x + 100);
-        float y = ofRandom(origin.y - 100, origin.y + 100);;
-        
-        StoneParticle particle = StoneParticle();
-        
-        particles.push_back(particle);
-    }
-    
-    for(int i = 0; i < particles.size(); i++){
-        particles[i].origin = origin;
-        particles[i].externalRad = externalRad;
-    }
-    
     
     
     padding = 128;
@@ -79,70 +52,68 @@ void StoneParticleSystem::setup(int width, int height, int k) {
     
     rebound = false;
     
+}
+
+void StoneParticleSystem::setup(int width, int height, int k) {
+    this->width = width;
+    this->height = height;
+    this->k = k;
+    binSize = 1 << k;
+    xBins = (int) ceilf((float) width / (float) binSize);
+    yBins = (int) ceilf((float) height / (float) binSize);
+    bins.resize(xBins * yBins);
     
-    
-    
-    
-    setupColours(baseColour);
+    setupParticles();
     
 }
 
 
-void StoneParticleSystem::setupColours(ofColor base_){
+void StoneParticleSystem::setupParticles(){
+    
+    for(int i = 0; i < kParticles; i++) {
+        float x = ofRandom(origin.x - 100, origin.x + 100);
+        float y = ofRandom(origin.y - 100, origin.y + 100);;
+        StoneParticle particle = StoneParticle();
+        particle.origin = origin;
+        particle.externalRad = externalRad;
+        particles.push_back(particle);
+    }
+    
+    for(int i = 0; i < particles.size(); i++){
+        if(i >= 0 && i <= 30) particles[i].team = 0;
+        if(i > 30 && i <= 60) particles[i].team = 1;
+        if(i > 60 && i <= 90) particles[i].team = 2;
+        if(i > 90) particles[i].team = 3;
+    }
+    
+    team1Base = ofColor(27,125, 204);
+    team2Base = ofColor(145,49, 191);
+    team3Base = ofColor(42, 211, 126);
+    team4Base = ofColor(255,211, 91);
+    setupColours();
+}
+
+
+void StoneParticleSystem::setupColours(){
         
     for(int i = 0; i < 4; i ++){
         ofxColorPalette c;
         teamCols.push_back(c);
     }
     
-    teamCols[0].setBaseColor(ofColor(27,125, 204));
-//    teamCols[1].setBaseColor(ofColor(52,167, 173));
-    teamCols[1].setBaseColor(ofColor(255,0, 0));
-
-    teamCols[2].setBaseColor(ofColor(145,49, 191));
-    teamCols[3].setBaseColor(ofColor(255,211, 91));
-
-    
-//    teamCols[1] = ofColor(52,167, 173);
-//    teamCols[2] = ofColor(145,49, 191);
-//    teamCols[3] = ofColor(255,211, 91);
+    teamCols[0].setBaseColor(team1Base);
+    teamCols[1].setBaseColor(team2Base);
+    teamCols[2].setBaseColor(team3Base);
+    teamCols[3].setBaseColor(team4Base);
 
     for(int i = 0; i < teamCols.size(); i ++){
         teamCols[i].generateAnalogous();
     }
     
     for(int i = 0; i < particles.size(); i++){
-        
-        if(i >= 0 && i <= 30) particles[i].team = 0;
-        if(i > 30 && i <= 60) particles[i].team = 1;
-        if(i > 60 && i <= 90) particles[i].team = 2;
-        if(i > 90) particles[i].team = 3;
-        
-//        if(particles[i].team == 0) particles[i].col = ofColor(team1Col[particles[i].col])
         ofxColorPalette& c = teamCols[particles[i].team];
         particles[i].col = ofColor(c[particles[i].colIndex]);
-
     }
-    
-}
-
-void StoneParticleSystem::updateColours(){
-    
-    //    for(int i = 0; i < particles.size(); i++){
-    //
-    //
-    //        if(sensor){
-    //            particles[i].col = ofColor(0, 255, 0);
-    //
-    //
-    //        }
-    //        else{
-    //            particles[i].col = ofColor(team1Col[ofRandom(team1Col.size())]);
-    //        }
-    //
-    //    }
-    
-    
 }
 
 void StoneParticleSystem::setTimeStep(float timeStep) {
@@ -361,11 +332,6 @@ void StoneParticleSystem::display(){
     
     releaseTimer.run();
     
-    
-//    if(sens) rebound = true;
-//    else rebound = false;
-    
-    //
     if(env1 || env2 || env3 || sens || !releaseTimer.reached){
         ofPushStyle();
         ofPushMatrix();
@@ -373,9 +339,7 @@ void StoneParticleSystem::display(){
         
         // do this once per frame
         setupForces();
-        
-        //    if(sensor && active) drawLines = true;
-        //    else drawLines = false;
+
         
         // apply per-particle forces
         if(drawLines) {
@@ -386,21 +350,11 @@ void StoneParticleSystem::display(){
             ofPopStyle();
         }
         
-        //    ofPushStyle();
-        //    ofSetColor(255, 0, 0);
-        //    setupColours(baseColour);
         
-        //    fadeParticles();
         particlesInOut(e1StartIndex, env1, env1Display);
         particlesInOut(e2StartIndex, env2, env2Display);
         particlesInOut(e3StartIndex, env3, env3Display);
         particlesInOut(sensStartIndex, sens, sensorDisplay);
-        
-        //    cout << "e dis = " << env3Display << endl;
-        
-        //    fadeParticles(1, env2);
-        
-        //    ofPopStyle();
         
         for(int i = 0; i < particles.size(); i++) {
             //        particles[i].displayParticle();
@@ -410,13 +364,6 @@ void StoneParticleSystem::display(){
             // forces on this particle
             cur.bounceOffWalls(rebound);
             cur.addDampingForce();
-            
-//            vector<StoneParticle*> nei = getNeighbors(cur.x, cur.y, 50);
-//            for(int j = 0; j < nei.size(); j ++){
-//                if (cur.team == nei[j] -> team){
-//                    ofDrawLine(cur.x, cur.y, nei[j] ->x, nei[j] ->y);
-//                }
-//            }
             
         }
         if(drawLines) {
@@ -435,20 +382,11 @@ void StoneParticleSystem::display(){
         ofPopStyle();
         ofPopMatrix();
         
-        
-        
-        
     }
-    
-    
-    
-    
-    //    cout<<particles.size()<<endl;
+
     
     timer ++;
-    
     if(timer > 50000)timer = 0;
-    
 }
 
 
@@ -458,48 +396,8 @@ void StoneParticleSystem::reset(){
     particles.clear();
 }
 
-
-
-
-
-
-
-void StoneParticleSystem::fadeParticles(){
-    
-    for(int i = 0; i < numToDisplay; i++) {
-        particles[i].displayParticle();
-    }
-    
-    if(active){
-        if(timer % showParticleSpacing == 0){
-            numToDisplay ++;
-            if(numToDisplay >= kParticles){
-                numToDisplay = kParticles;
-            }
-        }
-    }
-    
-    if(!active){
-        if(timer % showParticleSpacing == 0){
-            numToDisplay --;
-            if(numToDisplay <= 0){
-                numToDisplay = 0;
-            }
-        }
-    }
-    
-    //    timer ++;
-    //
-    //    if(timer > 50000)timer = 0;
-    
-}
-
 // Make changes based on which system sent the signal
 void StoneParticleSystem::originSystem(string originSystem_){
-    //    newColours(originSystem_);
-    
-    
-    
     
 }
 
@@ -513,9 +411,6 @@ void StoneParticleSystem::particlesInOut(int start, bool active, float& display)
     }
     
     if(active){
-        
-//        display += 0.1;
-        
         if(timer % showParticleSpacing == 0){
             display ++;
             if(display >= max){
@@ -527,39 +422,12 @@ void StoneParticleSystem::particlesInOut(int start, bool active, float& display)
     if(!active){
         if(timer % showParticleSpacing == 0){
             display --;
-//        display -= 0.1;
             if(display <= start){
                 display = start;
             }
         }
     }
     
-}
-
-void StoneParticleSystem::newColours(string originSystem_){
-    
-    //    if(originSystem_ == "Sensor"){
-    //        sens = true;
-    ////        setupColours(env1Col);
-    //    }
-    //    if(originSystem_ == "Environment One"){
-    //        env1 = true;
-    ////        setupColours(env2Col);
-    //    }
-    //    if(originSystem_ == "Environment Two"){
-    //        env2 = true;
-    ////        setupColours(env3Col);
-    //    }
-    //    if(originSystem_ == "Environment Three"){
-    //        env3 = true;
-    ////        setupColours(sensorCol);
-    //    }
-    //    else{
-    //        sens = false;
-    //        env1 = false;
-    //        env2 = false;
-    //        env3 = false;
-    //    }
 }
 
 void StoneParticleSystem::pushPopParticles(){
@@ -583,34 +451,6 @@ void StoneParticleSystem::addParticle(int team_){
     p.x = origin.x;
     p.y = origin.y;
     
-//    if(team_ == 0) p.col = team1Col;
-//    if(team_ == 1) p.col = team2Col;
-//    if(team_ == 2) p.col = team3Col;
-//    if(team_ == 3) p.col = team4Col;
-    
     particles.push_back(p);
     
 }
-
-//void StoneParticleSystem::particlesInOut(int start, bool active, int& display, int team_){
-//
-//    float max = start + 30;
-//    int maxNumParticles = 120;
-//    if(particles.size() < maxNumParticles){
-//        if(active){
-//            if(timer % showParticleSpacing == 0){
-//                addParticle(team_);
-//            }
-//        }
-//
-//        if(!active){
-//                for(int i = 0; i < particles.size(); i ++){
-//                    if(timer % showParticleSpacing == 0){
-//                        if(particles[i].team == team_){
-//                            particles.erase(particles.begin() + i);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

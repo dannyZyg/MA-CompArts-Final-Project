@@ -49,14 +49,6 @@ void E1System::setupParticles(){
     }
 }
 
-//void E1System::update() {
-//    int n = particles.size();
-//    for(int i = 0; i < n; i++) {
-//        particles[i].updatePosition();
-////        particles[i].membraneRad = region;
-//    }
-//}
-
 void E1System::particleInteractions(){
     
     //Send an output signal if a certain number of particles reach a particular size
