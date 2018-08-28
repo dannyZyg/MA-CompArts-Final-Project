@@ -20,10 +20,12 @@
 class E3System : public ParticleSystem{
 public:
     E3System();
-    virtual void setupParticles() override;
-    virtual void particleInteractions() override;
-    virtual void outputConditions() override;
-    virtual void impactEffect() override;
+    void setupParticles() override;
+    void particleInteractions() override;
+    void outputConditions() override;
+    void impactEffect() override;
+    void seedWithRandomValues() override;
+    void presetSelector(string preset) override;
     void drawTeamLines();
 //    void seedWithRandomValues() override;
     

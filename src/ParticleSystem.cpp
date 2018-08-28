@@ -17,6 +17,8 @@ ParticleSystem::ParticleSystem(){
     trigger = false;
     glow = false;
     sequenceActive = false;
+    setNewRules = false;
+    triggeredBySensor = false;
 }
 
 void ParticleSystem::setup(int width, int height, int k) {
@@ -278,7 +280,7 @@ void ParticleSystem::update() {
         
     }
 
-
+    newRules();
     
     
 }
@@ -382,17 +384,22 @@ void ParticleSystem::fadeConnectingLines(){
     
 }
 
-void ParticleSystem::newRules(int option){
-    
-    // predefined behaviours
-    if(option == 0) presetSelector("p1");
-    if(option == 1) presetSelector("p2");
-    if(option == 2) presetSelector("p3");
-    
-    //random behaviours
-    if(option == 3) presetSelector("r1");
-    if(option == 4) presetSelector("r2");
-    if(option == 5) presetSelector("r3");
+void ParticleSystem::newRules(){
+    if(setNewRules && !triggeredBySensor){
+        int option = ofRandom(2);
+        
+        // predefined behaviours
+        if(option == 0) presetSelector("p1");
+        if(option == 1) presetSelector("p2");
+        if(option == 2) presetSelector("p3");
+    }
+    else if (setNewRules && triggeredBySensor){
+        //random behaviours triggered by sensor interaction
+        presetSelector("r1");
+        triggeredBySensor = false;
+    }
+   
+    setNewRules = false;
 }
 
 
@@ -408,12 +415,6 @@ void ParticleSystem::presetSelector(string preset){
     }
     
     if(preset == "r1"){
-    }
-    
-    if(preset == "r2"){
-    }
-    
-    if(preset == "r3"){
     }
 }
 

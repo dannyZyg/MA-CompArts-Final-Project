@@ -49,7 +49,7 @@ public:
     virtual void outputConditions();
     virtual void impactEffect();
     virtual void seedWithRandomValues();
-    void newRules(int option);
+    void newRules();
     virtual void presetSelector(string preset);
     void fadeConnectingLines();
     
@@ -81,6 +81,8 @@ public:
     bool glow;
     bool randomVals;
     bool calibration;
+    bool setNewRules;
+    bool triggeredBySensor;
     
     int destination;
     int randomPath;

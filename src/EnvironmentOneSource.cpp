@@ -89,7 +89,6 @@ void EnvironmentOneSource::update(){
     
     
     if(active){
-//        startTime = 0;
         enviro.impact = true;
     }
     

@@ -242,14 +242,13 @@ void ofApp::scheduler(){
 //        E2_to_E3(env2Timer, 1);
 //    }
     
-    cout << "seq trig = " << environmentTwo.enviro.sequenceTrigger << endl;
-    cout << "e2 active " << environmentTwo.enviro.sequenceActive << endl;
-    cout << environmentTwo.enviro.trigger << endl;
+ 
 //    cout << "e2 timer" << env2Timer.timer << endl;
 //    cout << "out trigger" << environmentTwo.enviro.trigger <<endl;
 //    cout << "sys output" << environmentTwo.enviro.systemOutput << endl;
     
-    
+//    cout << "setNewRules = " << environmentTwo.enviro.setNewRules << endl;
+
     
 //    cout << "e2 ran path" << environmentTwo.enviro.randomPath<< endl;
 //    cout << "e2 ran destination " << environmentTwo.enviro.destination <<endl;
@@ -352,23 +351,12 @@ void ofApp::sequenceComplete(string sender, Timer& t, int timing){
 // function which triggers a stone on and off at the right time in a given sequence
 void ofApp::triggerStone(string sender, Timer& t, StoneSystem& stone, int timing){
     
-//    // check which environment/sensor sent the signal and inform the stone
-//    if(t.timer == env1Timer.timer) sender = "Environment One";
-//    if(t.timer == env2Timer.timer) sender = "Environment Two";
-//    if(t.timer == env3Timer.timer) sender = "Environment Three";
-//    if(t.timer == sensorTimer.timer) sender = "Sensor";
-//    newColours(sender, stone);
-//    stone.originSystem(sender);
-    
     //turn on the stone
     if(t.timer > timeSpacing * timing){
         if(sender == "Environment One") stone.env1 = true;
         if(sender == "Environment Two") stone.env2 = true;
         if(sender == "Environment Three") stone.env3 = true;
         if(sender == "Sensor") stone.sens = true;
-//        stone.active = true;
-//        if(t.timer == sensorTimer.timer) stone.sensor = true;
-//        else stone.sensor = false;
     }
     //turn off the stone
     if(t.timer  > timeSpacing * timing + 3000){
@@ -381,7 +369,7 @@ void ofApp::triggerStone(string sender, Timer& t, StoneSystem& stone, int timing
 }
 
 // The following three functions turns on and off an environment's impact state to complete the visual sequence
-void ofApp::triggerEnviro1(Timer& t, int timing){
+void ofApp::triggerEnviro1(string sender, Timer& t, int timing){
     //turn on the environment impact
     if (t.timer > timeSpacing * timing){
         environmentOne.active = true;
@@ -390,10 +378,14 @@ void ofApp::triggerEnviro1(Timer& t, int timing){
     if  (t.timer > (timeSpacing * timing) + t.activeStoneTime){
         environmentOne.active = false;
     }
+    if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
+        if(sender == "Sensor") environmentOne.enviro.triggeredBySensor = true;
+        environmentOne.enviro.setNewRules = true;
+    }
     
 }
 
-void ofApp::triggerEnviro2(Timer& t, int timing){
+void ofApp::triggerEnviro2(string sender, Timer& t, int timing){
     //turn on the environment impact
     if (t.timer > timeSpacing * timing){
         environmentTwo.active = true;
@@ -402,12 +394,13 @@ void ofApp::triggerEnviro2(Timer& t, int timing){
     if (t.timer > timeSpacing * timing + 3000){
         environmentTwo.active = false;
     }
-//    if (t.timer == timeSpacing * timing){
-//        environmentTwo.enviro.randomVals = true;
-//    }
+    if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
+        if(sender == "Sensor") environmentTwo.enviro.triggeredBySensor = true;
+        environmentTwo.enviro.setNewRules = true;
+    }
 }
 
-void ofApp::triggerEnviro3(Timer& t, int timing){
+void ofApp::triggerEnviro3(string sender, Timer& t, int timing){
     //turn on the environment impact
     if (t.timer > timeSpacing * timing){
         environmentThree.active = true;
@@ -415,6 +408,10 @@ void ofApp::triggerEnviro3(Timer& t, int timing){
     //turn off the environment impact
     if (t.timer > timeSpacing * timing + t.activeStoneTime){
         environmentThree.active = false;
+    }
+    if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
+        if(sender == "Sensor") environmentThree.enviro.triggeredBySensor = true;
+        environmentThree.enviro.setNewRules = true;
     }
 }
 
@@ -430,7 +427,7 @@ void ofApp::E1_to_E2(Timer& t, int variation){
         triggerStone(s, t,  med_stones_5_8.stones[3], 2);
         triggerStone(s, t, large_stones.stones[3], 3);
         triggerStone(s, t, small_stones_13_16.stones[2], 4);
-        triggerEnviro2(t, 5);
+        triggerEnviro2(s, t, 5);
         sequenceComplete(s, t, 6);
 
     }
@@ -440,7 +437,7 @@ void ofApp::E1_to_E2(Timer& t, int variation){
         triggerStone(s, t, small_stones_13_16.stones[0], 2);
         triggerStone(s, t, large_stones.stones[3], 3);
         triggerStone(s, t, small_stones_13_16.stones[2], 4);
-        triggerEnviro2(t, 5);
+        triggerEnviro2(s, t, 5);
         sequenceComplete(s, t, 6);
     }
     if(variation == 2){
@@ -450,7 +447,7 @@ void ofApp::E1_to_E2(Timer& t, int variation){
         triggerStone(s, t, med_stones_5_8.stones[1], 3);
         triggerStone(s, t, large_stones.stones[2], 4);
         triggerStone(s, t, small_stones_5_8.stones[2], 5);
-        triggerEnviro2(t, 6);
+        triggerEnviro2(s, t, 6);
         sequenceComplete(s, t, 7);
     }
 }
@@ -468,7 +465,7 @@ void ofApp::E1_to_E3(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[3], 5);
         triggerStone(s, t, med_stones_1_4.stones[2], 6);
         triggerStone(s, t, small_stones_5_8.stones[1], 7);
-        triggerEnviro3(t, 8);
+        triggerEnviro3(s, t, 8);
         sequenceComplete(s, t, 9);
     }
     if(variation == 1){
@@ -480,7 +477,7 @@ void ofApp::E1_to_E3(Timer& t, int variation){
         triggerStone(s, t, large_stones.stones[1], 5);
         triggerStone(s, t, med_stones_1_4.stones[3], 6);
         triggerStone(s, t, small_stones_5_8.stones[1], 7);
-        triggerEnviro3(t, 8);
+        triggerEnviro3(s, t, 8);
         sequenceComplete(s, t, 9);
     }
     if(variation == 2){
@@ -490,7 +487,7 @@ void ofApp::E1_to_E3(Timer& t, int variation){
         triggerStone(s, t, large_stones.stones[1], 3);
         triggerStone(s, t, med_stones_1_4.stones[3], 4);
         triggerStone(s, t, small_stones_5_8.stones[1], 5);
-        triggerEnviro3(t, 6);
+        triggerEnviro3(s, t, 6);
         sequenceComplete(s, t, 7);
     }
 
@@ -506,7 +503,7 @@ void ofApp::E2_to_E1(Timer& t, int variation){
         triggerStone(s, t, small_stones_13_16.stones[0], 3);
         triggerStone(s, t, small_stones_9_12.stones[2], 4);
         triggerStone(s, t, small_stones_9_12.stones[1], 5);
-        triggerEnviro1(t, 6);
+        triggerEnviro1(s, t, 6);
         sequenceComplete(s, t, 7);
 
     }
@@ -518,7 +515,7 @@ void ofApp::E2_to_E1(Timer& t, int variation){
         triggerStone(s, t, small_stones_5_8.stones[3], 3);
         triggerStone(s, t, small_stones_9_12.stones[0], 4);
         triggerStone(s, t, med_stones_5_8.stones[2], 5);
-        triggerEnviro1(t, 6);
+        triggerEnviro1(s, t, 6);
         sequenceComplete(s, t, 7);
     }
     if(variation == 2){
@@ -528,7 +525,7 @@ void ofApp::E2_to_E1(Timer& t, int variation){
         triggerStone(s, t, small_stones_5_8.stones[3], 3);
         triggerStone(s, t, small_stones_9_12.stones[0], 4);
         triggerStone(s, t, med_stones_5_8.stones[2], 5);
-        triggerEnviro1(t, 6);
+        triggerEnviro1(s, t, 6);
         sequenceComplete(s, t, 7);
     }
 }
@@ -543,7 +540,7 @@ void ofApp::E2_to_E3(Timer& t, int variation){
         triggerStone(s, t, large_stones.stones[0], 4);
         triggerStone(s, t, small_stones_1_4.stones[1], 5);
         triggerStone(s, t, small_stones_1_4.stones[0], 6);
-        triggerEnviro3(t, 7);
+        triggerEnviro3(s, t, 7);
         sequenceComplete(s, t, 8);
     }
     if(variation == 1){
@@ -554,7 +551,7 @@ void ofApp::E2_to_E3(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[3], 4);
         triggerStone(s, t, med_stones_1_4.stones[2], 5);
         triggerStone(s, t, small_stones_5_8.stones[1], 6);
-        triggerEnviro3(t, 7);
+        triggerEnviro3(s, t, 7);
         sequenceComplete(s, t, 8);
 
     }
@@ -565,7 +562,7 @@ void ofApp::E2_to_E3(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[0], 2);
         triggerStone(s, t, small_stones_1_4.stones[2], 3);
         triggerStone(s, t, med_stones_1_4.stones[1], 4);
-        triggerEnviro3(t, 5);
+        triggerEnviro3(s, t, 5);
         sequenceComplete(s, t, 6);
     }
 }
@@ -579,7 +576,7 @@ void ofApp::E3_to_E1(Timer& t, int variation){
        triggerStone(s, t, large_stones.stones[1], 2);
        triggerStone(s, t, med_stones_5_8.stones[0], 3);
        triggerStone(s, t, small_stones_5_8.stones[3], 4);
-       triggerEnviro1(t, 5);
+       triggerEnviro1(s, t, 5);
        sequenceComplete(s, t, 6);
 
 
@@ -591,7 +588,7 @@ void ofApp::E3_to_E1(Timer& t, int variation){
         triggerStone(s, t, med_stones_5_8.stones[0], 3);
         triggerStone(s, t, med_stones_5_8.stones[1], 4);
         triggerStone(s, t, small_stones_9_12.stones[0], 5);
-        triggerEnviro1(t, 6);
+        triggerEnviro1(s, t, 6);
         sequenceComplete(s, t, 7);
     }
     if(variation == 2){
@@ -603,7 +600,7 @@ void ofApp::E3_to_E1(Timer& t, int variation){
         triggerStone(s, t, med_stones_5_8.stones[1], 4);
         triggerStone(s, t, large_stones.stones[2], 5);
         triggerStone(s, t, med_stones_5_8.stones[2], 6);
-        triggerEnviro1(t, 7);
+        triggerEnviro1(s, t, 7);
         sequenceComplete(s, t, 8);
     }
 }
@@ -619,7 +616,7 @@ void ofApp::E3_to_E2(Timer& t, int variation){
         triggerStone(s, t, small_stones_5_8.stones[0], 4);
         triggerStone(s, t, small_stones_1_4.stones[2], 4);
         triggerStone(s, t, small_stones_1_4.stones[3], 5);
-        triggerEnviro2(t, 6);
+        triggerEnviro2(s, t, 6);
         sequenceComplete(s, t, 7);
     }
 
@@ -631,7 +628,7 @@ void ofApp::E3_to_E2(Timer& t, int variation){
         triggerStone(s, t, med_stones_5_8.stones[0], 4);
         triggerStone(s, t, med_stones_5_8.stones[1], 5);
         triggerStone(s, t, small_stones_5_8.stones[2], 6);
-        triggerEnviro2(t, 7);
+        triggerEnviro2(s, t, 7);
         sequenceComplete(s, t, 8);
 
     }
@@ -641,7 +638,7 @@ void ofApp::E3_to_E2(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[0], 2);
         triggerStone(s, t, small_stones_5_8.stones[0], 3);
         triggerStone(s, t, small_stones_1_4.stones[3], 4);
-        triggerEnviro2(t, 5);
+        triggerEnviro2(s, t, 5);
         sequenceComplete(s, t, 6);
     }
 }
@@ -657,7 +654,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, small_stones_9_12.stones[2], 2);
         triggerStone(s, t, small_stones_9_12.stones[3], 3);
         triggerStone(s, t, small_stones_9_12.stones[1], 4);
-        triggerEnviro1(t, 5);
+        triggerEnviro1(s, t, 5);
         sequenceComplete(s, t, 6);
     }
 
@@ -668,7 +665,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, large_stones.stones[2], 3);
         triggerStone(s, t, med_stones_5_8.stones[1], 4);
         triggerStone(s, t, small_stones_5_8.stones[2], 5);
-        triggerEnviro1(t, 6);
+        triggerEnviro1(s, t, 6);
         sequenceComplete(s, t, 7);
     }
 
@@ -679,7 +676,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, med_stones_5_8.stones[3], 2);
         triggerStone(s, t, large_stones.stones[3], 3);
         triggerStone(s, t, small_stones_13_16.stones[2], 4);
-        triggerEnviro2(t, 5);
+        triggerEnviro2(s, t, 5);
         sequenceComplete(s, t, 6);
     }
 
@@ -691,7 +688,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, large_stones.stones[2], 4);
         triggerStone(s, t, med_stones_5_8.stones[1], 5);
         triggerStone(s, t, small_stones_5_8.stones[2], 6);
-        triggerEnviro2(t, 7);
+        triggerEnviro2(s, t, 7);
         sequenceComplete(s, t, 8);
     }
 
@@ -708,7 +705,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[3], 9);
         triggerStone(s, t, med_stones_1_4.stones[2], 10);
         triggerStone(s, t, small_stones_5_8.stones[1], 11);
-        triggerEnviro3(t, 12);
+        triggerEnviro3(s, t, 12);
         sequenceComplete(s, t, 13);
 
     }
@@ -726,7 +723,7 @@ void ofApp::sensorToSystem(Timer& t, int variation){
         triggerStone(s, t, med_stones_1_4.stones[3], 9);
         triggerStone(s, t, med_stones_1_4.stones[2], 10);
         triggerStone(s, t, small_stones_5_8.stones[1], 11);
-        triggerEnviro3(t, 12);
+        triggerEnviro3(s, t, 12);
         sequenceComplete(s, t, 13);
 
     }

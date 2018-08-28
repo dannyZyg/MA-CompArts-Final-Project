@@ -28,7 +28,7 @@ public:
     void impactEffect() override;
     void alterSize(Particle& cur_);
     void seedWithRandomValues() override;
-    
+    void presetSelector(string preset) override;
     
     void drawMembranes();
     

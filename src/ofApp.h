@@ -129,9 +129,9 @@ public:
     
     Timer stoneTimer;
     
-    void triggerEnviro1(Timer& t, int timing);
-    void triggerEnviro2(Timer& t, int timing);
-    void triggerEnviro3(Timer& t, int timing);
+    void triggerEnviro1(string sender, Timer& t, int timing);
+    void triggerEnviro2(string sender, Timer& t, int timing);
+    void triggerEnviro3(string sender, Timer& t, int timing);
 
     
     bool sensorTrigger;

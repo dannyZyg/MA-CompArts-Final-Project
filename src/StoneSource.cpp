@@ -113,23 +113,13 @@ void StoneSource::update(){
 
 void StoneSource::draw(){
     
-    ofClear(0);
-    
-    
-//    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
-//    ofBackground(255);
-//
-//    //refresh background circle colour every frame, for all stepping stones in the fbo source
-//
-//    for(int i = 0; i < origins.size(); i ++){
-//        ofPushStyle();
-//        ofSetColor(0);
-//        ofNoFill();
-//        ofDrawRectangle(origins[i], gs, gs);
-//        ofFill();
-//        ofDrawCircle(origins[i], rad);
-//        ofPopStyle();
-//    }
+    ofBackground(0);    //refresh background circle colour every frame
+//    ofPushStyle();
+//    ofFill();
+//    ofSetLineWidth(5);
+//    ofSetColor(0);
+//    ofDrawCircle(origin, rad);
+//    ofPopStyle();
     
     
     

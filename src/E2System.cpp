@@ -178,8 +178,10 @@ void E2System::outputConditions(){
 void E2System::impactEffect(){
     
     ofVec2f target;
-    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad, origin.x + externalRad);
-    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.x - externalRad, origin.x + externalRad);
+    target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad/2, origin.x + externalRad/2, true);
+    target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.y - externalRad/2, origin.y + externalRad/2, true);
+    
+//    ofDrawCircle(target, 50);
     
     if(impact){
         addRepulsionForce(target.x, target.y, 250, 1);
@@ -265,9 +267,7 @@ void E2System::presetSelector(string preset){
             
             
         }
-        
-        
-        
+        cout<< "P1" << endl;
     }
     
     if(preset == "p2"){
@@ -279,6 +279,7 @@ void E2System::presetSelector(string preset){
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 5;
         }
+        cout<< "P2" << endl;
     }
     
     if(preset == "p3"){
@@ -302,10 +303,13 @@ void E2System::presetSelector(string preset){
         }
         //        numActive = 200;
         //        maxParticles = 150;
+        
+        cout<< "P3" << endl;
     }
     
     if(preset == "r1"){
         randomVals = true;
+        cout<< "R1" << endl;
     }
     
     if(preset == "r2"){

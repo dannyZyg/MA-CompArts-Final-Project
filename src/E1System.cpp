@@ -5,7 +5,7 @@
 ////  Created by Danny on 25/8/18.
 ////
 //
-// This 
+// 
 
 
 #include "E1System.hpp"
@@ -13,7 +13,6 @@
 E1System::E1System(){
    
     kParticles = 80;
-    
     particleNeighborhood = 80;
     particleRepulsion = 0.9;// 0.5;
     centerAttraction = 0; //0.6;
@@ -21,11 +20,8 @@ E1System::E1System(){
     impact = false;
     colourExchange = true;
     maxRad = 20;
-    
     outputThreshold = 10;
     outputCondition = 0;
-    
-    
 }
 
 void E1System::setupParticles(){
@@ -39,8 +35,6 @@ void E1System::setupParticles(){
         particle.setupE1();
         particles.push_back(particle);
     }
-    
-    
     
     team1Base = ofColor(27,125, 204);
     team2Base = ofColor(0,125, 90);
@@ -235,10 +229,73 @@ void E1System::impactEffect(){
     }
 }
 
+
+void E1System::presetSelector(string preset){
+    
+    // cell walls active. Outside cells retreat from outer wall.
+    if(preset == "p1"){
+        particleRepulsion = 0.5;
+        centerAttraction = 0;
+        
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 0.4;
+            
+            
+        }
+        cout<< "P1" << endl;
+    }
+    
+    if(preset == "p2"){
+        particleRepulsion = 0.5;// 0.5;
+        centerAttraction = 0;
+        
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 5;
+        }
+        cout<< "P2" << endl;
+    }
+    
+    if(preset == "p3"){
+        
+        particleRepulsion = 0.4;
+        particleAttraction = 0.3;
+        
+        
+        //        cout<<particles[0].xv<<endl;
+        
+        for(int i = 0; i < particles.size(); i ++){
+            particles[i].maxSpeed = 10;
+            //            particles[i].vel.x = 3;
+            //            particles[i].vel.y = 3;
+            //            particles[i].vel.x = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25), -1, 1, -2, 2);
+            //            particles[i].vel.y = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25 + 500), -1, 1, -2, 2);
+            //            particles[i].xv = ofRandom(-2, 2);
+            //            particles[i].yv = ofRandom(-2, 2);
+        }
+        //        numActive = 200;
+        //        maxParticles = 150;
+        
+        cout<< "P3" << endl;
+    }
+    
+    if(preset == "r1"){
+        randomVals = true;
+        cout<< "R1" << endl;
+    }
+    
+    if(preset == "r2"){
+        
+    }
+    
+    if(preset == "r3"){
+        
+    }
+    
+}
+
 void E1System::seedWithRandomValues(){
     if(randomVals){
         //change rules
-        
         float tempMemStep = ofRandom(0.01, 0.5);
         float tempMemRad = ofRandom(5, 25);
         float tempMaxMemLife = ofRandom(20, 150);
@@ -254,7 +311,6 @@ void E1System::seedWithRandomValues(){
             particles[i].membraneStep = tempMemStep;
             particles[i].maxMembraneLife = tempMaxMemLife;
         }
-        
 //        cout<< particleRepulsion <<endl;
         randomVals = false;
         colourExchange = ofRandom(2);
