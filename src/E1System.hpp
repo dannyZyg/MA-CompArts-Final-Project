@@ -4,6 +4,7 @@
 ////
 ////  Created by Danny on 25/8/18.
 ////
+//// Derivative class of Particle System.
 
 #pragma once
 

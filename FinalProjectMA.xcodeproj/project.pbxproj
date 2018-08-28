@@ -23,17 +23,14 @@
 		3022E5442131B654005ACFE2 /* E1System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5422131B654005ACFE2 /* E1System.cpp */; };
 		3022E5472131FE14005ACFE2 /* E3System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5452131FE14005ACFE2 /* E3System.cpp */; };
 		3022E54A21320E83005ACFE2 /* E2System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E54821320E83005ACFE2 /* E2System.cpp */; };
-		30232793212C96F700D867F7 /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278B212C96F700D867F7 /* Envelope.cpp */; };
 		30232794212C96F700D867F7 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278C212C96F700D867F7 /* Particle.cpp */; };
 		30232795212C96F700D867F7 /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278D212C96F700D867F7 /* ParticleSystem.cpp */; };
 		30232796212C96F700D867F7 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3023278F212C96F700D867F7 /* Timer.cpp */; };
 		3029CC82210CD89D00E55228 /* EnvironmentOneSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3029CC80210CD89D00E55228 /* EnvironmentOneSource.cpp */; };
-		3039353B2118FBFB00913419 /* EnvironmentTwoSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 303935352118FBFB00913419 /* EnvironmentTwoSystem.cpp */; };
 		3039353C2118FBFB00913419 /* EnvironmentTwoSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 303935372118FBFB00913419 /* EnvironmentTwoSource.cpp */; };
 		304A6B9521301EFA00FBCDE5 /* StoneSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */; };
 		30A0106B213561C000688084 /* StoneSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30A01069213561C000688084 /* StoneSystem.cpp */; };
 		30C40CA1210F77180063369E /* EnvironmentThreeSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */; };
-		30F19DE2212C4C46004E8E0F /* StoneParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30F19DE1212C4C45004E8E0F /* StoneParticleSystem.cpp */; };
 		30F9C9F92131538400E25596 /* EnvironmentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30F9C9F72131538400E25596 /* EnvironmentSource.cpp */; };
 		36A98A331EAE1D0A19998A59 /* SaveTexCoordPosCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60F40691CD9DE4DEE1768FE9 /* SaveTexCoordPosCmd.cpp */; };
 		3800542E2A9FC9F9F4D07001 /* ofxFboBlur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 717FFECA4DDACD613D27B6AD /* ofxFboBlur.cpp */; };
@@ -195,8 +192,6 @@
 		3022E5462131FE14005ACFE2 /* E3System.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = E3System.hpp; sourceTree = "<group>"; };
 		3022E54821320E83005ACFE2 /* E2System.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = E2System.cpp; sourceTree = "<group>"; };
 		3022E54921320E83005ACFE2 /* E2System.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = E2System.hpp; sourceTree = "<group>"; };
-		30232789212C96F600D867F7 /* Envelope.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Envelope.hpp; sourceTree = "<group>"; };
-		3023278B212C96F700D867F7 /* Envelope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
 		3023278C212C96F700D867F7 /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
 		3023278D212C96F700D867F7 /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = "<group>"; };
 		3023278E212C96F700D867F7 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
@@ -205,10 +200,8 @@
 		30232791212C96F700D867F7 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
 		3029CC80210CD89D00E55228 /* EnvironmentOneSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentOneSource.cpp; sourceTree = "<group>"; };
 		3029CC81210CD89D00E55228 /* EnvironmentOneSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentOneSource.hpp; sourceTree = "<group>"; };
-		303935352118FBFB00913419 /* EnvironmentTwoSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentTwoSystem.cpp; sourceTree = "<group>"; };
 		303935372118FBFB00913419 /* EnvironmentTwoSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentTwoSource.cpp; sourceTree = "<group>"; };
 		303935392118FBFB00913419 /* EnvironmentTwoSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentTwoSource.hpp; sourceTree = "<group>"; };
-		3039353A2118FBFB00913419 /* EnvironmentTwoSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnvironmentTwoSystem.h; sourceTree = "<group>"; };
 		304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StoneSource.cpp; sourceTree = "<group>"; };
 		304A6B9421301EFA00FBCDE5 /* StoneSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StoneSource.hpp; sourceTree = "<group>"; };
 		3074E4094F76555C299E5D8E /* ClearSurfacesCmd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ClearSurfacesCmd.h; path = ../../../addons/ofxPiMapper/src/Commands/ClearSurfacesCmd.h; sourceTree = SOURCE_ROOT; };
@@ -217,8 +210,6 @@
 		30C40C9F210F77180063369E /* EnvironmentThreeSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentThreeSource.hpp; sourceTree = "<group>"; };
 		30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentThreeSource.cpp; sourceTree = "<group>"; };
 		30ED82F4A70B5B95CCEF7744 /* SelNextSurfaceCmd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SelNextSurfaceCmd.h; path = ../../../addons/ofxPiMapper/src/Commands/SelNextSurfaceCmd.h; sourceTree = SOURCE_ROOT; };
-		30F19DE0212C4C45004E8E0F /* StoneParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoneParticleSystem.h; sourceTree = "<group>"; };
-		30F19DE1212C4C45004E8E0F /* StoneParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StoneParticleSystem.cpp; sourceTree = "<group>"; };
 		30F9C9F72131538400E25596 /* EnvironmentSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentSource.cpp; sourceTree = "<group>"; };
 		30F9C9F82131538400E25596 /* EnvironmentSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentSource.hpp; sourceTree = "<group>"; };
 		3157007392BD114EAB99F470 /* TextureMappingMode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TextureMappingMode.h; path = ../../../addons/ofxPiMapper/src/Application/Modes/TextureMappingMode.h; sourceTree = SOURCE_ROOT; };
@@ -785,8 +776,6 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3023278B212C96F700D867F7 /* Envelope.cpp */,
-				30232789212C96F600D867F7 /* Envelope.hpp */,
 				3023278C212C96F700D867F7 /* Particle.cpp */,
 				30232791212C96F700D867F7 /* Particle.h */,
 				3023278D212C96F700D867F7 /* ParticleSystem.cpp */,
@@ -807,13 +796,9 @@
 				30C40C9F210F77180063369E /* EnvironmentThreeSource.hpp */,
 				303935372118FBFB00913419 /* EnvironmentTwoSource.cpp */,
 				303935392118FBFB00913419 /* EnvironmentTwoSource.hpp */,
-				303935352118FBFB00913419 /* EnvironmentTwoSystem.cpp */,
-				3039353A2118FBFB00913419 /* EnvironmentTwoSystem.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				30F19DE1212C4C45004E8E0F /* StoneParticleSystem.cpp */,
-				30F19DE0212C4C45004E8E0F /* StoneParticleSystem.h */,
 				304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */,
 				304A6B9421301EFA00FBCDE5 /* StoneSource.hpp */,
 				30F9C9F72131538400E25596 /* EnvironmentSource.cpp */,
@@ -1037,7 +1022,6 @@
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				BEDFEE7400C58EA4E412B757 /* ofxJSONElement.cpp in Sources */,
-				30F19DE2212C4C46004E8E0F /* StoneParticleSystem.cpp in Sources */,
 				FB84AAF8D1B7A95266DB5C09 /* jsoncpp.cpp in Sources */,
 				5FB2E2349349B93011671206 /* Vec2.cpp in Sources */,
 				2E088EDC6E32D190998D8241 /* Vec3.cpp in Sources */,
@@ -1053,7 +1037,6 @@
 				274AEF0299D77E27C0C5B205 /* ProjectionEditorWidget.cpp in Sources */,
 				8A3D6CE0A4338871766366B6 /* SurfaceHighlightWidget.cpp in Sources */,
 				4D2D4455339FC8C955091C88 /* TextureEditorWidget.cpp in Sources */,
-				30232793212C96F700D867F7 /* Envelope.cpp in Sources */,
 				7702233BBFB6E8D9E8B93CBC /* FboSource.cpp in Sources */,
 				A0C1CAB7B9C59DDDC960EB62 /* VideoSource.cpp in Sources */,
 				588E33B9B0BD6F5A2E4DF31D /* OMXPlayerCache.cpp in Sources */,
@@ -1076,7 +1059,6 @@
 				25F5CD753AF35B53464E56AE /* MvTexCoordCmd.cpp in Sources */,
 				D61A46C1800537BA43C7884F /* DuplicateSurfaceCmd.cpp in Sources */,
 				A75658250711ADE2C05FC781 /* MvLayerDnCmd.cpp in Sources */,
-				3039353B2118FBFB00913419 /* EnvironmentTwoSystem.cpp in Sources */,
 				B01F972DDDA5F21EF4C8B99D /* RmSurfaceCmd.cpp in Sources */,
 				6056983B92E88B475FF04299 /* MvSelectionCmd.cpp in Sources */,
 				23963D6D8F0085D5DD2DF394 /* TogglePerspectiveCmd.cpp in Sources */,

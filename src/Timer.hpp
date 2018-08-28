@@ -1,3 +1,4 @@
+// Timer class is based on the timer example from openFrameworks.
 //
 //  Timer.hpp
 //  FinalProjectMA

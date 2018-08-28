@@ -16,10 +16,7 @@
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
 #include "Timer.hpp"
-#include "Envelope.hpp"
-//#include "Scheduler.hpp"
 #include "ParticleSystem.h"
-//#include "ofxGui.h"
 #include "EnvironmentSource.hpp"
 
 #include "StoneSource.hpp"
@@ -158,7 +155,6 @@ public:
     
 //    Timer testTimer;
     Timer env1Timer, env2Timer, env3Timer, sensorTimer;
-    Envelope testEnvelope;
     
     bool env;
 //    int randomPath;

@@ -9,14 +9,8 @@
 
 
 StoneSystem::StoneSystem(){
-    mode = ofxColorPalette::BRIGHTNESS;
-    brightness = 200;
-    saturation = 200;
-    
+
     showParticleSpacing = 5;
-    
-//    numToDisplay = 0;
-    
     activeTimer = Timer();
     releaseTimer = Timer();
     activeTimer.setup();
@@ -59,9 +53,10 @@ void StoneSystem::setupParticles(){
     for(int i = 0; i < kParticles; i++) {
         float x = ofRandom(origin.x - 100, origin.x + 100);
         float y = ofRandom(origin.y - 100, origin.y + 100);;
-        StoneParticle particle = StoneParticle();
+        Particle particle = Particle();
         particle.origin = origin;
         particle.externalRad = externalRad;
+        particle.setupStoneParticle();
         particles.push_back(particle);
     }
     
@@ -85,6 +80,7 @@ void StoneSystem::display(){
     
     releaseTimer.run();
     
+    //If a system has sent a signal, allow the following, otherwise save CPU.
     if(env1 || env2 || env3 || sens || !releaseTimer.reached){
         ofPushStyle();
         ofPushMatrix();
@@ -92,7 +88,6 @@ void StoneSystem::display(){
         
         // do this once per frame
         setupForces();
-        
         
         // apply per-particle forces
         if(drawLines) {
@@ -103,7 +98,7 @@ void StoneSystem::display(){
             ofPopStyle();
         }
         
-        
+        // functions which fades in and out particles based on which system sends a signal
         particlesInOut(e1StartIndex, env1, env1Display);
         particlesInOut(e2StartIndex, env2, env2Display);
         particlesInOut(e3StartIndex, env3, env3Display);
@@ -127,8 +122,6 @@ void StoneSystem::display(){
         addAttractionForce(origin.x, origin.y, 200, centerAttraction);
 
         update();
-        
-        
         
         ofPopStyle();
         ofPopMatrix();
@@ -184,18 +177,15 @@ void StoneSystem::particlesInOut(int start, bool active, float& display){
 void StoneSystem::pushPopParticles(){
     
     if(particles.size() < 50){
-        
         if(timer % showParticleSpacing == 0){
             addParticle(ofRandom(4));
-            
         }
-        
     }
 }
 
 void StoneSystem::addParticle(int team_){
     
-    StoneParticle p = StoneParticle();
+    Particle p = Particle();
     p.origin = origin;
     p.externalRad = externalRad;
     p.team = team_;

@@ -14,7 +14,7 @@
 #include "ofMain.h"
 #include "FboSource.h"
 //#include "EnvironmentOneSystem.h"
-#include "EnvironmentTwoSystem.h"
+//#include "EnvironmentTwoSystem.h"
 #include "ParticleSystem.h"
 #include "E1System.hpp"
 #include "E3System.hpp"

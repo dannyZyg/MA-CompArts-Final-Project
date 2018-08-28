@@ -22,6 +22,7 @@ public:
     void setupE1();
     void setupE2();
     void setupE3();
+    void setupStoneParticle();
     
 	void updatePosition();
 	void resetForce();
@@ -81,36 +82,3 @@ public:
     
     
 };
-
-
-class E1Particle: public Particle {
-    
-public:
-    E1Particle();
-    
-    float testVal;
-
-    
-    
-};
-
-class E2Particle: public Particle {
-    
-public:
-    E2Particle();
-    
-
-};
-
-class E3Particle: public Particle {
-public:
-    E3Particle();
-};
-
-class StoneParticle: public Particle {
-public:
-    StoneParticle();
-//    void bounceOffWalls();
-//    int team;
-};
-

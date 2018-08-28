@@ -76,9 +76,9 @@ void Particle::setupE3(){
     
 }
 
-StoneParticle::StoneParticle(){
+void Particle::setupStoneParticle(){
+    r = ofRandom (5, 12);
     
-    r = ofRandom (5, 15);
 }
 
 void Particle::updatePosition() {

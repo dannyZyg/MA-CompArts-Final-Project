@@ -29,11 +29,14 @@ void ParticleSystem::setup(int width, int height, int k) {
     yBins = (int) ceilf((float) height / (float) binSize);
     bins.resize(xBins * yBins);
     
+//    
+//    mode = ofxColorPalette::BRIGHTNESS;
+//    brightness = 200;
+//    saturation = 200;
+    
     setupParticles();
     
-    mode = ofxColorPalette::BRIGHTNESS;
-    //    brightness = 200;
-    //    saturation = 200;
+
     
     glowTimer.setup();
     outputTimer = Timer();
@@ -274,8 +277,6 @@ void ParticleSystem::update() {
         else calibration = true;
         
     }
-    
-    
 
 
     

@@ -1,5 +1,9 @@
-#pragma once
+// Particle System based on the binned particle system developed by Kyle Mcdonald
+// see this github page: https://github.com/kylemcdonald/openFrameworksDemos/tree/master/BinnedParticleSystem/src
+// openFrameworks forum discussion here: https://forum.openframeworks.cc/t/quadtree-particle-system/2860
+// Modifications were made to make the system circle based (in their area restriction), amongst other things.
 
+#pragma once
 #include "Particle.h"
 #include "ofxColorPalette.h"
 #include "Timer.hpp"
@@ -35,35 +39,34 @@ public:
     void addForce(const Particle& particle, float radius, float scale);
     void addForce(float x, float y, float radius, float scale);
     void update();
-    
     void draw();
+    virtual void display();
     int getWidth() const;
     int getHeight() const;
-    
     virtual void setupParticles();
     void setupColours();
-    vector <ofxColorPalette> teamCols;
-    ofColor team1Base, team2Base, team3Base, team4Base;
-    ofxColorPalette::ColorChannel mode;
-    float brightness;
-    float saturation;
-    
+    virtual void particleInteractions();
+    virtual void outputConditions();
+    virtual void impactEffect();
+    virtual void seedWithRandomValues();
+    void newRules(int option);
+    virtual void presetSelector(string preset);
     void fadeConnectingLines();
     
-    float lineAlpha;
+    vector <ofxColorPalette> teamCols;
+    ofColor team1Base, team2Base, team3Base, team4Base;
     
     int kParticles;
     float particleNeighborhood;
     float centerAttraction, particleRepulsion, particleAttraction;
     bool drawLines;
-    
-    virtual void display();
+    float lineAlpha;
     
     ofVec2f origin;
+    ofVec2f impactTarget;
     float externalRad;
     float angle;
-    ofVec2f impactTarget;
-
+    
     vector <float> noiseSeed;
     
     Timer glowTimer;
@@ -77,23 +80,13 @@ public:
     bool systemOutput;
     bool glow;
     bool randomVals;
+    bool calibration;
     
     int destination;
     int randomPath;
     int outputCondition;
     int outputThreshold;
     int clusterCount;
-    
-    
-    bool calibration;
-    
-    virtual void particleInteractions();
-    virtual void outputConditions();
-    virtual void impactEffect();
-    virtual void seedWithRandomValues();
-    
-    void newRules(int option);
-    virtual void presetSelector(string preset);
 
     inline float InvSqrt(float x){
         float xhalf = 0.5f * x;

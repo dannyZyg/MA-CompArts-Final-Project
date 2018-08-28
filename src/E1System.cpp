@@ -5,6 +5,9 @@
 ////  Created by Danny on 25/8/18.
 ////
 //
+// This 
+
+
 #include "E1System.hpp"
 
 E1System::E1System(){
@@ -57,18 +60,6 @@ void E1System::particleInteractions(){
     float sinsz = ofMap(sin(ofGetFrameNum() * 0.1), -1, 1, -10, 10);
 //    cout <<sinsz <<endl;
     for(int i = 0; i < particles.size(); i++) {
-    
-        
-        
-        // alter size
-        
-//        alterSize(particles[i]);
-        
-        
-    
-        
-
-        
         particles[i].limitSize();
         particles[i].limitMembraneLife();
         particles[i].bounceOffWalls(true);
@@ -128,7 +119,6 @@ void E1System::particleInteractions(){
                 }
             }
         }
-//        particles[i].r += sinsz;
     }
     
 //    cout <<"clusters " <<clusterCount << endl;
@@ -137,31 +127,10 @@ void E1System::particleInteractions(){
 
 
 void E1System::drawMembranes(){
-    
-//    int nearby;
-//
-//    maxRad = particles[0].maxSize;
-////    vector<Particle*> closeNei = getNeighbors(cur_.x, cur_.y, region + 10);
-//
-//    ofPushStyle();
-//    ofFill();
-//    for(int i = 0; i < particles.size(); i ++){
-//        region = particles[i].r + maxRad;
-//        ofSetColor(255);
-//        ofDrawCircle(particles[i].x, particles[i].y, region);
-//    }
-//
-//    ofPopStyle();
-    
-    
     for(int i = 0; i < particles.size(); i ++){
         alterSize(particles[i]);
     }
 }
-
-
-
-
 
 void E1System::alterSize(Particle& cur_){
     
@@ -176,8 +145,6 @@ void E1System::alterSize(Particle& cur_){
     //test
     nearby = closeNei.size();
     
-//    cout<<nearby<<endl;
-    
     ofPushStyle();
     ofFill();
     ofSetColor(125, cur_.membraneLife);
@@ -189,9 +156,6 @@ void E1System::alterSize(Particle& cur_){
     else{
         cur_.alone = true;
     }
-    
-    
-//    cout<< cur_.membraneLife<<endl;
     
     ofPopStyle();
     
@@ -215,8 +179,6 @@ void E1System::alterSize(Particle& cur_){
                 cur_.col = c2;
                 closeNei[j] -> col = c1;
             }
-  
-            
         }
         if(!cur_.alone) {
             cur_.r -= cur_.membraneStep;
@@ -264,25 +226,14 @@ void E1System::outputConditions(){
             glow = false;
         }
     }
-    
-    
-    
-    
 }
 
-
 void E1System::impactEffect(){
-    
+
     if(impact){
         addRepulsionForce(origin.x, origin.y, 200, 3);
     }
-    else{
-        
-    }
-    
 }
-
-
 
 void E1System::seedWithRandomValues(){
     if(randomVals){
@@ -304,13 +255,7 @@ void E1System::seedWithRandomValues(){
             particles[i].maxMembraneLife = tempMaxMemLife;
         }
         
-        
-   
-
-        
-        cout<< particleRepulsion <<endl;
-
-        
+//        cout<< particleRepulsion <<endl;
         randomVals = false;
         colourExchange = ofRandom(2);
     }

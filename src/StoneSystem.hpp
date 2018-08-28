@@ -21,25 +21,22 @@ public:
     
     void setupParticles() override;
     void display() override;
-//    void particleInteractions() override;
-//    void outputConditions() override;
-//    void impactEffect() override;
     void particlesInOut(int start, bool active, float& display);
     void pushPopParticles();
     void addParticle(int team_);
     
-    
     Timer activeTimer;
     Timer releaseTimer;
-    int numToDisplay;
-    bool timeIntervalPassed;
-    unsigned int timer;
     
+    unsigned int timer;
     int showParticleSpacing;
     int e1StartIndex, e2StartIndex, e3StartIndex, sensStartIndex;
-    float env1Display, env2Display, env3Display, sensorDisplay;
     int environmentDivision;
+    float env1Display, env2Display, env3Display, sensorDisplay;
+
     bool env1, env2, env3, sens;
     bool active;
+    bool timeIntervalPassed;
+
     
 };

@@ -14,8 +14,8 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
     name = "Environment Three";
     allocate(600, 600);
     
-    width =  600;//fbo-> getWidth();
-    height = 600;//fbo -> getHeight();
+    width =  600;
+    height = 600;
     
     setScale = 0.8;
     setRotation = -2.5;
@@ -58,26 +58,6 @@ void EnvironmentThreeSource::setup(){
 
 void EnvironmentThreeSource::update(){
     
-//    setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
-//    setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
-//    blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
-//    blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
-//    
-
-    
-    
-
-    
-
-    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0, 2, true);
-    if(active) setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, -PI, PI);
-
-    
-//        cout <<"scale = " << setScale<<endl;
-//        cout <<"rot = " << setRotation<<endl;
-//        cout <<"blurOffset = " << blurOffset<<endl;
-//        cout <<"blurPasses = " << blurPasses<<endl;
-    
     blur.setScale(setScale);
     blur.setRotation(setRotation);
     
@@ -87,9 +67,6 @@ void EnvironmentThreeSource::update(){
     gpuBlur.numBlurOverlays = 3;
     gpuBlur.blurOverlayGain = 150;
     
-    
-    
-//    cout<< gpuBlur.blurPasses<<endl;
     if(active){
         enviro.impact = true;
     }
@@ -97,10 +74,6 @@ void EnvironmentThreeSource::update(){
     if(!active){
         enviro.impact = false;
     }
-    
-//    cout<<enviro.lineAlpha <<endl;
-    
-    
 }
 
 void EnvironmentThreeSource::draw(){

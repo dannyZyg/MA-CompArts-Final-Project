@@ -305,7 +305,7 @@ void E2System::presetSelector(string preset){
     }
     
     if(preset == "r1"){
-        
+        randomVals = true;
     }
     
     if(preset == "r2"){
