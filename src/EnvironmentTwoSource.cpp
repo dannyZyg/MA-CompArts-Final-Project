@@ -16,17 +16,17 @@ EnvironmentTwoSource::EnvironmentTwoSource(){
     width = fbo-> getWidth();
     height = fbo -> getHeight();
     
-    setScale = 1;
+    setScale = 0;
     setRotation = -3.5;
     blurOffset = 2.5;
-    blurPasses = 1;
+    blurPasses = 2;
 
 
 }
 
 void EnvironmentTwoSource::setup(){
     
-    blur.setup(width,height, 8, .1, 4);
+    blur.setup(width,height, 4, .1, 8);
 
     s.width = 600;
     s.height = 600;
@@ -77,7 +77,7 @@ void EnvironmentTwoSource::update(){
 //
     
     
-    
+//    cout << setScale << endl;
     
     
     
@@ -96,8 +96,9 @@ void EnvironmentTwoSource::update(){
     
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
-    gpuBlur.numBlurOverlays = 5;
-    gpuBlur.blurOverlayGain = 150;
+    gpuBlur.numBlurOverlays = 6;
+    gpuBlur.blurOverlayGain = 250;
+    
     
 //    float noise2 = ofSignedNoise(ofGetFrameNum() * 0.01) * 1.2;
 //    cout<< "noise = " << noise2 << endl;
@@ -113,15 +114,12 @@ void EnvironmentTwoSource::update(){
 
     
     if(active){
-        //        startTime = 0;
         enviro.impact = true;
     }
     
     if(!active){
         enviro.impact = false;
-        
     }
-    
 }
 
 void EnvironmentTwoSource::draw(){

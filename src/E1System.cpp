@@ -20,7 +20,7 @@ E1System::E1System(){
     impact = false;
     colourExchange = true;
     maxRad = 20;
-    outputThreshold = 10;
+    outputThreshold = 20;
     outputCondition = 0;
 }
 
@@ -195,31 +195,31 @@ void E1System::outputConditions(){
     glowTimer.run();
     
     
-    if(calibration){
-        if(outputCondition > outputThreshold) trigger = true;
-        else(trigger = false);
-        
-        // if these conditions are met, do this once only!
-        
-        if(trigger && !sequenceActive) {
-            systemOutput = true;
-            ofSetColor(0, 255, 0);
-            ofDrawCircle(origin, 50);
-            glowTimer.reset();
-            glowTimer.endTime = 5000;
-            sequenceTrigger = true;
-        }
-        
-        // if the timer is active, glow
-        if(!glowTimer.reached){
-            glow = true;
-            
-        }
-        // if not, don't glow
-        if (glowTimer.reached){
-            glow = false;
-        }
+    if(outputCondition > outputThreshold) trigger = true;
+    else(trigger = false);
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !sequenceActive) {
+//        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
     }
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
+        
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+//    presetSelector("p1");
 }
 
 void E1System::impactEffect(){
@@ -239,6 +239,7 @@ void E1System::presetSelector(string preset){
         
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 0.4;
+            particles[i].damping = 0.01;
             
             
         }
@@ -310,6 +311,9 @@ void E1System::seedWithRandomValues(){
             particles[i].membraneRad = tempMemRad;
             particles[i].membraneStep = tempMemStep;
             particles[i].maxMembraneLife = tempMaxMemLife;
+            particles[i].damping = ofRandom(0.01, 0.05);
+            particles[i].maxSize = ofRandom(15, 30);
+            particles[i].minSize = ofRandom(4, 9);
         }
 //        cout<< particleRepulsion <<endl;
         randomVals = false;

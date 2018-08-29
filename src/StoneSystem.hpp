@@ -42,4 +42,7 @@ public:
     bool activateDraw;
     bool timerTrigger;
     
+    
+    int counter;
+    
 };

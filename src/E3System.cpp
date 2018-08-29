@@ -18,7 +18,7 @@ E3System::E3System(){
     
 //    lineAlpha = 0;
     
-    outputThreshold = 100;
+    outputThreshold = 200;
     drawLines = true;
     rebound = true;
     trigger = false;
@@ -164,39 +164,39 @@ void E3System::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
 //    if(calibration){
-        if(outputCondition > outputThreshold) trigger = true;
-        else(trigger = false);
+    if(outputCondition > outputThreshold) trigger = true;
+    else(trigger = false);
+    
+    //    if(outputTimer.reached) trigger = true;
+    //    else if(!outputTimer.reached) trigger = false;
+    
+    //    cout<<"trig "<<trigger << endl;
+    
+    // if these conditions are met, do this once only!
+    
+    if(trigger && !sequenceActive) {
+//        systemOutput = true;
+        ofSetColor(0, 255, 0);
+        ofDrawCircle(origin, 50);
+        glowTimer.reset();
+        glowTimer.endTime = 5000;
+        sequenceTrigger = true;
+        outputTimer.reset();
+    }
+    
+    
+    // if the timer is active, glow
+    if(!glowTimer.reached){
+        glow = true;
         
-        //    if(outputTimer.reached) trigger = true;
-        //    else if(!outputTimer.reached) trigger = false;
-        
-        //    cout<<"trig "<<trigger << endl;
-        
-        // if these conditions are met, do this once only!
-        
-        if(trigger && !sequenceActive) {
-            systemOutput = true;
-            ofSetColor(0, 255, 0);
-            ofDrawCircle(origin, 50);
-            glowTimer.reset();
-            glowTimer.endTime = 5000;
-            sequenceTrigger = true;
-            outputTimer.reset();
-        }
-        
-        
-        // if the timer is active, glow
-        if(!glowTimer.reached){
-            glow = true;
-            
-        }
-        // if not, don't glow
-        if (glowTimer.reached){
-            glow = false;
-        }
-        
-        // reset the cluster tally
-        outputCondition = 0;
+    }
+    // if not, don't glow
+    if (glowTimer.reached){
+        glow = false;
+    }
+    
+    // reset the cluster tally
+    outputCondition = 0;
         
         
         

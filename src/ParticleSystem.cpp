@@ -16,9 +16,10 @@ ParticleSystem::ParticleSystem(){
     rebound = true;
     trigger = false;
     glow = false;
-    sequenceActive = false;
     setNewRules = false;
     triggeredBySensor = false;
+    sequenceActive = false;
+    sequenceTrigger = false;
 }
 
 void ParticleSystem::setup(int width, int height, int k) {

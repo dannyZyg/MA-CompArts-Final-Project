@@ -18,19 +18,19 @@ EnvironmentOneSource::EnvironmentOneSource(){
     
     setScale = 1.5;
     setRotation = 1.1;
-    blurOffset = 3.5;
+    blurOffset = 2.5;
     blurPasses = 1;
 }
 
 void EnvironmentOneSource::setup(){
     
-    blur.setup(width,height, 8, .1, 4);
+    blur.setup(width,height, 4, .1, 4);
     
     s.width = 600;
     s.height = 600;
     s.internalformat = GL_RGBA;
     s.maxFilter = GL_LINEAR; GL_NEAREST;
-    s.numSamples = 6;
+    s.numSamples = 3;
     s.numColorbuffers = 3;
     s.useDepth = true;
     s.useStencil = true;
@@ -49,7 +49,6 @@ void EnvironmentOneSource::setup(){
     blur1 = true;
     blur2 = true;
     startTime = 0;
-//    active = true;
 }
 
 void EnvironmentOneSource::update(){
@@ -64,7 +63,7 @@ void EnvironmentOneSource::update(){
     
     
 //        setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
-    //    setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
+//        setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
     //    blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
     //    blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
     
@@ -77,11 +76,10 @@ void EnvironmentOneSource::update(){
     blur.setScale(setScale);
     blur.setRotation(setRotation);
     
-    
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
-    gpuBlur.numBlurOverlays = 5;
-    gpuBlur.blurOverlayGain = 150;
+    gpuBlur.numBlurOverlays = 3;
+    gpuBlur.blurOverlayGain = 200;
     
 //    enviro.addRepulsionForce(100, 300, 200, 1);
     
@@ -94,10 +92,7 @@ void EnvironmentOneSource::update(){
     
     if(!active){
         enviro.impact = false;
-        
     }
-    
-
     
     newRules();
     

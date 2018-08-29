@@ -20,7 +20,7 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
     setScale = 0.8;
     setRotation = -2.5;
     blurOffset = 4.2;
-    blurPasses = 0.5;
+    blurPasses = 1;
     
 }
 
@@ -35,7 +35,7 @@ void EnvironmentThreeSource::setup(){
     enviro.setup(width, height, 4);
     debug = false;
     
-    blur.setup(width,height, 8, .1, 4);
+    blur.setup(width,height, 4, .1, 4);
     
     
     s.width = width;
@@ -65,7 +65,7 @@ void EnvironmentThreeSource::update(){
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
     gpuBlur.numBlurOverlays = 3;
-    gpuBlur.blurOverlayGain = 150;
+    gpuBlur.blurOverlayGain = 250;
     
     if(active){
         enviro.impact = true;

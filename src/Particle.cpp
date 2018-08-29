@@ -83,7 +83,7 @@ void Particle::setupStoneParticle(){
     r = ofRandom (5, 12);
     vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-    
+    damping = ofRandom(0.01, 0.03);
     xv = ofRandom(-1, 1);
     yv = ofRandom(-1, 1);
 }

@@ -9,7 +9,7 @@
 
 
 E2System::E2System(){
-    kParticles = 300;
+    kParticles = 350;
     particleNeighborhood = 32;
     particleRepulsion = 0.5;
     centerAttraction = 0;
@@ -18,6 +18,9 @@ E2System::E2System(){
     cellWallsActive = true;
     lineAlpha = 0;
     outputThreshold = 80;
+    
+    sequenceActive = false;
+    sequenceTrigger = false;
     
 }
 
@@ -154,12 +157,18 @@ void E2System::outputConditions(){
     
     // if these conditions are met, do this once only!
     
-    if(trigger && !sequenceActive) {
+    if(trigger && !sequenceActive && !sequenceTrigger) {
+//        sequenceActive = true;
+        sequenceTrigger = true;
         ofSetColor(0, 255, 0);
         ofDrawCircle(origin, 50);
-        sequenceTrigger = true;
+//        destination = ofRandom(2);
+        cout << "you suck" << endl;
+        cout<< "destination = " << destination << endl;
+
     }
     
+//    cout<< "e2 seq active = " << sequenceActive << endl;
     
 //    // if the timer is active, glow
 //    if(!glowTimer.reached){
@@ -337,6 +346,7 @@ void E2System::seedWithRandomValues(){
 //        centerAttraction = ofRandom(0, 0.5);
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = ofRandom(3);
+            particles[i].damping = ofRandom(0.02, 0.04);
 //            particles[i].vel.x = ofRandom(-2, 2);
 //            particles[i].vel.y = ofRandom(-2, 2);
             

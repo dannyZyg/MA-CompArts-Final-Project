@@ -16,7 +16,7 @@ StoneSystem::StoneSystem(){
     activeTimer.setup();
     releaseTimer.setup();
     
-    releaseTimer.endTime = 5000;
+    releaseTimer.endTime = 1000;
     
     e1StartIndex = 0;
     e2StartIndex = 31;
@@ -77,30 +77,22 @@ void StoneSystem::setupParticles(){
 
 void StoneSystem::display(){
     
-    activeTimer.run();
-    
-    releaseTimer.run();
-    
-//    timerForDrawDeactivation(env1, e1Reset);
-//    timerForDrawDeactivation(env2, e2Reset);
-//    timerForDrawDeactivation(env3, e3Reset);
-//    timerForDrawDeactivation(sens, sensReset);
-    
-    if(releaseTimer.reached){
-//        e1Reset = false;
-//        e2Reset = false;
-//        e3Reset = false;
-//        sensReset = false;
-    }
-    
-//    if(env1 || env2 || env3 || sens) releaseTimer.reset();
+
+//    activeTimer.run();
 //
-//    if(!releaseTimer.reached) activateDraw = true;
-//    else activateDraw = false;
+//    releaseTimer.run();
+//
     
+    if(env1 || env2 || env3 || sens) counter = 0;
+    else {
+        counter ++;
+        if(counter > 250) activateDraw = false;;
+    }
+
+    if(counter == 0) activateDraw = true;
     
-    
-    activateDraw = false;
+
+//    activateDraw = false;
     //If a system has sent a signal, allow the following, otherwise save CPU.
     if(activateDraw){
         ofPushStyle();
@@ -146,6 +138,9 @@ void StoneSystem::display(){
         
         ofPopStyle();
         ofPopMatrix();
+        
+        
+//        ofDrawRectangle(origin, 100, 100);
         
     }
     

@@ -1,6 +1,9 @@
 #include "ofApp.h"
 
 void ofApp::setup(){
+//    ofSetFullscreen(true);
+    
+    
     serialSetup();
     verdana30.load("verdana.ttf", 80, true, true);
     verdana30.setLineHeight(34.0f);
@@ -168,6 +171,11 @@ void ofApp::keyPressed(int key){
     if(key == 'B') environmentTwo.blur1 = !environmentTwo.blur1;
     if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
     if(key == 'A') environmentThree.active = !environmentThree.active;
+    
+    
+    if(key == '!') environmentOne.enviro.randomVals = true;
+    if(key == '@') environmentTwo.enviro.randomVals = true;
+    if(key == '#') environmentThree.enviro.randomVals = true;
 
 }
 
@@ -288,22 +296,28 @@ void ofApp::scheduler(){
 //// Environment Two
     // Conditions under which to allow a sequence to start
     if(environmentTwo.enviro.sequenceTrigger && !environmentTwo.enviro.sequenceActive){
+
         // if these conditions are met, do the following once only!
-        env2Timer.reset(); // start a fresh timer
-        environmentTwo.enviro.randomPath = ofRandom(3); // choose random stone path
-        environmentTwo.enviro.destination = ofRandom(2); // choose random destination enviro
+//        environmentTwo.enviro.destination = ofRandom(2); // choose random destination enviro
         environmentTwo.enviro.sequenceActive = true; // condition to start the sequence
         environmentTwo.enviro.sequenceTrigger = false; // reset the trigger condition
+        env2Timer.reset(); // start a fresh timer
         env2Timer.activeStoneTime = ofRandom(1000, 5000); // chose how long the stones are active
+        environmentTwo.enviro.randomPath = ofRandom(3); // choose random stone path
+        environmentTwo.enviro.destination = 0;
+//                cout<< "destination = " << environmentTwo.enviro.destination << endl;
+
     }
     // Then display the sequence while the bool is true
     if(environmentTwo.enviro.sequenceActive){
-        if(environmentTwo.enviro.destination == 0){
-            E2_to_E1(env2Timer, environmentTwo.enviro.randomPath);
-        }
-        if(environmentThree.enviro.destination == 1){
-            E2_to_E3(env2Timer, environmentTwo.enviro.randomPath);
-        }
+//        if(environmentTwo.enviro.destination == 0){
+//            E2_to_E1(env2Timer, environmentTwo.enviro.randomPath);
+//        }
+//        if(environmentThree.enviro.destination == 1){
+//            E2_to_E3(env2Timer, environmentTwo.enviro.randomPath);
+//        }
+    
+        E2_to_E1(env2Timer, 0);
     }
 //
 //// Environment Three
