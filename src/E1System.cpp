@@ -20,7 +20,7 @@ E1System::E1System(){
     impact = false;
     colourExchange = true;
     maxRad = 20;
-    outputThreshold = 200;
+    outputThreshold = 75;
     outputCondition = 0;
 }
 
@@ -74,7 +74,7 @@ void E1System::particleInteractions(){
 
         
         
-        if(particles[i].r > maxRad - 5) outputCondition ++;
+        if(particles[i].membraneLife > 50) outputCondition ++;
         
         
         
@@ -194,7 +194,7 @@ void E1System::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
-    
+//    cout << "out cond = " << outputCondition << endl;
     if(outputCondition > outputThreshold) trigger = true;
     else(trigger = false);
     

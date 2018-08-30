@@ -21,7 +21,7 @@
 
 #include "StoneSource.hpp"
 
-#define NUM_BYTES 2
+#define NUM_BYTES 3
 
 class ofApp : public ofBaseApp{
 public:
@@ -162,5 +162,7 @@ public:
     
 
     bool sensorSequenceGo;
+    
+    bool incomingTrigger;
     
 };

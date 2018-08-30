@@ -18,7 +18,7 @@ E3System::E3System(){
     
 //    lineAlpha = 0;
     
-    outputThreshold = 200;
+    outputThreshold = 250;
     drawLines = true;
     rebound = true;
     trigger = false;

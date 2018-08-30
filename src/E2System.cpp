@@ -147,7 +147,7 @@ void E2System::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
-    cout << "cells" << cells[1] << endl;
+//    cout << "cells" << cells[1] << endl;
     
     //    cout <<"trigger " <<trigger << endl;
     //    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
@@ -181,7 +181,7 @@ void E2System::outputConditions(){
 
     }
     
-    cout<< "e2 seq active = " << sequenceActive << endl;
+//    cout<< "e2 seq active = " << sequenceActive << endl;
     
 //    // if the timer is active, glow
 //    if(!glowTimer.reached){
