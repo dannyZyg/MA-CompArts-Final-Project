@@ -20,7 +20,7 @@ E1System::E1System(){
     impact = false;
     colourExchange = true;
     maxRad = 20;
-    outputThreshold = 20;
+    outputThreshold = 200;
     outputCondition = 0;
 }
 
@@ -200,7 +200,7 @@ void E1System::outputConditions(){
     
     // if these conditions are met, do this once only!
     
-    if(trigger && !sequenceActive) {
+    if(trigger) {
 //        systemOutput = true;
         ofSetColor(0, 255, 0);
         ofDrawCircle(origin, 50);

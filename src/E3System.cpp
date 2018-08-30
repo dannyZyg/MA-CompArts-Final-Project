@@ -174,7 +174,7 @@ void E3System::outputConditions(){
     
     // if these conditions are met, do this once only!
     
-    if(trigger && !sequenceActive) {
+    if(trigger) {
 //        systemOutput = true;
         ofSetColor(0, 255, 0);
         ofDrawCircle(origin, 50);

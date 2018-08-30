@@ -97,14 +97,22 @@ void E2System::updateColours(){
 
 void E2System::particleInteractions(){
 //    int numOutside = 0;
+    outputCondition = 0;
     
     for(int i = 0; i < particles.size(); i++) {
         Particle& cur = particles[i];
         
-//        float d = ofDist(cur.x, cur.y, origin.x, origin.y);
-//        if (d > externalRad + 10) numOutside ++;
+        float d = ofDist(cur.x, cur.y, origin.x, origin.y);
+        if (d >= externalRad - 50) {
+//            ofSetColor(255);
+//            cur.col = ofColor(255, 0, 0);
+//            ofDrawLine(cur.x, cur.y, origin.x, origin.y);
+            outputCondition ++;
+        }
 //
         
+        
+//        cout << "out cond " << cells[1] << endl;
         
 //        particles[i].updatePosition();
         particles[i].receiveCells(cells);
@@ -139,7 +147,7 @@ void E2System::outputConditions(){
     // run the timer for the glow effect
     glowTimer.run();
     
-//    cout << cells[1] << endl;
+    cout << "cells" << cells[1] << endl;
     
     //    cout <<"trigger " <<trigger << endl;
     //    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
@@ -147,28 +155,33 @@ void E2System::outputConditions(){
 //    if(cells[1] < outputThreshold) trigger = true;
     
     
-    if(ofGetMouseX() < 100) trigger = true;
+    if(cells[1] > 100) trigger = true;
     else(trigger = false);
     
     //    if(outputTimer.reached) trigger = true;
     //    else if(!outputTimer.reached) trigger = false;
     
-    //    cout<<"trig "<<trigger << endl;
+//        cout<<"trig "<<trigger << endl;
     
     // if these conditions are met, do this once only!
     
-    if(trigger && !sequenceActive && !sequenceTrigger) {
+    
+    
+    
+    if(trigger ){//&& !sequenceActive) {
+//        sequenceActive = true;
 //        sequenceActive = true;
         sequenceTrigger = true;
         ofSetColor(0, 255, 0);
         ofDrawCircle(origin, 50);
+        
 //        destination = ofRandom(2);
-        cout << "you suck" << endl;
-        cout<< "destination = " << destination << endl;
+//        randomPath = ofRandom(3);
+
 
     }
     
-//    cout<< "e2 seq active = " << sequenceActive << endl;
+    cout<< "e2 seq active = " << sequenceActive << endl;
     
 //    // if the timer is active, glow
 //    if(!glowTimer.reached){
