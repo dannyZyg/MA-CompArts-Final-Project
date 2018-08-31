@@ -94,6 +94,11 @@ void ofApp::setup(){
     
     
     sensorPath = ofRandom(6);
+    
+    smoothSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
+    returnToZero.smoother = new ParameterSmoother(5., ofGetFrameRate());
+
+    
 }
 
 void ofApp::update(){
@@ -143,7 +148,6 @@ void ofApp::draw(){
     ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
     ofDrawBitmapString("sens path = " + ofToString(sensorPath), 32, 50);
     ofDrawBitmapString("sens act = " + ofToString(sensorSequenceActive), 32, 70);
-    ofSetColor(255);
     
 }
 
@@ -253,26 +257,67 @@ void ofApp::scheduler(){
     }
 
     float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
+    
+    
+//    if(mappedSensorVal > 0){
+//    }
+    
+//    else(target)
+    
+    smoothSensor.currentValue = smoothSensor.smoother -> process(smoothSensor.targetValue);
+    
+    returnToZero.currentValue = smoothSensor.smoother -> process(returnToZero.targetValue);
+    
+    returnToZero.targetValue = 0;
+    
+    
+    int elapsed_seconds = (int) round(ofGetElapsedTimef()) % 60;
+    float mappedTimeSensorVal = ofMap(elapsed_seconds, 0, 1, 0, 1);
+
+    
     if(sensorSequenceActive){
         if(sensorPath == 0 || sensorPath == 1){
-            if(val < 800 && val > 0) environmentOne.setScale = mappedSensorVal;
-            else(environmentOne.setScale = 0);
+            if(val < 800 && val > 0) {
+                environmentOne.setScale = smoothSensor.currentValue;
+                smoothSensor.targetValue = mappedSensorVal;
+            }
+//            else{
+//                environmentOne.setScale = smoothSensor.currentValue;
+//                (smoothSensor.targetValue = 0);
+//            }
         }
         if(sensorPath == 2 || sensorPath == 3){
-            if(val < 800 && val > 0) environmentTwo.setScale = mappedSensorVal;
-            else(environmentTwo.setScale = 0);
+            if(val < 800 && val > 0) {
+                environmentTwo.setScale = smoothSensor.currentValue;
+                smoothSensor.targetValue = mappedSensorVal;
+            }
+            else{
+                environmentTwo.setScale = smoothSensor.currentValue;
+                (smoothSensor.targetValue = 0);
+            }
         }
         if(sensorPath == 4 || sensorPath == 5){
-            if(val < 800 && val > 0) environmentThree.setScale = mappedSensorVal;
-            else(environmentThree.setScale = 0);
+            if(val < 800 && val > 0) {
+                environmentThree.setScale = smoothSensor.currentValue;
+                smoothSensor.targetValue = mappedSensorVal;
+            }
+            else{
+                environmentThree.setScale = smoothSensor.currentValue;
+                (smoothSensor.targetValue = 0);
+            }
         }
+
+    }
+    else{
+        environmentOne.setScale = smoothSensor.currentValue;
+        (smoothSensor.targetValue = 0);
     }
     
-    else{
-        environmentOne.setScale = 0;
-        environmentTwo.setScale = 0;
-        environmentThree.setScale = 0;
-    }
+//    else{
+////        environmentOne.setScale = returnToZero.currentValue;
+////        environmentTwo.setScale = returnToZero.currentValue;
+////        environmentThree.setScale = returnToZero.currentValue;
+//    }
     
 //
 //    float mappedVal = ofMap(val, 450, 0, 0, 10, true);

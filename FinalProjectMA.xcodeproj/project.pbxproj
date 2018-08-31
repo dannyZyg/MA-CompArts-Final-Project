@@ -20,6 +20,7 @@
 		2A9AFA74E0EF07E58AC11382 /* QuadSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9ECBF061BABECA9C2341372 /* QuadSurface.cpp */; };
 		2E088EDC6E32D190998D8241 /* Vec3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8558ACA2B5E9FD75C455CA2 /* Vec3.cpp */; };
 		2E9E05C9FFCE15172A701335 /* SettingsLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33DD6E4350FD51C68B7E65F0 /* SettingsLoader.cpp */; };
+		3017F9962139BF920082B94F /* ParameterSmoother.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3017F9942139BF920082B94F /* ParameterSmoother.cpp */; };
 		3022E5442131B654005ACFE2 /* E1System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5422131B654005ACFE2 /* E1System.cpp */; };
 		3022E5472131FE14005ACFE2 /* E3System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E5452131FE14005ACFE2 /* E3System.cpp */; };
 		3022E54A21320E83005ACFE2 /* E2System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3022E54821320E83005ACFE2 /* E2System.cpp */; };
@@ -186,6 +187,8 @@
 		2C7CF000B7B4F782C187C353 /* json.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = json.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/json.h; sourceTree = SOURCE_ROOT; };
 		2D2400AC1A64EDE5E990C56C /* GridWarpSurface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = GridWarpSurface.cpp; path = ../../../addons/ofxPiMapper/src/Surfaces/GridWarpSurface.cpp; sourceTree = SOURCE_ROOT; };
 		2F04FFB9BAC4575E214C0DED /* CmdManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = CmdManager.h; path = ../../../addons/ofxPiMapper/src/Commands/CmdManager.h; sourceTree = SOURCE_ROOT; };
+		3017F9942139BF920082B94F /* ParameterSmoother.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParameterSmoother.cpp; sourceTree = "<group>"; };
+		3017F9952139BF920082B94F /* ParameterSmoother.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParameterSmoother.hpp; sourceTree = "<group>"; };
 		3022E5422131B654005ACFE2 /* E1System.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = E1System.cpp; sourceTree = "<group>"; };
 		3022E5432131B654005ACFE2 /* E1System.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = E1System.hpp; sourceTree = "<group>"; };
 		3022E5452131FE14005ACFE2 /* E3System.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = E3System.cpp; sourceTree = "<group>"; };
@@ -776,6 +779,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				3017F9942139BF920082B94F /* ParameterSmoother.cpp */,
+				3017F9952139BF920082B94F /* ParameterSmoother.hpp */,
 				3022E5422131B654005ACFE2 /* E1System.cpp */,
 				3022E5432131B654005ACFE2 /* E1System.hpp */,
 				3022E54821320E83005ACFE2 /* E2System.cpp */,
@@ -1068,6 +1073,7 @@
 				E327ACE85A208BAFACD1B7C7 /* ScaleSurfaceFromToCmd.cpp in Sources */,
 				14566DCD28D35A80428886C4 /* SelTexCoordCmd.cpp in Sources */,
 				973F560586CB3735581265E7 /* DeselectTexCoordCmd.cpp in Sources */,
+				3017F9962139BF920082B94F /* ParameterSmoother.cpp in Sources */,
 				67FF225B68ECC1942C833BFE /* SelNextSurfaceCmd.cpp in Sources */,
 				B1EEE5A7EC1876072BF8F7FE /* AddSurfaceCmd.cpp in Sources */,
 				60C8089351E49CF344577098 /* SelNextTexCoordCmd.cpp in Sources */,

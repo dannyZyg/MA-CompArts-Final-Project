@@ -20,8 +20,9 @@
 #include "EnvironmentSource.hpp"
 
 #include "StoneSource.hpp"
+#include "ParameterSmoother.hpp"
 
-#define NUM_BYTES 3
+#define NUM_BYTES 2
 
 class ofApp : public ofBaseApp{
 public:
@@ -170,6 +171,7 @@ public:
 //    bool resetTrigTimer;
 //    bool trigTimerRunning;
     
-    
+    smoothValue smoothSensor;
+    smoothValue returnToZero;
     
 };
