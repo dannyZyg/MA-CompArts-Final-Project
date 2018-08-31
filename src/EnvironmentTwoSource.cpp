@@ -79,7 +79,8 @@ void EnvironmentTwoSource::update(){
     
 //    cout << setScale << endl;
     
-    
+    setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 1000), -1, 1, -PI, PI);
+
     
 //    if(active) setScale = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, 0, 2, true);
 //    if(active) setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, -PI, PI);

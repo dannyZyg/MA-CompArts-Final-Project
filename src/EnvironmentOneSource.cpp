@@ -63,7 +63,7 @@ void EnvironmentOneSource::update(){
     
     
 //        setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
-//        setRotation = ofMap(ofGetMouseY(), 0, ofGetHeight(), -PI, PI);
+        setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01), -1, 1, -PI, PI);
     //    blurOffset = 5 * ofMap(ofGetMouseX(), 0, ofGetHeight(), 1, 0, true);
     //    blurPasses = 10. * ofMap(ofGetMouseY(), 0, ofGetWidth(), 0, 1, true);
     

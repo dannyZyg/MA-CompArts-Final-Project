@@ -176,12 +176,12 @@ void E3System::outputConditions(){
     
     if(trigger) {
 //        systemOutput = true;
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(origin, 50);
-        glowTimer.reset();
-        glowTimer.endTime = 5000;
-        sequenceTrigger = true;
-        outputTimer.reset();
+//        ofSetColor(0, 255, 0);
+//        ofDrawCircle(origin, 50);
+//        glowTimer.reset();
+//        glowTimer.endTime = 5000;
+//        sequenceTrigger = true;
+//        outputTimer.reset();
     }
     
     

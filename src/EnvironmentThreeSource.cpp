@@ -58,8 +58,12 @@ void EnvironmentThreeSource::setup(){
 
 void EnvironmentThreeSource::update(){
     
+    setRotation = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 500), -1, 1, -PI, PI);
+
+    
     blur.setScale(setScale);
     blur.setRotation(setRotation);
+    
     
     
     gpuBlur.blurOffset = blurOffset;

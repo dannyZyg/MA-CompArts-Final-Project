@@ -202,11 +202,11 @@ void E1System::outputConditions(){
     
     if(trigger) {
 //        systemOutput = true;
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(origin, 50);
-        glowTimer.reset();
-        glowTimer.endTime = 5000;
-        sequenceTrigger = true;
+//        ofSetColor(0, 255, 0);
+//        ofDrawCircle(origin, 50);
+//        glowTimer.reset();
+//        glowTimer.endTime = 5000;
+//        sequenceTrigger = true;
     }
     
     // if the timer is active, glow

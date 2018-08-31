@@ -363,11 +363,11 @@ void ParticleSystem::display(){
     
     
     
-    if(impact){
-        ofSetColor(255, 0, 0);
-        ofDrawCircle(origin, 60);
-        
-    }
+//    if(impact){
+//        ofSetColor(255, 0, 0);
+//        ofDrawCircle(origin, 60);
+//        
+//    }
 
 }
 

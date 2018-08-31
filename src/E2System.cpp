@@ -171,9 +171,9 @@ void E2System::outputConditions(){
     if(trigger ){//&& !sequenceActive) {
 //        sequenceActive = true;
 //        sequenceActive = true;
-        sequenceTrigger = true;
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(origin, 50);
+//        sequenceTrigger = true;
+//        ofSetColor(0, 255, 0);
+//        ofDrawCircle(origin, 50);
         
 //        destination = ofRandom(2);
 //        randomPath = ofRandom(3);
