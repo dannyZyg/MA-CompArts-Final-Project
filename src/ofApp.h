@@ -155,6 +155,7 @@ public:
     
 //    Timer testTimer;
     Timer env1Timer, env2Timer, env3Timer, sensorTimer;
+    Timer sensTriggerTimer;
     
     bool env;
 //    int randomPath;
@@ -163,6 +164,12 @@ public:
 
     bool sensorSequenceGo;
     
-    bool incomingTrigger;
+//    bool incomingTrigger;
+    
+    bool verifiedTrigger;
+//    bool resetTrigTimer;
+//    bool trigTimerRunning;
+    
+    
     
 };

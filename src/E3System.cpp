@@ -8,7 +8,7 @@
 #include "E3System.hpp"
 
 E3System::E3System(){
-    kParticles = 100;
+    kParticles = 110;
     particleNeighborhood = 64;
     particleRepulsion = 0.3;
     centerAttraction = 0;
@@ -239,7 +239,7 @@ void E3System::presetSelector(string preset){
             
             
         }
-        cout<< "P1" << endl;
+//        cout<< "P1" << endl;
     }
     
     if(preset == "p2"){
@@ -249,7 +249,7 @@ void E3System::presetSelector(string preset){
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 5;
         }
-        cout<< "P2" << endl;
+//        cout<< "P2" << endl;
     }
     
     if(preset == "p3"){
@@ -272,12 +272,12 @@ void E3System::presetSelector(string preset){
         //        numActive = 200;
         //        maxParticles = 150;
         
-        cout<< "P3" << endl;
+//        cout<< "P3" << endl;
     }
     
     if(preset == "r1"){
         randomVals = true;
-        cout<< "R1" << endl;
+//        cout<< "R1" << endl;
     }
 //
 //    if(preset == "r2"){

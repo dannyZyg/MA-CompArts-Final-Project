@@ -24,7 +24,7 @@ EnvironmentOneSource::EnvironmentOneSource(){
 
 void EnvironmentOneSource::setup(){
     
-    blur.setup(width,height, 4, .1, 4);
+    blur.setup(width,height, 4, .1, 6);
     
     s.width = 600;
     s.height = 600;

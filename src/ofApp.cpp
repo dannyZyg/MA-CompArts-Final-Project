@@ -69,6 +69,10 @@ void ofApp::setup(){
     sensorSequenceActive = false;
     sequenceActive = false;
     
+    verifiedTrigger = false;
+//    resetTrigTimer = true;
+//    trigTimerRunning = false;
+    
     
     activeLength = 3000;
         
@@ -76,6 +80,7 @@ void ofApp::setup(){
     env2Timer = Timer();
     env3Timer = Timer();
     sensorTimer = Timer();
+    sensTriggerTimer = Timer();
     
     stoneTimer = Timer();
     stoneTimer.setup();
@@ -84,6 +89,8 @@ void ofApp::setup(){
     env2Timer.setup();
     env3Timer.setup();
     sensorTimer.setup();
+    sensTriggerTimer.setup();
+    sensTriggerTimer.endTime = 1000;
     
     
     sensorPath = ofRandom(6);
@@ -102,6 +109,7 @@ void ofApp::update(){
     env3Timer.run();
     sensorTimer.run();
     stoneTimer.run();
+    sensTriggerTimer.run();
     
 }
 
@@ -133,14 +141,8 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 25);
     ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
-    ofDrawBitmapString("Incoming Trigger = " + ofToString(incomingTrigger), 32, 40);
     ofDrawBitmapString("sens path = " + ofToString(sensorPath), 32, 50);
     ofDrawBitmapString("sens act = " + ofToString(sensorSequenceActive), 32, 70);
-
-
-    
-    
-    
     ofSetColor(255);
     
 }
@@ -231,12 +233,12 @@ void ofApp::debugDisplay(){
 void ofApp::scheduler(){
 
 //SENSOR COMMUNICATION//
-    float tempVal = ofMap(mouseX, 0, ofGetWidth(), 0, 1000);
+
+    if(val > 50 && val < 400) verifiedTrigger = true;
+    else verifiedTrigger = false;
     
-//    if(incomingTrigger) sensorTrigger = true;
-//    else(sensorTrigger = false);
-//    cout << "se"
-    if(incomingTrigger && !sensorSequenceActive){
+    
+    if(verifiedTrigger && !sensorSequenceActive){
         sensorTimer.reset();
         sensorSequenceActive = true;
         lastSensorPath = sensorPath;
@@ -244,29 +246,28 @@ void ofApp::scheduler(){
         if(sensorPath == lastSensorPath){
             sensorPath = ofRandom(6);
         }
-//        cout<< "sensorPath" << sensorPath<<endl;
     }
 
-//    cout << "sens seq active " << sensorSequenceActive << endl;
     if(sensorSequenceActive){
         sensorToSystem(sensorTimer, sensorPath);
     }
 
-    float mappedVal = ofMap(val, 450, 0, 0, 10, true);
+    float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
     if(sensorSequenceActive){
         if(sensorPath == 0 || sensorPath == 1){
-            if(val < 800 && val > 0) environmentOne.setScale = mappedVal;
+            if(val < 800 && val > 0) environmentOne.setScale = mappedSensorVal;
             else(environmentOne.setScale = 0);
         }
         if(sensorPath == 2 || sensorPath == 3){
-            if(val < 800 && val > 0) environmentTwo.setScale = mappedVal;
+            if(val < 800 && val > 0) environmentTwo.setScale = mappedSensorVal;
             else(environmentTwo.setScale = 0);
         }
         if(sensorPath == 4 || sensorPath == 5){
-            if(val < 800 && val > 0) environmentThree.setScale = mappedVal;
+            if(val < 800 && val > 0) environmentThree.setScale = mappedSensorVal;
             else(environmentThree.setScale = 0);
         }
     }
+    
     else{
         environmentOne.setScale = 0;
         environmentTwo.setScale = 0;
@@ -831,7 +832,7 @@ void ofApp::serialUpdate(){
             val = bytesReturned[0];
             val <<= 8;                                          // shift values into correct range
             val += bytesReturned[1];
-            incomingTrigger = bytesReturned[2];
+//            incomingTrigger = bytesReturned[2];
             
             bSendSerialMessage = false;                         // get ready to wait a few frames before asking again
         }

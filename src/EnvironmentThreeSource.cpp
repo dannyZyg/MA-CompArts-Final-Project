@@ -35,7 +35,7 @@ void EnvironmentThreeSource::setup(){
     enviro.setup(width, height, 4);
     debug = false;
     
-    blur.setup(width,height, 4, .1, 4);
+    blur.setup(width,height, 4, .1, 6);
     
     
     s.width = width;
