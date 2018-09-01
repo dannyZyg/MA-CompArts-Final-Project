@@ -92,7 +92,7 @@ public:
     void E3_to_E1(Timer& t, int variation);
     void E3_to_E2(Timer& t, int variation);
     
-    void sensorToSystem(Timer& t, int variation);
+    void sensorToSystem(Timer& t, int destination, int variation);
 
     void sequence2();
 
@@ -134,6 +134,7 @@ public:
     void triggerEnviro2(string sender, Timer& t, int timing);
     void triggerEnviro3(string sender, Timer& t, int timing);
 
+    void proximitySensorToBlur();
     
     bool sensorTrigger;
     
@@ -146,6 +147,7 @@ public:
     float activeLength;
     
     int sensorPath;
+    int sensorDestination;
     int lastSensorPath;
     float sequenceSpacingStart;
     
@@ -171,7 +173,7 @@ public:
 //    bool resetTrigTimer;
 //    bool trigTimerRunning;
     
-    smoothValue smoothSensor;
-    smoothValue returnToZero;
+    smoothValue env1SmoothedSensor, env2SmoothedSensor, env3SmoothedSensor;
+    
     
 };

@@ -93,10 +93,12 @@ void ofApp::setup(){
     sensTriggerTimer.endTime = 1000;
     
     
-    sensorPath = ofRandom(6);
+//    sensorPath = ofRandom(6);
+    sensorDestination = 2;
     
-    smoothSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
-    returnToZero.smoother = new ParameterSmoother(5., ofGetFrameRate());
+    env1SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
+    env2SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
+    env3SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
 
     
 }
@@ -115,6 +117,8 @@ void ofApp::update(){
     sensorTimer.run();
     stoneTimer.run();
     sensTriggerTimer.run();
+    
+    proximitySensorToBlur();
     
 }
 
@@ -148,6 +152,7 @@ void ofApp::draw(){
     ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
     ofDrawBitmapString("sens path = " + ofToString(sensorPath), 32, 50);
     ofDrawBitmapString("sens act = " + ofToString(sensorSequenceActive), 32, 70);
+    ofDrawBitmapString("sens Dest = " + ofToString(sensorDestination), 32, 80);
     
 }
 
@@ -234,131 +239,78 @@ void ofApp::debugDisplay(){
 //    ofPopStyle();
 }
 
+
+void ofApp::proximitySensorToBlur(){
+    
+    float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
+    
+    env1SmoothedSensor.currentValue = env1SmoothedSensor.smoother -> process(env1SmoothedSensor.targetValue);
+    environmentOne.setScale = env1SmoothedSensor.currentValue;
+    
+    env2SmoothedSensor.currentValue = env2SmoothedSensor.smoother -> process(env2SmoothedSensor.targetValue);
+    environmentTwo.setScale = env2SmoothedSensor.currentValue;
+    
+    env3SmoothedSensor.currentValue = env3SmoothedSensor.smoother -> process(env3SmoothedSensor.targetValue);
+    environmentThree.setScale = env3SmoothedSensor.currentValue;
+    
+    
+//    int elapsed_seconds = (int) round(ofGetElapsedTimef()) % 60;
+//    float mappedTimeSensorVal = ofMap(elapsed_seconds, 0, 1, 0, 1);
+    
+    
+    if(sensorSequenceActive){
+        if(sensorDestination == 0){
+            if(val < 800 && val > 0) {
+                env1SmoothedSensor.targetValue = mappedSensorVal;
+            }
+            else{
+                env1SmoothedSensor.targetValue = 0;
+            }
+        }
+        if(sensorDestination == 1){
+            if(val < 800 && val > 0) {
+                env2SmoothedSensor.targetValue = mappedSensorVal;
+            }
+            else{
+                env2SmoothedSensor.targetValue = 0;
+            }
+        }
+        if(sensorDestination == 2){
+            if(val < 800 && val > 0) {
+                env3SmoothedSensor.targetValue = mappedSensorVal;
+            }
+            else{
+                env3SmoothedSensor.targetValue = 0;
+            }
+        }
+    }
+    else{
+        env1SmoothedSensor.targetValue = 0;
+        env2SmoothedSensor.targetValue = 0;
+        env3SmoothedSensor.targetValue = 0;
+    }
+}
+
 void ofApp::scheduler(){
 
 //SENSOR COMMUNICATION//
 
-    if(val > 50 && val < 400) verifiedTrigger = true;
+    if(val > 15 && val < 450 && val != 31) verifiedTrigger = true;
     else verifiedTrigger = false;
     
     
     if(verifiedTrigger && !sensorSequenceActive){
         sensorTimer.reset();
         sensorSequenceActive = true;
-        lastSensorPath = sensorPath;
-        sensorPath = ofRandom(6);
-        if(sensorPath == lastSensorPath){
-            sensorPath = ofRandom(6);
-        }
+        sensorDestination ++;
+        if(sensorDestination > 2) sensorDestination = 0;
+        sensorPath = ofRandom(2);
     }
 
     if(sensorSequenceActive){
-        sensorToSystem(sensorTimer, sensorPath);
+        sensorToSystem(sensorTimer, sensorDestination, sensorPath);
     }
 
-    float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
-    
-    
-//    if(mappedSensorVal > 0){
-//    }
-    
-//    else(target)
-    
-    smoothSensor.currentValue = smoothSensor.smoother -> process(smoothSensor.targetValue);
-    
-    returnToZero.currentValue = smoothSensor.smoother -> process(returnToZero.targetValue);
-    
-    returnToZero.targetValue = 0;
-    
-    
-    int elapsed_seconds = (int) round(ofGetElapsedTimef()) % 60;
-    float mappedTimeSensorVal = ofMap(elapsed_seconds, 0, 1, 0, 1);
-
-    
-    if(sensorSequenceActive){
-        if(sensorPath == 0 || sensorPath == 1){
-            if(val < 800 && val > 0) {
-                environmentOne.setScale = smoothSensor.currentValue;
-                smoothSensor.targetValue = mappedSensorVal;
-            }
-//            else{
-//                environmentOne.setScale = smoothSensor.currentValue;
-//                (smoothSensor.targetValue = 0);
-//            }
-        }
-        if(sensorPath == 2 || sensorPath == 3){
-            if(val < 800 && val > 0) {
-                environmentTwo.setScale = smoothSensor.currentValue;
-                smoothSensor.targetValue = mappedSensorVal;
-            }
-            else{
-                environmentTwo.setScale = smoothSensor.currentValue;
-                (smoothSensor.targetValue = 0);
-            }
-        }
-        if(sensorPath == 4 || sensorPath == 5){
-            if(val < 800 && val > 0) {
-                environmentThree.setScale = smoothSensor.currentValue;
-                smoothSensor.targetValue = mappedSensorVal;
-            }
-            else{
-                environmentThree.setScale = smoothSensor.currentValue;
-                (smoothSensor.targetValue = 0);
-            }
-        }
-
-    }
-    else{
-        environmentOne.setScale = smoothSensor.currentValue;
-        (smoothSensor.targetValue = 0);
-    }
-    
-//    else{
-////        environmentOne.setScale = returnToZero.currentValue;
-////        environmentTwo.setScale = returnToZero.currentValue;
-////        environmentThree.setScale = returnToZero.currentValue;
-//    }
-    
-//
-//    float mappedVal = ofMap(val, 450, 0, 0, 10, true);
-////      setScale = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
-//    if(val < 800 && val > 0) environmentOne.setScale = mappedVal;
-//    else (environmentOne.setScale = 0);
-    
-//    cout << val << endl;
-    
-//    cout << "e2 seq act " << environmentTwo.enviro.sequenceActive << endl;
-    
-    
-//    cout<< "activate draw = " << small_stones_1_4.stones[0].activateDraw << endl;
-//    cout << "release pct" << small_stones_1_4.stones[0].releaseTimer.pct << endl;
-    
-    
-//    if(sensorTrigger && !environmentTwo.enviro.sequenceActive){
-//        env2Timer.reset();
-//        environmentTwo.enviro.sequenceActive = true;
-//    }
-//
-//    if(environmentTwo.enviro.sequenceActive){
-//        E2_to_E3(env2Timer, 1);
-//    }
-    
- 
-//    cout << "e2 timer" << env2Timer.timer << endl;
-//    cout << "out trigger" << environmentTwo.enviro.trigger <<endl;
-//    cout << "sys output" << environmentTwo.enviro.systemOutput << endl;
-    
-//    cout << "setNewRules = " << environmentTwo.enviro.setNewRules << endl;
-
-    
-//    cout << "e2 ran path" << environmentTwo.enviro.randomPath<< endl;
-//    cout << "e2 ran destination " << environmentTwo.enviro.destination <<endl;
-    
-//
-//    E1_to_E2(env1Timer, 0);
-//
-//    cout<< "sens trigger = " <<sensorTrigger << endl;
-//
 ////////////ENVIRONMENT COMMUNICATION//
 //
 // Environment One
@@ -368,7 +320,6 @@ void ofApp::scheduler(){
         environmentOne.enviro.randomPath = ofRandom(3); // choose random stone path
         environmentOne.enviro.destination = ofRandom(2); // choose random destination enviro
         environmentOne.enviro.sequenceActive = true; // condition to start the sequence
-//        environmentOne.enviro.sequenceTrigger = false; // reset the trigger condition
         env1Timer.reset(); // start a fresh timer
         env1Timer.activeStoneTime = ofRandom(1000, 5000); // chose how long the stones are active
     }
@@ -381,11 +332,10 @@ void ofApp::scheduler(){
             E1_to_E3(env1Timer, environmentOne.enviro.randomPath);
         }
     }
-//
+
 //// Environment Two
     // Conditions under which to allow a sequence to start
     if(environmentTwo.enviro.trigger && !environmentTwo.enviro.sequenceActive && !environmentTwo.active){
-
         // if these conditions are met, do the following once only!
         environmentTwo.enviro.sequenceActive = true; // condition to start the sequence
         env2Timer.reset(); // start a fresh timer
@@ -402,7 +352,7 @@ void ofApp::scheduler(){
             E2_to_E3(env2Timer, environmentTwo.enviro.randomPath);
         }
     }
-////
+
 //// Environment Three
     // Conditions under which to allow a sequence to start
     if(environmentThree.enviro.trigger && !environmentThree.enviro.sequenceActive && !environmentThree.active){
@@ -410,7 +360,6 @@ void ofApp::scheduler(){
         environmentThree.enviro.randomPath = ofRandom(3); // choose random stone path
         environmentThree.enviro.destination = ofRandom(2); // choose random destination enviro
         environmentThree.enviro.sequenceActive = true; // condition to start the sequence
-//        environmentThree.enviro.sequenceTrigger = false; // reset the trigger condition
         env3Timer.reset(); // start a fresh timer
         env3Timer.activeStoneTime = ofRandom(1000, 5000); // chose how long the stones are active
     }
@@ -746,98 +695,97 @@ void ofApp::E3_to_E2(Timer& t, int variation){
 }
 
 
-void ofApp::sensorToSystem(Timer& t, int variation){
+void ofApp::sensorToSystem(Timer& t, int destination, int variation){
     string s = "Sensor";
     
 // Communication with environment one
-    if(variation == 0){
-        triggerStone(s, t, small_stones_13_16.stones[1], 0);
-        triggerStone(s, t, small_stones_13_16.stones[0], 1);
-        triggerStone(s, t, small_stones_9_12.stones[2], 2);
-        triggerStone(s, t, med_stones_5_8.stones[3], 3);
-        triggerStone(s, t, small_stones_9_12.stones[1], 4);
-        triggerEnviro1(s, t, 5);
-        sequenceComplete(s, t, 6);
+    if(destination == 0){
+        if(variation == 0){
+            triggerStone(s, t, small_stones_13_16.stones[1], 0);
+            triggerStone(s, t, small_stones_13_16.stones[0], 1);
+            triggerStone(s, t, small_stones_9_12.stones[2], 2);
+            triggerStone(s, t, med_stones_5_8.stones[3], 3);
+            triggerStone(s, t, small_stones_9_12.stones[1], 4);
+            triggerEnviro1(s, t, 5);
+            sequenceComplete(s, t, 6);
+        }
+        if(variation == 1){
+            triggerStone(s, t, small_stones_13_16.stones[1], 0);
+            triggerStone(s, t, large_stones.stones[3], 1);
+            triggerStone(s, t, small_stones_13_16.stones[2], 2);
+            triggerStone(s, t, med_stones_5_8.stones[3], 3);
+            triggerStone(s, t, large_stones.stones[2], 4);
+            triggerStone(s, t, med_stones_5_8.stones[2], 5);
+            triggerStone(s, t, small_stones_9_12.stones[0], 6);
+            triggerStone(s, t, small_stones_5_8.stones[3], 7);
+            triggerEnviro1(s, t, 6);
+            sequenceComplete(s, t, 7);
+        }
     }
-
-    if(variation == 1){
-        triggerStone(s, t, small_stones_13_16.stones[1], 0);
-        triggerStone(s, t, large_stones.stones[3], 1);
-        triggerStone(s, t, small_stones_13_16.stones[2], 2);
-        triggerStone(s, t, med_stones_5_8.stones[3], 3);
-        triggerStone(s, t, large_stones.stones[2], 4);
-        triggerStone(s, t, med_stones_5_8.stones[2], 5);
-        triggerStone(s, t, small_stones_9_12.stones[0], 6);
-        triggerStone(s, t, small_stones_5_8.stones[3], 7);
-        triggerEnviro1(s, t, 6);
-        sequenceComplete(s, t, 7);
-    }
-
 // Communication with environment two
-    if(variation == 2){
-        triggerStone(s, t, small_stones_13_16.stones[1], 0);
-        triggerStone(s, t, small_stones_13_16.stones[0], 1);
-        triggerStone(s, t, med_stones_5_8.stones[3], 2);
-        triggerStone(s, t, large_stones.stones[2], 3);
-        triggerStone(s, t, med_stones_5_8.stones[2], 4);
-        triggerStone(s, t, small_stones_5_8.stones[2], 5);
-        triggerEnviro2(s, t, 6);
-        sequenceComplete(s, t, 7);
-    }
 
-    if(variation == 3){
-        triggerStone(s, t, small_stones_9_12.stones[3], 0);
-        triggerStone(s, t, small_stones_9_12.stones[2], 1);
-        triggerStone(s, t, small_stones_13_16.stones[0], 2);
-        triggerStone(s, t, small_stones_13_16.stones[1], 3);
-        triggerStone(s, t, small_stones_13_16.stones[0], 4);
-        triggerStone(s, t, large_stones.stones[3], 5);
-        triggerStone(s, t, small_stones_13_16.stones[2], 6);
-        triggerEnviro2(s, t, 7);
-        sequenceComplete(s, t, 8);
+    if(destination == 1){
+        if(variation == 0){
+            triggerStone(s, t, small_stones_13_16.stones[1], 0);
+            triggerStone(s, t, small_stones_13_16.stones[0], 1);
+            triggerStone(s, t, med_stones_5_8.stones[3], 2);
+            triggerStone(s, t, large_stones.stones[2], 3);
+            triggerStone(s, t, med_stones_5_8.stones[2], 4);
+            triggerStone(s, t, small_stones_5_8.stones[2], 5);
+            triggerEnviro2(s, t, 6);
+            sequenceComplete(s, t, 7);
+            
+            
+        }
+        if(variation == 1){
+            triggerStone(s, t, small_stones_9_12.stones[3], 0);
+            triggerStone(s, t, small_stones_9_12.stones[2], 1);
+            triggerStone(s, t, small_stones_13_16.stones[0], 2);
+            triggerStone(s, t, small_stones_13_16.stones[1], 3);
+            triggerStone(s, t, small_stones_13_16.stones[0], 4);
+            triggerStone(s, t, large_stones.stones[3], 5);
+            triggerStone(s, t, small_stones_13_16.stones[2], 6);
+            triggerEnviro2(s, t, 7);
+            sequenceComplete(s, t, 8);
+        }
     }
+    
 
 // Communication with environment three
-    if(variation == 4){
-        triggerStone(s, t, small_stones_9_12.stones[3], 0);
-        triggerStone(s, t, small_stones_9_12.stones[2], 1);
-        triggerStone(s, t, med_stones_5_8.stones[3], 2);
-        triggerStone(s, t, large_stones.stones[2], 3);
-        triggerStone(s, t, med_stones_5_8.stones[2], 4);
-        triggerStone(s, t, small_stones_9_12.stones[0], 5);
-        triggerStone(s, t, med_stones_5_8.stones[0], 6);
-        triggerStone(s, t, large_stones.stones[1], 7);
-        triggerStone(s, t, med_stones_1_4.stones[2], 8);
-        triggerEnviro3(s, t, 9);
-        sequenceComplete(s, t, 10);
-
-    }
-
-    if(variation == 5){
-        triggerStone(s, t, small_stones_13_16.stones[1], 0);
-        triggerStone(s, t, small_stones_13_16.stones[0], 1);
-        triggerStone(s, t, large_stones.stones[3], 2);
-        triggerStone(s, t, small_stones_13_16.stones[2], 3);
-        triggerStone(s, t, med_stones_5_8.stones[3], 4);
-        triggerStone(s, t, large_stones.stones[2], 5);
-        triggerStone(s, t, med_stones_5_8.stones[2], 6);
-        triggerStone(s, t, small_stones_5_8.stones[2], 7);
-        triggerStone(s, t, med_stones_5_8.stones[1], 8);
-        triggerStone(s, t, med_stones_1_4.stones[3], 9);
-        triggerStone(s, t, small_stones_5_8.stones[1], 10);
-        triggerEnviro3(s, t, 11);
-        sequenceComplete(s, t, 12);
-
+    
+    if(destination == 2){
+        if(variation == 0){
+            triggerStone(s, t, small_stones_9_12.stones[3], 0);
+            triggerStone(s, t, small_stones_9_12.stones[2], 1);
+            triggerStone(s, t, med_stones_5_8.stones[3], 2);
+            triggerStone(s, t, large_stones.stones[2], 3);
+            triggerStone(s, t, med_stones_5_8.stones[2], 4);
+            triggerStone(s, t, small_stones_9_12.stones[0], 5);
+            triggerStone(s, t, med_stones_5_8.stones[0], 6);
+            triggerStone(s, t, large_stones.stones[1], 7);
+            triggerStone(s, t, med_stones_1_4.stones[2], 8);
+            triggerEnviro3(s, t, 9);
+            sequenceComplete(s, t, 10);
+            
+        }
+        if(variation == 1){
+            triggerStone(s, t, small_stones_13_16.stones[1], 0);
+            triggerStone(s, t, small_stones_13_16.stones[0], 1);
+            triggerStone(s, t, large_stones.stones[3], 2);
+            triggerStone(s, t, small_stones_13_16.stones[2], 3);
+            triggerStone(s, t, med_stones_5_8.stones[3], 4);
+            triggerStone(s, t, large_stones.stones[2], 5);
+            triggerStone(s, t, med_stones_5_8.stones[2], 6);
+            triggerStone(s, t, small_stones_5_8.stones[2], 7);
+            triggerStone(s, t, med_stones_5_8.stones[1], 8);
+            triggerStone(s, t, med_stones_1_4.stones[3], 9);
+            triggerStone(s, t, small_stones_5_8.stones[1], 10);
+            triggerEnviro3(s, t, 11);
+            sequenceComplete(s, t, 12);
+            
+        }
     }
 }
-
-
-
-
-
-
-
-
 
 ///////SERIAL///////////
 
