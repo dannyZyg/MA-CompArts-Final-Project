@@ -718,8 +718,8 @@ void ofApp::sensorToSystem(Timer& t, int destination, int variation){
             triggerStone(s, t, med_stones_5_8.stones[2], 5);
             triggerStone(s, t, small_stones_9_12.stones[0], 6);
             triggerStone(s, t, small_stones_5_8.stones[3], 7);
-            triggerEnviro1(s, t, 6);
-            sequenceComplete(s, t, 7);
+            triggerEnviro1(s, t, 8);
+            sequenceComplete(s, t, 9);
         }
     }
 // Communication with environment two

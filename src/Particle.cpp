@@ -51,6 +51,8 @@ void Particle::setupE1(){
 }
 
 void Particle::setupE2(){
+    life = 255;
+
     xv = ofRandom(-3, 3);
     yv = ofRandom(-3, 3);
     wallTimer = Timer();
@@ -61,12 +63,12 @@ void Particle::setupE2(){
     
     vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
-    
+    maxSpeed = 3;
 }
 
 void Particle::setupE3(){
     r = ofRandom (4, 12);
-//    r = 30;
+    life = 255;
     xv = ofRandom(-1, 1);
     yv = ofRandom(-1, 1);
     team = ofRandom(2);
@@ -86,6 +88,7 @@ void Particle::setupStoneParticle(){
     damping = ofRandom(0.01, 0.03);
     xv = ofRandom(-1, 1);
     yv = ofRandom(-1, 1);
+    life = 255;
 }
 
 void Particle::updatePosition() {
@@ -187,7 +190,7 @@ void Particle::draw() {
 
 void Particle::displayParticle(){
 //    collectStuckParticles();
-    ofSetColor(col);
+    ofSetColor(col, life);
     ofDrawCircle(x, y, r);
     
 }

@@ -228,9 +228,7 @@ void E2System::receiveCells(vector <float> cells_){
     
     for(int i = 0; i < cells.size(); i ++){
         scaledCells[i] = ofMap(scaledCells[i], -50, 50, 0, 1);
-    }
-    
-    
+    }    
 }
 
 
@@ -268,19 +266,6 @@ void E2System::allocateCellState(Particle& particle){
     }
 }
 
-//void E2System::newRules(int option){
-//    
-//    // predefined behaviours
-//    if(option == 0) presetSelector("p1");
-//    if(option == 1) presetSelector("p2");
-//    if(option == 2) presetSelector("p3");
-//    
-//    //random behaviours
-//    if(option == 3) presetSelector("r1");
-//    if(option == 4) presetSelector("r2");
-//    if(option == 5) presetSelector("r3");
-//}
-
 void E2System::presetSelector(string preset){
     
     // cell walls active. Outside cells retreat from outer wall.
@@ -292,22 +277,21 @@ void E2System::presetSelector(string preset){
         
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 0.4;
-            
-            
+            particles[i].damping = 0.1;
         }
-//        cout<< "P1" << endl;
     }
     
     if(preset == "p2"){
         pingFromWalls = true;
         cellWallsActive = false;
-        particleRepulsion = 0.5;// 0.5;
+        particleRepulsion = 0.5;
         centerAttraction = 0;
         
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 5;
+            particles[i].damping = 0.1;
+
         }
-//        cout<< "P2" << endl;
     }
     
     if(preset == "p3"){
@@ -316,88 +300,36 @@ void E2System::presetSelector(string preset){
         particleRepulsion = 0.4;
         particleAttraction = 0.3;
         pingFromWalls = false;
-        
-        
-        //        cout<<particles[0].xv<<endl;
-        
+
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = 10;
-            //            particles[i].vel.x = 3;
-            //            particles[i].vel.y = 3;
-            //            particles[i].vel.x = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25), -1, 1, -2, 2);
-            //            particles[i].vel.y = ofMap(ofSignedNoise(ofGetFrameNum() + i * 25 + 500), -1, 1, -2, 2);
-            //            particles[i].xv = ofRandom(-2, 2);
-            //            particles[i].yv = ofRandom(-2, 2);
+            particles[i].damping = 0.07;
         }
-        //        numActive = 200;
-        //        maxParticles = 150;
-        
-//        cout<< "P3" << endl;
     }
     
     if(preset == "r1"){
         randomVals = true;
-//        cout<< "R1" << endl;
     }
-    
-    if(preset == "r2"){
-        
-    }
-    
-    if(preset == "r3"){
-        
-    }
-    
 }
 
 void E2System::seedWithRandomValues(){
     if(randomVals){
         //change rules
-        
-//        particleRepulsion = ofRandom(0.1, 1.);
-//        particleAttraction = ofRandom(0.1, 0.5);
-//        centerAttraction = ofRandom(0, 0.5);
+
         for(int i = 0; i < particles.size(); i ++){
             particles[i].maxSpeed = ofRandom(3);
-            particles[i].damping = ofRandom(0.02, 0.04);
-//            particles[i].vel.x = ofRandom(-2, 2);
-//            particles[i].vel.y = ofRandom(-2, 2);
-            
+            particles[i].damping = ofRandom(0.04, 0.08);
         }
+        
+        
+        
         int r1 = ofRandom(2);
         int r2 = ofRandom(2);
         if(r1 == 1) pingFromWalls = true;
         if(r1 == 0) pingFromWalls = false;
         if(r2 == 1) cellWallsActive = true;
         if(r2 == 0) cellWallsActive = false;
-        
-        cout<< particleRepulsion <<endl;
-        cout<< "ping " << pingFromWalls << endl;
-        cout <<"cellWallsActive " << cellWallsActive <<endl;
-        
+
         randomVals = false;
     }
 }
-
-
-
-//void E2System::animateCellWalls(){
-//
-//    for(int i = 0; i < cells.size(); i ++){
-//        float noise = ofSignedNoise(ofGetFrameNum() * 0.01 + noiseSeed[i]) * 1.2;
-//        cells[i] += noise;
-//    }
-//}
-//
-//void E2System::drawCells(){
-//    //  draw the noisy circle guide
-//    ofPushStyle();
-//    for(int i = 0; i < cells.size(); i ++){
-//        ofSetColor(255);
-//        ofNoFill();
-//        ofDrawCircle(origin, cells[i]);
-//        ofDrawBitmapString(ofToString(i), origin.x + cells[i], origin.y);
-//    }
-//    ofPopStyle();
-//
-//}

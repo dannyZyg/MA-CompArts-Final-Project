@@ -49,6 +49,7 @@ public:
     
     bool rebound;
     
+    
     float blurOffset;
 
 

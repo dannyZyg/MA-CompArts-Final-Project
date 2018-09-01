@@ -2,6 +2,51 @@
     <surface type="5">
         <vertices>
             <vertex>
+                <x>891.181823730</x>
+                <y>592.444091797</y>
+            </vertex>
+            <vertex>
+                <x>895.000000000</x>
+                <y>636.000000000</y>
+            </vertex>
+            <vertex>
+                <x>939.730773926</x>
+                <y>639.634033203</y>
+            </vertex>
+            <vertex>
+                <x>940.730773926</x>
+                <y>587.365844727</y>
+            </vertex>
+        </vertices>
+        <texCoords>
+            <texCoord>
+                <x>0.500000000</x>
+                <y>-0.001250000</y>
+            </texCoord>
+            <texCoord>
+                <x>1.001250029</x>
+                <y>-0.001250000</y>
+            </texCoord>
+            <texCoord>
+                <x>1.001250029</x>
+                <y>0.501250029</y>
+            </texCoord>
+            <texCoord>
+                <x>0.500000000</x>
+                <y>0.501250029</y>
+            </texCoord>
+        </texCoords>
+        <source>
+            <source-type>fbo</source-type>
+            <source-name>Small Stones 13-16</source-name>
+        </source>
+        <properties>
+            <perspectiveWarping>1</perspectiveWarping>
+        </properties>
+    </surface>
+    <surface type="5">
+        <vertices>
+            <vertex>
                 <x>314.184143066</x>
                 <y>525.084960938</y>
             </vertex>
@@ -142,11 +187,11 @@
             </vertex>
             <vertex>
                 <x>716.091186523</x>
-                <y>323.617187500</y>
+                <y>322.617187500</y>
             </vertex>
             <vertex>
                 <x>1005.551269531</x>
-                <y>328.579650879</y>
+                <y>327.579650879</y>
             </vertex>
             <vertex>
                 <x>1008.504760742</x>
@@ -1299,51 +1344,6 @@
         <source>
             <source-type>fbo</source-type>
             <source-name>Small Stones 9-12</source-name>
-        </source>
-        <properties>
-            <perspectiveWarping>1</perspectiveWarping>
-        </properties>
-    </surface>
-    <surface type="5">
-        <vertices>
-            <vertex>
-                <x>891.181823730</x>
-                <y>592.444091797</y>
-            </vertex>
-            <vertex>
-                <x>895.000000000</x>
-                <y>636.000000000</y>
-            </vertex>
-            <vertex>
-                <x>939.730773926</x>
-                <y>639.634033203</y>
-            </vertex>
-            <vertex>
-                <x>940.730773926</x>
-                <y>587.365844727</y>
-            </vertex>
-        </vertices>
-        <texCoords>
-            <texCoord>
-                <x>0.500000000</x>
-                <y>-0.001250000</y>
-            </texCoord>
-            <texCoord>
-                <x>1.001250029</x>
-                <y>-0.001250000</y>
-            </texCoord>
-            <texCoord>
-                <x>1.001250029</x>
-                <y>0.501250029</y>
-            </texCoord>
-            <texCoord>
-                <x>0.500000000</x>
-                <y>0.501250029</y>
-            </texCoord>
-        </texCoords>
-        <source>
-            <source-type>fbo</source-type>
-            <source-name>Small Stones 13-16</source-name>
         </source>
         <properties>
             <perspectiveWarping>1</perspectiveWarping>

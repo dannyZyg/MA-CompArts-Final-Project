@@ -31,7 +31,7 @@ void EnvironmentOneSource::setup(){
     s.internalformat = GL_RGBA;
     s.maxFilter = GL_LINEAR; GL_NEAREST;
     s.numSamples = 3;
-    s.numColorbuffers = 3;
+    s.numColorbuffers = 6;
     s.useDepth = true;
     s.useStencil = true;
     
@@ -78,10 +78,9 @@ void EnvironmentOneSource::update(){
     
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
-    gpuBlur.numBlurOverlays = 3;
-    gpuBlur.blurOverlayGain = 200;
+    gpuBlur.numBlurOverlays = 4;
+    gpuBlur.blurOverlayGain = 165;
     
-//    enviro.addRepulsionForce(100, 300, 200, 1);
     
     
     
@@ -115,8 +114,30 @@ void EnvironmentOneSource::draw(){
     ofPopStyle();
     
     ofSetColor(0, 255, 0);
+    
+//    if(active){
+//        float alpha = ofMap(ofNoise(ofGetFrameNum() * 0.01), 0, 1, 0, 100, true);
+//        ofSetColor(255,211, 91, alpha);
+//        ofDrawCircle(origin, rad);
+//    }
+
+    
     enviro.display();
     enviro.drawMembranes();
+    
+//    float g = ofMap(ofGetMouseX(), 0 , ofGetWidth(), 0, 255);
+//    float b = ofMap(ofGetMouseY(), 0 , ofGetHeight(), 0, 255);
+//    
+//    cout << "GREEN = " << g << endl;
+//    cout << "BLUE = " << b << endl;
+//
+//    for(int i = 0; i < enviro.particles.size(); i ++){
+//        
+////        enviro.particles[i].col = ofColor(0,g, b);
+//
+//
+//        
+//    }
 
     
     if(blur1){

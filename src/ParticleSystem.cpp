@@ -387,7 +387,7 @@ void ParticleSystem::fadeConnectingLines(){
 
 void ParticleSystem::newRules(){
     if(setNewRules && !triggeredBySensor){
-        int option = ofRandom(2);
+        int option = ofRandom(3);
         
         // predefined behaviours
         if(option == 0) presetSelector("p1");
@@ -401,6 +401,7 @@ void ParticleSystem::newRules(){
     }
    
     setNewRules = false;
+    
 }
 
 

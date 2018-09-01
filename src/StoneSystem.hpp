@@ -44,5 +44,5 @@ public:
     
     
     int counter;
-    
+    float alpha;
 };

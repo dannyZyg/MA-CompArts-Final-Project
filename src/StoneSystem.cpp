@@ -41,11 +41,11 @@ StoneSystem::StoneSystem(){
     active = false;
     timer = 0;
     timeIntervalPassed = 0;
-    drawLines = false;
+    drawLines = true;
     rebound = false;
     environmentDivision = 30;
     activateDraw = false;
-    
+    alpha = 0;
 }
 
 
@@ -65,7 +65,13 @@ void StoneSystem::setupParticles(){
         if(i >= 0 && i <= 30) particles[i].team = 0;
         if(i > 30 && i <= 60) particles[i].team = 1;
         if(i > 60 && i <= 90) particles[i].team = 2;
-        if(i > 90) particles[i].team = 3;
+        if(i > 90){
+            particles[i].team = 3;
+            particles[i].r = ofRandom(18, 28);
+//            particles[i].vel.x = ofRandom(-3, 3);
+//            particles[i].vel.y = ofRandom(-3, 3);
+            particles[i].damping = 0.01;
+        }
     }
     
     team1Base = ofColor(27,125, 204);
@@ -98,18 +104,55 @@ void StoneSystem::display(){
         ofPushStyle();
         ofPushMatrix();
         
+    for(int i = 90; i < particles.size(); i ++){
+        particles[i].life = ofMap(ofNoise(ofGetFrameNum() * ( i * 0.0001) + (i * 100)), 0, 1, 150, 255);
+    }
+        
+//        if(sensorDisplay > 91){
+//
+//
+//            alpha ++;
+//            if(alpha > 200) alpha = 200;
+//
+//            for(int i = 90; i < particles.size(); i ++){
+//                vector<Particle*> nearbyParticles = getNeighbors(particles[i].x, particles[i].y, particleNeighborhood);
+//
+//                for(int j = 0; j < nearbyParticles.size(); j ++ ){
+//                    ofPushStyle();
+////                    float alpha = ofMap(ofNoise(ofGetFrameNum() * (0.01 * i) + j), 0, 1, 100, 255);
+//                    ofSetLineWidth(5);
+//                    ofSetColor(team4Base, alpha);
+//                    ofDrawLine(particles[i].x, particles[i].y, nearbyParticles[j] -> x, nearbyParticles[j] -> y);
+//                    ofPopStyle();
+//                }
+//            }
+//
+//
+//        }
+//
+//        if(sensorDisplay < 92){
+//            alpha --;
+//            if(alpha < 0) alpha = 0;
+//
+//        }
+//
+//        cout << alpha << endl;
+
+        
+        
+        
         
         // do this once per frame
         setupForces();
         
         // apply per-particle forces
-        if(drawLines) {
-            ofPushStyle();
-            ofSetColor(24, 124, 174);
-            ofSetLineWidth(2);
-            glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
-            ofPopStyle();
-        }
+//        if(drawLines) {
+//            ofPushStyle();
+//            ofSetColor(24, 124, 174);
+//            ofSetLineWidth(3);
+//            glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
+//            ofPopStyle();
+//        }
         
         // functions which fades in and out particles based on which system sends a signal
         particlesInOut(e1StartIndex, env1, env1Display);
@@ -123,13 +166,21 @@ void StoneSystem::display(){
             // global force on other particles
             addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
             // forces on this particle
+            
+//            if(i > 90) rebound = true;
+//            else rebound = false;
+
             cur.bounceOffWalls(rebound);
             cur.addDampingForce();
             
         }
-        if(drawLines) {
-            glEnd();
-        }
+//        if(drawLines) {
+//            glEnd();
+//        }
+        
+        
+
+        
         
         // single-pass global forces
         addAttractionForce(origin.x, origin.y, 200, centerAttraction);
