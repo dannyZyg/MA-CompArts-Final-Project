@@ -32,7 +32,6 @@
 		304A6B9521301EFA00FBCDE5 /* StoneSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304A6B9321301EFA00FBCDE5 /* StoneSource.cpp */; };
 		30A0106B213561C000688084 /* StoneSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30A01069213561C000688084 /* StoneSystem.cpp */; };
 		30C40CA1210F77180063369E /* EnvironmentThreeSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */; };
-		30F9C9F92131538400E25596 /* EnvironmentSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30F9C9F72131538400E25596 /* EnvironmentSource.cpp */; };
 		36A98A331EAE1D0A19998A59 /* SaveTexCoordPosCmd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60F40691CD9DE4DEE1768FE9 /* SaveTexCoordPosCmd.cpp */; };
 		3800542E2A9FC9F9F4D07001 /* ofxFboBlur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 717FFECA4DDACD613D27B6AD /* ofxFboBlur.cpp */; };
 		3B90107DB9BF4857E357FCA8 /* ofxPiMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16DB3860ECC0D672B08DE71C /* ofxPiMapper.cpp */; };
@@ -213,8 +212,6 @@
 		30C40C9F210F77180063369E /* EnvironmentThreeSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentThreeSource.hpp; sourceTree = "<group>"; };
 		30C40CA0210F77180063369E /* EnvironmentThreeSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentThreeSource.cpp; sourceTree = "<group>"; };
 		30ED82F4A70B5B95CCEF7744 /* SelNextSurfaceCmd.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = SelNextSurfaceCmd.h; path = ../../../addons/ofxPiMapper/src/Commands/SelNextSurfaceCmd.h; sourceTree = SOURCE_ROOT; };
-		30F9C9F72131538400E25596 /* EnvironmentSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EnvironmentSource.cpp; sourceTree = "<group>"; };
-		30F9C9F82131538400E25596 /* EnvironmentSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EnvironmentSource.hpp; sourceTree = "<group>"; };
 		3157007392BD114EAB99F470 /* TextureMappingMode.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = TextureMappingMode.h; path = ../../../addons/ofxPiMapper/src/Application/Modes/TextureMappingMode.h; sourceTree = SOURCE_ROOT; };
 		33DD6E4350FD51C68B7E65F0 /* SettingsLoader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = SettingsLoader.cpp; path = ../../../addons/ofxPiMapper/src/Application/SettingsLoader.cpp; sourceTree = SOURCE_ROOT; };
 		34B45EB44DED0A47FBAD30F4 /* ScaleSurfaceFromToCmd.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ScaleSurfaceFromToCmd.cpp; path = ../../../addons/ofxPiMapper/src/Commands/ScaleSurfaceFromToCmd.cpp; sourceTree = SOURCE_ROOT; };
@@ -806,8 +803,6 @@
 				30A0106A213561C000688084 /* StoneSystem.hpp */,
 				3023278F212C96F700D867F7 /* Timer.cpp */,
 				3023278E212C96F700D867F7 /* Timer.hpp */,
-				30F9C9F72131538400E25596 /* EnvironmentSource.cpp */,
-				30F9C9F82131538400E25596 /* EnvironmentSource.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1010,7 +1005,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A0106B213561C000688084 /* StoneSystem.cpp in Sources */,
-				30F9C9F92131538400E25596 /* EnvironmentSource.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				CDB1F22153713F7E7AE9647D /* ofxBlur.cpp in Sources */,

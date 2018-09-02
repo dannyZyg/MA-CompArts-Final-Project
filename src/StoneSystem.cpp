@@ -46,6 +46,7 @@ StoneSystem::StoneSystem(){
     environmentDivision = 30;
     activateDraw = false;
     alpha = 0;
+//    dimForSensorPath = false;
 }
 
 
@@ -74,10 +75,16 @@ void StoneSystem::setupParticles(){
         }
     }
     
-    team1Base = ofColor(27,125, 204);
-    team2Base = ofColor(145,49, 191);
-    team3Base = ofColor(42, 211, 126);
-    team4Base = ofColor(255,211, 91);
+//    team1Base = ofColor(27,125, 204);
+//    team2Base = ofColor(145,49, 191);
+//    team3Base = ofColor(42, 211, 126);
+//    team4Base = ofColor(255,211, 91);
+    
+    
+    team1Base = ofColor(20,201, 23);
+    team2Base = ofColor(242,24, 249);
+    team3Base = ofColor(239, 171, 93);
+    team4Base = ofColor(193, 10, 7);
     setupColours();
 }
 
@@ -205,6 +212,10 @@ void StoneSystem::display(){
 //    ofSetColor(255, 0, 0);
 //    ofDrawBitmapString(pct, origin.x, origin.y);
     
+//    if(dimForSensorPath) dimParticles();
+//    else brightenParticles();
+    
+    
 }
 
 
@@ -281,3 +292,22 @@ void StoneSystem::timerForDrawDeactivation(bool& systemBool, bool& resetBool){
         }
     }
 }
+
+
+//void StoneSystem::dimParticles(){
+//
+//
+//    for(int i = 0; i < particles.size() - 30; i ++){
+//        particles[i].life --;
+//        if(particles[i].life < 0) particles[i].life = 0;
+//    }
+//
+//}
+//
+//void StoneSystem::brightenParticles(){
+//    for(int i = 0; i < particles.size() - 30; i ++){
+//        particles[i].life ++;
+//        if(particles[i].life > 255) particles[i].life = 255;
+//    }
+//
+//}

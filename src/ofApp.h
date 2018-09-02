@@ -2,23 +2,12 @@
 
 #include "ofMain.h"
 #include "ofxPiMapper.h"
-//#include "StoneParticleSystem.h"
 #include "StoneSystem.hpp"
-
-//#include "StonesSmall_1_4.hpp"
-//#include "StonesSmall_5_8.hpp"
-//#include "StonesSmall_9_12.hpp"
-//#include "StonesSmall_13_16.hpp"
-//#include "StonesMed_1_4.hpp"
-//#include "StonesMed_5_8.hpp"
-//#include "StonesLarge_1_4.hpp"
 #include "EnvironmentOneSource.hpp"
 #include "EnvironmentTwoSource.hpp"
 #include "EnvironmentThreeSource.hpp"
 #include "Timer.hpp"
 #include "ParticleSystem.h"
-#include "EnvironmentSource.hpp"
-
 #include "StoneSource.hpp"
 #include "ParameterSmoother.hpp"
 
@@ -26,7 +15,6 @@
 
 class ofApp : public ofBaseApp{
 public:
-//    ofApp(){}
     
     void setup();
     void update();
@@ -46,23 +34,12 @@ public:
     // By using a custom source that is derived from FboSource
     // you will be able to see the source listed in sources editor
 
-//    StonesSmall_1_4 small_stones_1_4;
-//    StonesSmall_5_8 small_stones_5_8;
-//    StonesSmall_9_12 small_stones_9_12;
-//    StonesSmall_13_16 small_stones_13_16;
-//    StonesMed_1_4 med_stones_1_4;
-//    StonesMed_5_8 med_stones_5_8;
-//    StonesLarge_1_4 large_stones;
+    //FBO sources: Three main environments
     EnvironmentOneSource environmentOne;
     EnvironmentTwoSource environmentTwo;
     EnvironmentThreeSource environmentThree;
     
-    StoneSource stoneSourceTest;
-    SmallStones_1_4 testStones;
-    EnvironmentTestSource e1test;
-    EnvironmentTest2Source e2test;
-    EnvironmentSource es;
-    
+    //FBO sources: stepping stone sources. Each FBO source takes care of four stones by dividing the canvas.
     SmallStones_1_4 small_stones_1_4;
     SmallStones_5_8 small_stones_5_8;
     SmallStones_9_12 small_stones_9_12;
@@ -71,19 +48,10 @@ public:
     MediumStones_5_8 med_stones_5_8;
     LargeStones_1_4 large_stones;
     
-    bool drawTemplate;
-    ofImage layout;
-  
-    bool displayCircleTemplate;
+    bool debug, printInfo;
+    ofTrueTypeFont verdana30; //font for geometry labels
     
-    bool debug;
-    
-    void debugDisplay();
-    ofTrueTypeFont verdana30;
-    
-    float startTime;
-    int timeSpacing;
-    
+    int timeSpacing; //time interval between each sequential stone trigger
     
     void E1_to_E2(Timer& t, int variation);
     void E1_to_E3(Timer& t, int variation);
@@ -91,11 +59,20 @@ public:
     void E2_to_E3(Timer& t, int variation);
     void E3_to_E1(Timer& t, int variation);
     void E3_to_E2(Timer& t, int variation);
-    
     void sensorToSystem(Timer& t, int destination, int variation);
+    void triggerStone(string sender, Timer& t, StoneSystem& stone, int timing);
+    void triggerEnviro1(string sender, Timer& t, int timing);
+    void triggerEnviro2(string sender, Timer& t, int timing);
+    void triggerEnviro3(string sender, Timer& t, int timing);
+    void sequenceComplete(string sender, Timer& t, int timing);
 
-    void sequence2();
-
+    bool sensorTrigger, verifiedTrigger;
+    void proximitySensorToBlur();
+    bool sensorSequenceActive;
+    int sensorPath, sensorDestination, lastPath;
+    
+    Timer env1Timer, env2Timer, env3Timer, sensorTimer; // timers for the communication sequences
+    smoothValue env1SmoothedSensor, env2SmoothedSensor, env3SmoothedSensor; //smoothing of the sensor value
     
     // Serial conversion code from Joshua Noble's "Programming Interactivity:
     // A Designer's Guide to Proccessing, Arduino and openFrameworks" (p. 229-232, 2012)
@@ -114,66 +91,6 @@ public:
     int                     clampVal;
     int                     avg;
     ofSerial                serial;
-
-    
-    void fillMapWithStones();
-    // a map where the keys are integers and the values are strings
-    std::map<int, std::string> stoneIndex;
-    
-//    std::vector<shared_ptr<StoneParticleSystem> > systems;
-    
-//    vector<StoneParticleSystem&> systems;
-    
-    void triggerStone(string sender, Timer& t, StoneSystem& stone, int timing);
-    void sequenceComplete(string sender, Timer& t, int timing);
-    int count;
-    
-    Timer stoneTimer;
-    
-    void triggerEnviro1(string sender, Timer& t, int timing);
-    void triggerEnviro2(string sender, Timer& t, int timing);
-    void triggerEnviro3(string sender, Timer& t, int timing);
-
-    void proximitySensorToBlur();
-    
-    bool sensorTrigger;
-    
-    bool sequenceActive;
-    
-    bool sensorSequenceActive;
-    
-    
-    
-    float activeLength;
-    
-    int sensorPath;
-    int sensorDestination;
-    int lastSensorPath;
-    float sequenceSpacingStart;
-    
-    float timerSequenceSpacing;
-    
-    bool envTest;
-    float testVal;
-    
-//    Timer testTimer;
-    Timer env1Timer, env2Timer, env3Timer, sensorTimer;
-    Timer sensTriggerTimer;
-    
-    bool env;
-//    int randomPath;
-//    Scheduler s;
-    
-
-    bool sensorSequenceGo;
-    
-//    bool incomingTrigger;
-    
-    bool verifiedTrigger;
-//    bool resetTrigTimer;
-//    bool trigTimerRunning;
-    
-    smoothValue env1SmoothedSensor, env2SmoothedSensor, env3SmoothedSensor;
     
     
 };

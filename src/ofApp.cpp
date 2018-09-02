@@ -2,21 +2,17 @@
 
 void ofApp::setup(){
     ofSetFullscreen(true);
-    
-    
     serialSetup();
+    
+    // Font used for environment/geometry labeling.
     verdana30.load("verdana.ttf", 80, true, true);
     verdana30.setLineHeight(34.0f);
     verdana30.setLetterSpacing(1.035);
     
-    
     ofSetCircleResolution(100);
-//    ofSetRectMode(OF_RECTMODE_CENTER);
-//    ofSetFullscreen(true);
-    displayCircleTemplate = false;
 	ofBackground(0);
-    ofSetCircleResolution(100);
     debug = false;
+    printInfo = false;
 
 	// Register our sources.
 	// This should be done before mapper.setup().
@@ -30,95 +26,51 @@ void ofApp::setup(){
     piMapper.registerFboSource(med_stones_1_4);
     piMapper.registerFboSource(med_stones_5_8);
     piMapper.registerFboSource(large_stones);
-    
-    
-    piMapper.registerFboSource(e1test);
-    piMapper.registerFboSource(e2test);
-    piMapper.registerFboSource(es);
 
-//    piMapper.registerFboSource(stoneSourceTest);
-//    piMapper.registerFboSource(testStones);
-
-////Send large font to all FBO sources
+    //Send large font to all FBO sources
     environmentOne.font = verdana30;
     environmentTwo.font = verdana30;
     environmentThree.font = verdana30;
-//    small_stones_1_4.font = verdana30;
-//    small_stones_5_8.font = verdana30;
-//    small_stones_9_12.font = verdana30;
-//    small_stones_13_16.font = verdana30;
-//    med_stones_1_4.font = verdana30;
-//    med_stones_5_8.font = verdana30;
-//    large_stones.font = verdana30;
-//    stoneSourceTest.font = verdana30;
     
-// setup piMapper
+    // setup piMapper
 	piMapper.setup();
 
-	// This will set the app fullscreen if compiled on Raspberry Pi.
-	#ifdef TARGET_RASPBERRY_PI
-		ofSetFullscreen(true);
-	#endif
-    
-    layout.load("layout.png");
-   
-    drawTemplate = false;
-    
     timeSpacing = 1000;
     sensorTrigger = false;
     sensorSequenceActive = false;
-    sequenceActive = false;
-    
     verifiedTrigger = false;
-//    resetTrigTimer = true;
-//    trigTimerRunning = false;
     
-    
-    activeLength = 3000;
-        
+    // Setup the timers that will be used for communication sequences.
     env1Timer = Timer();
     env2Timer = Timer();
     env3Timer = Timer();
     sensorTimer = Timer();
-    sensTriggerTimer = Timer();
-    
-    stoneTimer = Timer();
-    stoneTimer.setup();
-    
     env1Timer.setup();
     env2Timer.setup();
     env3Timer.setup();
     sensorTimer.setup();
-    sensTriggerTimer.setup();
-    sensTriggerTimer.endTime = 1000;
     
-    
-//    sensorPath = ofRandom(6);
     sensorDestination = 2;
     
+    // setup the three smoother objects. One to handle each of the environment's sensor onset.
     env1SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
     env2SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
     env3SmoothedSensor.smoother = new ParameterSmoother(5., ofGetFrameRate());
-
     
 }
 
 void ofApp::update(){
 	piMapper.update();
-    scheduler();
-    serialUpdate();
-
+    scheduler(); // call the function which handles all of the communication sequences
+    serialUpdate(); // update serial with new values from the sensor
     
-    timerSequenceSpacing = ofGetElapsedTimeMillis() - sequenceSpacingStart;
-    
+    // keep the timers running
     env1Timer.run();
     env2Timer.run();
     env3Timer.run();
     sensorTimer.run();
-    stoneTimer.run();
-    sensTriggerTimer.run();
     
-    proximitySensorToBlur();
+    proximitySensorToBlur(); //this function adds a slow onset/offset to the sensor's control of the blur effect
     
 }
 
@@ -126,46 +78,18 @@ void ofApp::draw(){
  
     ofBackground(0);
     
-    if(drawTemplate) layout.draw(0, 0);
-    
-    // a template circle for making a perfect 'circle' and not an ellipse
-    if(displayCircleTemplate){
-        ofPushStyle();
-        ofSetColor(255);
-        ofDrawRectangle(150, 150, 300, 300);
-        ofPopStyle();
-    }
-    
     // draw the piMapper interface and surfaces
 	piMapper.draw();
     
-    // continuation of the circle template
-    if(displayCircleTemplate){
-        ofPushStyle();
-        ofSetColor(0, 255, 0);
-        ofDrawCircle(300, 300, 150);
-        ofPopStyle();
+    if(printInfo){
+        ofSetColor(255);
+        ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 16, 16);
+        ofDrawBitmapString("Sensor Val = " + ofToString(val), 16, 32);
     }
- 
-    ofSetColor(255);
-    ofDrawBitmapString(ofToString((int) ofGetFrameRate()) + " fps", 32, 25);
-    ofDrawBitmapString("Sensor Val = " + ofToString(val), 32, 10);
-    ofDrawBitmapString("sens path = " + ofToString(sensorPath), 32, 50);
-    ofDrawBitmapString("sens act = " + ofToString(sensorSequenceActive), 32, 70);
-    ofDrawBitmapString("sens Dest = " + ofToString(sensorDestination), 32, 80);
-    
 }
-
-
 
 void ofApp::keyPressed(int key){
 	piMapper.keyPressed(key);
-    
-    //display the circle
-    if(key == 'w') displayCircleTemplate = !displayCircleTemplate;
-//    if(key == )\
-    
-    if(key == '/') drawTemplate = !drawTemplate;
     
     if(key == 'D') {
         debug = !debug;
@@ -183,23 +107,7 @@ void ofApp::keyPressed(int key){
         
         cout << "DEBUG = " << debug << endl;
     }
-    
- 
-    if(key == 'B') environmentTwo.blur1 = !environmentTwo.blur1;
-    if(key == 'N') environmentTwo.blur2 = !environmentTwo.blur2;
-    if(key == 'A') environmentThree.active = !environmentThree.active;
-    
-    
-    if(key == '!') environmentOne.enviro.randomVals = true;
-    if(key == '@') environmentTwo.enviro.randomVals = true;
-    if(key == '#') environmentThree.enviro.randomVals = true;
-    
-    if(key == 'P'){
-        environmentOne.setScale = ofRandom(10);
-        environmentOne.setRotation = ofRandom(-PI, PI);
-        
-    }
-
+    if(key == 'I') printInfo = !printInfo;
 }
 
 void ofApp::keyReleased(int key){
@@ -208,20 +116,10 @@ void ofApp::keyReleased(int key){
 
 void ofApp::mousePressed(int x, int y, int button){
 	piMapper.mousePressed(x, y, button);
-    
-    envTest = !envTest;
-    env = !env;
-    cout<< "env = " << envTest << endl;
-    environmentTwo.enviro.randomVals = true;
-    environmentOne.enviro.randomVals = true;
-
 }
 
 void ofApp::mouseReleased(int x, int y, int button){
 	piMapper.mouseReleased(x, y, button);
-    
-    count++;
-    if(count > 2) count =0;
 }
 
 void ofApp::mouseDragged(int x, int y, int button){
@@ -229,17 +127,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 }
 
 
-void ofApp::debugDisplay(){
-    
-//    ofPushStyle();
-//    ofFill();
-//    ofSetColor(255);
-//    ofDrawCircle(environmentOne.origin.x, environmentOne.origin.y, environmentOne.rad);
-//    verdana30.drawString("Env 1", environmentOne.origin.x, environmentOne.origin.y);
-//    ofPopStyle();
-}
-
-
+// This function takes the mapped sensor value and creates a smooht onset and offset when controlling each environment's Blur. When the destination system changes or the hand is removed from the sensor, the blur effect will fade out.
 void ofApp::proximitySensorToBlur(){
     
     float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
@@ -252,14 +140,10 @@ void ofApp::proximitySensorToBlur(){
     
     env3SmoothedSensor.currentValue = env3SmoothedSensor.smoother -> process(env3SmoothedSensor.targetValue);
     environmentThree.setScale = env3SmoothedSensor.currentValue;
-    
-    
-//    int elapsed_seconds = (int) round(ofGetElapsedTimef()) % 60;
-//    float mappedTimeSensorVal = ofMap(elapsed_seconds, 0, 1, 0, 1);
-    
+
     
     if(sensorSequenceActive){
-        if(sensorDestination == 0){
+        if(sensorDestination == 0){ // smoothing for Env1
             if(val < 800 && val > 0) {
                 env1SmoothedSensor.targetValue = mappedSensorVal;
             }
@@ -268,7 +152,7 @@ void ofApp::proximitySensorToBlur(){
             }
         }
         if(sensorDestination == 1){
-            if(val < 800 && val > 0) {
+            if(val < 800 && val > 0) { // smoothing for Env2
                 env2SmoothedSensor.targetValue = mappedSensorVal;
             }
             else{
@@ -276,7 +160,7 @@ void ofApp::proximitySensorToBlur(){
             }
         }
         if(sensorDestination == 2){
-            if(val < 800 && val > 0) {
+            if(val < 800 && val > 0) { // smoothing for Env3
                 env3SmoothedSensor.targetValue = mappedSensorVal;
             }
             else{
@@ -284,38 +168,55 @@ void ofApp::proximitySensorToBlur(){
             }
         }
     }
-    else{
+    else{ // otherwise, fade to 0
         env1SmoothedSensor.targetValue = 0;
         env2SmoothedSensor.targetValue = 0;
         env3SmoothedSensor.targetValue = 0;
     }
 }
 
+
+// This function listens to signs for sequence activation and then runs the right sequence.
 void ofApp::scheduler(){
 
-//SENSOR COMMUNICATION//
+//////////////SENSOR SEQUENCE ACTIVATION///////////////////////
 
-    if(val > 15 && val < 450 && val != 31) verifiedTrigger = true;
+    //'31' is a troublesome number with the sensor, and can sometimes send false triggers.
+    if(val > 15 && val < 450 && val != 31) verifiedTrigger = true; // verified trigger with no unintended changes
     else verifiedTrigger = false;
     
+    bool destInc;
     
+    // prepare the sequence. Do once only.
     if(verifiedTrigger && !sensorSequenceActive){
-        sensorTimer.reset();
+        
+        sensorDestination = ofRandom(3);
+        if(sensorDestination == lastPath){
+            sensorDestination = ofRandom(3);
+        }
+        
         sensorSequenceActive = true;
-        sensorDestination ++;
-        if(sensorDestination > 2) sensorDestination = 0;
+        sensorTimer.reset();
+     
         sensorPath = ofRandom(2);
+        cout<<sensorDestination<<endl;
     }
 
+    //run the sequence
     if(sensorSequenceActive){
+        lastPath = sensorDestination;
         sensorToSystem(sensorTimer, sensorDestination, sensorPath);
     }
 
-////////////ENVIRONMENT COMMUNICATION//
+    
+    
+
+////////////ENVIRONMENT SEQUENCE ACTIVATION//////////////////////
 //
 // Environment One
 ///// Conditions under which to allow a sequence to start
-    if(environmentOne.enviro.trigger && !environmentOne.enviro.sequenceActive && !environmentOne.active){
+    if(environmentOne.enviro.trigger && !environmentOne.enviro.sequenceActive && !environmentOne.active && !sensorSequenceActive && !verifiedTrigger){
+        // prepare the sequence.
         // if these conditions are met, do the following once only!
         environmentOne.enviro.randomPath = ofRandom(3); // choose random stone path
         environmentOne.enviro.destination = ofRandom(2); // choose random destination enviro
@@ -335,7 +236,8 @@ void ofApp::scheduler(){
 
 //// Environment Two
     // Conditions under which to allow a sequence to start
-    if(environmentTwo.enviro.trigger && !environmentTwo.enviro.sequenceActive && !environmentTwo.active){
+    if(environmentTwo.enviro.trigger && !environmentTwo.enviro.sequenceActive && !environmentTwo.active && !sensorSequenceActive && !verifiedTrigger){
+        // prepare the sequence.
         // if these conditions are met, do the following once only!
         environmentTwo.enviro.sequenceActive = true; // condition to start the sequence
         env2Timer.reset(); // start a fresh timer
@@ -355,7 +257,8 @@ void ofApp::scheduler(){
 
 //// Environment Three
     // Conditions under which to allow a sequence to start
-    if(environmentThree.enviro.trigger && !environmentThree.enviro.sequenceActive && !environmentThree.active){
+    if(environmentThree.enviro.trigger && !environmentThree.enviro.sequenceActive && !environmentThree.active && !sensorSequenceActive && !verifiedTrigger){
+        // prepare the sequence.
         // if these conditions are met, do the following once only!
         environmentThree.enviro.randomPath = ofRandom(3); // choose random stone path
         environmentThree.enviro.destination = ofRandom(2); // choose random destination enviro
@@ -372,14 +275,12 @@ void ofApp::scheduler(){
             E3_to_E2(env3Timer, environmentThree.enviro.randomPath);
         }
     }
-    
-    
 }
 
 
-// function which completes the stone sequence, setting the sequence state to inactive at the end.
+// function which completes the stone sequence, setting the sequence state to inactive at the end, ready for another trigger.
 void ofApp::sequenceComplete(string sender, Timer& t, int timing){
-    if (t.timer > (timeSpacing * (timing + 8))){
+    if (t.timer > (timeSpacing * (timing + 6))){
 
         //check which timer/environment is being addressed and turn of the relative sequenceActive state
         if(sender == "Environment One"){
@@ -393,6 +294,7 @@ void ofApp::sequenceComplete(string sender, Timer& t, int timing){
         }
         if(sender == "Sensor"){
             sensorSequenceActive = false;
+            
         }
     }
 }
@@ -400,6 +302,7 @@ void ofApp::sequenceComplete(string sender, Timer& t, int timing){
 
 // function which triggers a stone on and off at the right time in a given sequence
 void ofApp::triggerStone(string sender, Timer& t, StoneSystem& stone, int timing){
+    // the four bools correspond to which particles will fade in and out.
     
     //turn on the stone
     if(t.timer > timeSpacing * timing){
@@ -428,6 +331,7 @@ void ofApp::triggerEnviro1(string sender, Timer& t, int timing){
     if  (t.timer > (timeSpacing * timing) + t.activeStoneTime){
         environmentOne.active = false;
     }
+    // trigger the environment's new rules once impacted
     if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
         if(sender == "Sensor") environmentOne.enviro.triggeredBySensor = true;
         environmentOne.enviro.setNewRules = true;
@@ -444,6 +348,7 @@ void ofApp::triggerEnviro2(string sender, Timer& t, int timing){
     if (t.timer > timeSpacing * timing + 3000){
         environmentTwo.active = false;
     }
+    // trigger the environment's new rules once impacted
     if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
         if(sender == "Sensor") environmentTwo.enviro.triggeredBySensor = true;
         environmentTwo.enviro.setNewRules = true;
@@ -459,6 +364,7 @@ void ofApp::triggerEnviro3(string sender, Timer& t, int timing){
     if (t.timer > timeSpacing * timing + t.activeStoneTime){
         environmentThree.active = false;
     }
+    // trigger the environment's new rules once impacted
     if (t.timer > timeSpacing * timing && t.timer < timeSpacing * timing + 100){
         if(sender == "Sensor") environmentThree.enviro.triggeredBySensor = true;
         environmentThree.enviro.setNewRules = true;
@@ -466,7 +372,9 @@ void ofApp::triggerEnviro3(string sender, Timer& t, int timing){
 }
 
 
-// instructions for the illumination of particular stepping stones in order and in a timed sequence
+
+//////////COMMUNICATION SEQUENCES///////////////////////
+// instructions for the illumination of particular stepping stones in order and in a timed sequence. These are curated paths along the stepping stones.
 
 void ofApp::E1_to_E2(Timer& t, int variation){
     string s = "Environment One";
@@ -787,9 +695,7 @@ void ofApp::sensorToSystem(Timer& t, int destination, int variation){
     }
 }
 
-///////SERIAL///////////
-
-
+///////SERIAL COMMUNICATION WITH ARDUINO///////////
 
 //--------------------------------------------------------------
 void ofApp::serialSetup(){

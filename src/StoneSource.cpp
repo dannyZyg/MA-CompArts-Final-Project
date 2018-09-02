@@ -22,6 +22,7 @@ StoneSource::StoneSource(){
     font.load("verdana.ttf", 80, true, true);
     font.setLineHeight(34.0f);
     font.setLetterSpacing(1.035);
+//    sensorActive = false;
 }
 
 void StoneSource::setup(){
@@ -105,9 +106,10 @@ void StoneSource::setupParticleSystems(){
 void StoneSource::update(){
     
     for(int i = 0; i < stones.size(); i ++){
-        //        stones[i].update();
-//        stones[i].updateColours();
+
+
     }
+    
 }
 
 
