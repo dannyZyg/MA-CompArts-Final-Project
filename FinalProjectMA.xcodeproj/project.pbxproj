@@ -776,8 +776,6 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				3017F9942139BF920082B94F /* ParameterSmoother.cpp */,
-				3017F9952139BF920082B94F /* ParameterSmoother.hpp */,
 				3022E5422131B654005ACFE2 /* E1System.cpp */,
 				3022E5432131B654005ACFE2 /* E1System.hpp */,
 				3022E54821320E83005ACFE2 /* E2System.cpp */,
@@ -793,6 +791,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				3017F9942139BF920082B94F /* ParameterSmoother.cpp */,
+				3017F9952139BF920082B94F /* ParameterSmoother.hpp */,
 				3023278C212C96F700D867F7 /* Particle.cpp */,
 				30232791212C96F700D867F7 /* Particle.h */,
 				3023278D212C96F700D867F7 /* ParticleSystem.cpp */,

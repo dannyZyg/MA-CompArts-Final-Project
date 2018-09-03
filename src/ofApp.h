@@ -66,7 +66,7 @@ public:
     void triggerEnviro3(string sender, Timer& t, int timing);
     void sequenceComplete(string sender, Timer& t, int timing);
 
-    bool sensorTrigger, verifiedTrigger;
+    bool verifiedTrigger;
     void proximitySensorToBlur();
     bool sensorSequenceActive;
     int sensorPath, sensorDestination, lastDestination;

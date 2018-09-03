@@ -1,3 +1,28 @@
+//////////////////////////////////////////////////////////////////////////
+
+    ////     //     ////////    //       //     //      //     ///////
+    // //    //     //           //     //      //      //   ///
+    //  //   //     ////////       // //        //      //   //
+    //   //  //     //               //         //      //    ///////
+    //    // //     //            //   //        //    //          ///
+    //     ////     ////////    //       //       //////     ////////
+
+//////////////////////////////////////////////////////////////////////////
+// Danny Keig 2018
+// MA Computational Arts Final Project
+// Goldsmiths, University of London
+
+// Nexus aims to explore emergence, ecologies and networks. It is a projection mapping work utilising ofxPiMapper to project onto real world geometry. It consists of three unique environments which have their own rule systems for their agents (particles). When certain conditions are met within an environment, they communicate with another environment and can impact the destination environment's rules.
+
+// The conditions for communication are largely based on an environment's unique qualities, and are described in their relevant classes.
+
+// When the systems communicate, they send a signal of smaller particle clusters in a timed sequence along the physical shapes, which I will call stepping stones, or in the case of the code, between the smaller 'stone sources'. Each stone source FBO contains four separate 'stone systems', handling four physical stones on the structure when mapped.
+
+// The work is interactive, and connects with an arduino over serial. A proximity sensor detects human presence, and a hand motion can trigger a new sequence from the sensor location to a random envrionment. The regular environment -> environmnet communications result in the destination receiving new rules in the form of a preset, however the interactive sensor sequences seed the environments with randomised values.
+
+// Thanks to Krisjanis Rijnieks for developing ofxPiMapper, and to Kyle McDonald for sharing his binned particle system with the openFrameworks community.
+
+
 #include "ofApp.h"
 
 void ofApp::setup(){
@@ -14,7 +39,7 @@ void ofApp::setup(){
     debug = false;
     printInfo = false;
 
-	// Register our sources.
+	// Register our piMapper sources.
 	// This should be done before mapper.setup().
     piMapper.registerFboSource(environmentOne);
     piMapper.registerFboSource(environmentTwo);
@@ -36,7 +61,6 @@ void ofApp::setup(){
 	piMapper.setup();
 
     timeSpacing = 1000;
-    sensorTrigger = false;
     sensorSequenceActive = false;
     verifiedTrigger = false;
     
@@ -127,7 +151,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 }
 
 
-// This function takes the mapped sensor value and creates a smooht onset and offset when controlling each environment's Blur. When the destination system changes or the hand is removed from the sensor, the blur effect will fade out.
+// This function takes the mapped sensor value and creates a smooth onset and offset when controlling each environment's Blur. When the destination system changes or the hand is removed from the sensor, the blur effect will fade out.
 void ofApp::proximitySensorToBlur(){
     
     float mappedSensorVal = ofMap(val, 450, 0, 0, 10, true);
@@ -197,7 +221,6 @@ void ofApp::scheduler(){
         sensorTimer.reset();
      
         sensorPath = ofRandom(3);
-        cout<<sensorDestination<<endl;
     }
 
     //run the sequence
@@ -210,6 +233,8 @@ void ofApp::scheduler(){
     
 
 ////////////ENVIRONMENT SEQUENCE ACTIVATION//////////////////////
+//
+// These functions deal with the communication between the three systems over the stepping stones.
 //
 // Environment One
 ///// Conditions under which to allow a sequence to start
@@ -280,7 +305,7 @@ void ofApp::scheduler(){
 void ofApp::sequenceComplete(string sender, Timer& t, int timing){
     if (t.timer > (timeSpacing * (timing + 6))){
 
-        //check which timer/environment is being addressed and turn of the relative sequenceActive state
+        //check which timer/environment is being addressed and turn off the relative sequenceActive state
         if(sender == "Environment One"){
             environmentOne.enviro.sequenceActive = false;
         }
@@ -319,7 +344,7 @@ void ofApp::triggerStone(string sender, Timer& t, StoneSystem& stone, int timing
     }
 }
 
-// The following three functions turns on and off an environment's impact state to complete the visual sequence
+// The following three functions turn on and off an environment's impact state to complete the visual sequence
 void ofApp::triggerEnviro1(string sender, Timer& t, int timing){
     //turn on the environment impact
     if (t.timer > timeSpacing * timing){
