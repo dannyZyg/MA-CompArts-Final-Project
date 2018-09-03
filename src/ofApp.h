@@ -69,7 +69,7 @@ public:
     bool sensorTrigger, verifiedTrigger;
     void proximitySensorToBlur();
     bool sensorSequenceActive;
-    int sensorPath, sensorDestination, lastPath;
+    int sensorPath, sensorDestination, lastDestination;
     
     Timer env1Timer, env2Timer, env3Timer, sensorTimer; // timers for the communication sequences
     smoothValue env1SmoothedSensor, env2SmoothedSensor, env3SmoothedSensor; //smoothing of the sensor value
