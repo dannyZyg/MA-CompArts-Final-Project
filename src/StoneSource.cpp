@@ -22,7 +22,6 @@ StoneSource::StoneSource(){
     font.load("verdana.ttf", 80, true, true);
     font.setLineHeight(34.0f);
     font.setLetterSpacing(1.035);
-//    sensorActive = false;
 }
 
 void StoneSource::setup(){
@@ -95,7 +94,6 @@ void StoneSource::setupParticleSystems(){
     }
     
     for(int i = 0; i < stones.size(); i ++){
-//        stones[i].baseColour = ofColor(47,191, 57);
         stones[i].origin = origins[i];
         stones[i].externalRad = rad;
         stones[i].setup(width, height, binPower);
@@ -103,50 +101,20 @@ void StoneSource::setupParticleSystems(){
     }
 }
 
-void StoneSource::update(){
-    
-    for(int i = 0; i < stones.size(); i ++){
-
-
-    }
-    
-}
-
-
 void StoneSource::draw(){
     
-    ofBackground(0);    //refresh background circle colour every frame
-//    ofPushStyle();
-//    ofFill();
-//    ofSetLineWidth(5);
-//    ofSetColor(0);
-//    ofDrawCircle(origin, rad);
-//    ofPopStyle();
-    
-    
-    
+    ofBackground(0);    //refresh background every frame
+
     for(int i = 0; i < stones.size(); i ++){
-        //        stones[i].fadeParticles();
         stones[i].display();
     }
     
     if(debug) debugMode();
     
-    
-}
-
-void StoneSource::reset(){
-    
-    //    for(int i = 0; i < stones.size(); i ++){
-    //
-    //        startTime = ofGetElapsedTimeMillis();
-    ////        stones[i].reset();
-    //    }
-    
 }
 
 void StoneSource::debugMode(){
-    // Draw white circles over all stepping stones and display their position numbers
+    // Draw white circles over all stepping stones and display their labels
     for(int i = 0; i < stones.size(); i ++){
         ofPushStyle();
         ofFill();

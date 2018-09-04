@@ -7,7 +7,6 @@
 
 #include "Timer.hpp"
 
-
 Timer::Timer(){
     activeStoneTime = 3000;
     endTime = 0;
@@ -18,13 +17,6 @@ void Timer::setup(){
     startTime = ofGetElapsedTimeMillis();
     
 }
-
-void Timer::setup(int interval){
-    startTime = ofGetElapsedTimeMillis();
-
-    intervalLength = interval;
-}
-
 
 void Timer::run(){
     timer = ofGetElapsedTimeMillis() - startTime;

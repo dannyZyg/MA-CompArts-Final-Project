@@ -46,7 +46,6 @@ public:
     virtual void setupParticles();
     void setupColours();
     virtual void particleInteractions();
-    virtual void outputConditions();
     virtual void impactEffect();
     virtual void seedWithRandomValues();
     void newRules();
@@ -65,12 +64,8 @@ public:
     ofVec2f origin;
     ofVec2f impactTarget;
     float externalRad;
-    float angle;
     
     vector <float> noiseSeed;
-    
-    Timer glowTimer;
-    Timer outputTimer;
     
     bool rebound;
     bool trigger;
@@ -78,9 +73,7 @@ public:
     bool sequenceActive;
     bool impact;
     bool systemOutput;
-    bool glow;
     bool randomVals;
-    bool calibration;
     bool setNewRules;
     bool triggeredBySensor;
     

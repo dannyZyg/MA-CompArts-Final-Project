@@ -6,16 +6,11 @@ ParticleSystem::ParticleSystem(){
     particleRepulsion = 0.3;
     centerAttraction = 0;
     drawLines = true;
-    angle = 0;
     impactTarget = ofVec2f(origin.x + 100, origin.y + 100);
-    
-//    lineAlpha = 0;
-    
     outputThreshold = 200;
     
     rebound = true;
     trigger = false;
-    glow = false;
     setNewRules = false;
     triggeredBySensor = false;
     sequenceActive = false;
@@ -32,23 +27,13 @@ void ParticleSystem::setup(int width, int height, int k) {
     yBins = (int) ceilf((float) height / (float) binSize);
     bins.resize(xBins * yBins);
     
-//    
-//    mode = ofxColorPalette::BRIGHTNESS;
-//    brightness = 200;
-//    saturation = 200;
-    
     setupParticles();
-    
-
-    
-    glowTimer.setup();
-    outputTimer = Timer();
-    outputTimer.setup();
-    outputTimer.endTime = 30000;
     
 }
 
 void ParticleSystem::setupParticles(){
+    
+    // create all the particles for the system and pass them the origin and radius of their bounding shape.
     for(int i = 0; i < kParticles; i++) {
         
         float x = ofRandom(origin.x - 100, origin.x + 100);
@@ -69,6 +54,8 @@ void ParticleSystem::setupParticles(){
 
 
 void ParticleSystem::setupColours(){
+    
+    // for all the teams of particles, give them their colours.
     
     for(int i = 0; i < 4; i ++){
         ofxColorPalette c;
@@ -95,9 +82,6 @@ void ParticleSystem::impactEffect(){
     //Placeholder function which will be overrided by child classes
 }
 void ParticleSystem::particleInteractions(){
-    //Placeholder function which will be overrided by child classes
-}
-void ParticleSystem::outputConditions(){
     //Placeholder function which will be overrided by child classes
 }
 
@@ -274,16 +258,10 @@ void ParticleSystem::addForce(float targetX, float targetY, float radius, float 
 void ParticleSystem::update() {
     int n = particles.size();
     for(int i = 0; i < n; i++) {
-        particles[i].updatePosition();
-        
-        if(ofGetElapsedTimeMillis() < 15000) calibration = false;
-        else calibration = true;
-        
+        particles[i].updatePosition();        
     }
 
-    newRules();
-    
-    
+    newRules(); // when the system is impacted, decide on new rules
 }
 
 void ParticleSystem::draw() {
@@ -295,9 +273,6 @@ void ParticleSystem::draw() {
 }
 
 void ParticleSystem::display(){
-
-    outputTimer.run();
-    //    cout << outputTimer.reached << endl;
 
     // do this once per frame
     setupForces();
@@ -311,6 +286,7 @@ void ParticleSystem::display(){
         
         clusterCount = 0;
     
+        // prevent all the particles from incorporating into a few clusters if the forces become strong enough.
         for(int i = 0; i < particles.size(); i ++){
             vector<Particle*> nei = getNeighbors(particles[i].x, particles[i].y, 10);
             for(int j = 0; j < nei.size(); j ++){
@@ -319,24 +295,12 @@ void ParticleSystem::display(){
             }
             
             if(nei.size() > 20 || clusterCount > 200) addRepulsionForce(particles[i], 20, 0.7);
-//            cout <<"nei size = " << nei.size() << endl;
-
         }
-        
-        
-        
-        
-        
         
         float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
         ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
         
-        
-//        float lineLerp = ofMap(ofSignedNoise(ofGetFrameNum() * 0.01 + 255), -1, 1, 0, 1);
-//        ofColor lineCol = team1Base.getLerped(team2Base, lineLerp);
-//
         ofSetColor(lineCol, lineAlpha);
-//        ofSetColor(255, lineAlpha);
         ofSetLineWidth(2);
         
         glBegin(GL_LINES); // need GL_LINES if you want to draw inter-particle forces
@@ -348,8 +312,6 @@ void ParticleSystem::display(){
         glEnd();
     }
 
-
-
     // single-pass global forces
     addAttractionForce(origin.x, origin.y, 200, centerAttraction);
     update();
@@ -359,18 +321,10 @@ void ParticleSystem::display(){
         particles[i].displayParticle();
     }
 
-    outputConditions();
-    
-    
-    
-//    if(impact){
-//        ofSetColor(255, 0, 0);
-//        ofDrawCircle(origin, 60);
-//        
-//    }
 
 }
 
+// fade in and out the lines between particles when the system is impacted.
 void ParticleSystem::fadeConnectingLines(){
     if(impact){
         lineAlpha += 2;
@@ -381,10 +335,9 @@ void ParticleSystem::fadeConnectingLines(){
     if(lineAlpha > 255) lineAlpha = 255;
     if (lineAlpha < 0) lineAlpha = 0;
     
-//    lineAlpha = ofMap(ofGetMouseX(), 0 , ofGetWidth(), 0, 255);
-    
 }
 
+//allocate new rules at the end of the impact sequence.
 void ParticleSystem::newRules(){
     if(setNewRules && !triggeredBySensor){
         int option = ofRandom(3);
@@ -401,23 +354,11 @@ void ParticleSystem::newRules(){
     }
    
     setNewRules = false;
-    
 }
 
 
 void ParticleSystem::presetSelector(string preset){
-    
-    if(preset == "p1"){
-    }
-    
-    if(preset == "p2"){
-    }
-    
-    if(preset == "p3"){
-    }
-    
-    if(preset == "r1"){
-    }
+    //Placeholder function which will be overrided by child classes
 }
 
 

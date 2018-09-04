@@ -17,7 +17,7 @@ EnvironmentThreeSource::EnvironmentThreeSource(){
     width =  600;
     height = 600;
     
-    setScale = 0.8;
+    setScale = 0;
     setRotation = -2.5;
     blurOffset = 4.2;
     blurPasses = 1;
@@ -64,8 +64,6 @@ void EnvironmentThreeSource::update(){
     blur.setScale(setScale);
     blur.setRotation(setRotation);
     
-    
-    
     gpuBlur.blurOffset = blurOffset;
     gpuBlur.blurPasses = blurPasses;
     gpuBlur.numBlurOverlays = 3;
@@ -81,28 +79,11 @@ void EnvironmentThreeSource::update(){
 }
 
 void EnvironmentThreeSource::draw(){
-   
-    //colour of background rectangle (behind circular canvas), used for trimming fbo scene precicesly to circle
-  
 
     if(blur2) gpuBlur.beginDrawScene();
     if(blur1)blur.begin();
 
     ofBackground(0);
-//    //refresh background circle colour every frame
-//    ofPushStyle();
-//    ofFill();
-//    ofSetLineWidth(5);
-//    ofSetColor(0);
-//    ofDrawCircle(origin, rad);
-//    ofPopStyle();
-//
-//    ofClear(0);
-
-   
-
-   
-//    enviro.particleInteractions();
     enviro.drawTeamLines();
     enviro.display();
     
@@ -144,8 +125,3 @@ void EnvironmentThreeSource::draw(){
     }
 
 }
-
-
-
-
-

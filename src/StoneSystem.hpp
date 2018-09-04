@@ -22,11 +22,6 @@ public:
     void setupParticles() override;
     void display() override;
     void particlesInOut(int start, bool active, float& display);
-    void pushPopParticles();
-    void addParticle(int team_);
-    void timerForDrawDeactivation(bool& systemBool, bool& resetBool);
-//    void brightenParticles();
-//    void dimParticles();
     
     Timer activeTimer;
     Timer releaseTimer;
@@ -40,12 +35,9 @@ public:
     bool env1, env2, env3, sens;
     bool e1Reset, e2Reset, e3Reset, sensReset;
     bool active;
-    bool timeIntervalPassed;
     bool activateDraw;
     bool timerTrigger;
-//    bool dimForSensorPath;
     
     int counter;
-    float alpha;
     
 };

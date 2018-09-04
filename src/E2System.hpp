@@ -21,12 +21,9 @@ public:
     E2System();
     virtual void setupParticles() override;
     virtual void particleInteractions() override;
-    virtual void outputConditions() override;
     virtual void impactEffect() override;
     void updateColours();
-//    virtual void update() override;
     void seedWithRandomValues() override;
-//    void newRules(int option);
     void presetSelector(string preset) override;
     void receiveCells(vector <float> cells_);
     void cellWallRebound(Particle& particle);

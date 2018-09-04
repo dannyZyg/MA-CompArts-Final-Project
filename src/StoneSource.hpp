@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "ofMain.h"
-// #include "StoneParticleSystem.h"
 #include "StoneSystem.hpp"
 #include "FboSource.h"
 
@@ -21,16 +20,10 @@ class StoneSource : public ofx::piMapper::FboSource{
 public:
     
     StoneSource();
-    
-//    string name = "Stone Source";
-    
+        
     void setup();
     void setupParticleSystems();
-    void update();
     void draw();
-    void sequence1();
-    void sequence2();
-    void reset();
     void debugMode();
     vector <ofVec2f> origins;
     vector <StoneSystem> stones;
@@ -49,8 +42,6 @@ public:
     bool active;
     string sizeInitial;
     
-    void setName();
-    
     int labelOffset;
 };
 
@@ -64,30 +55,20 @@ class SmallStones_5_8 : public StoneSource {
 
 class SmallStones_9_12 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class SmallStones_13_16 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class MediumStones_1_4 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class MediumStones_5_8 : public StoneSource {
     void setup();
-    void setName();
 };
 
 class LargeStones_1_4 : public StoneSource {
     void setup();
-    void setName();
 };
-
-
-
-
-

@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "FboSource.h"
-//#include "EnvironmentTwoSystem.h"
 #include "E2System.hpp"
 #include "ParticleSystem.h"
 #include "ofxBlur.h"
@@ -31,15 +30,12 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     
     float width, height;
     
+    E2System enviro;
     ofVec2f origin;
     float rad;
     
-    E2System enviro;
-    
-    
     vector <float> cells;
     vector <float> noiseSeed;
-    
     
     bool debug;
     
@@ -49,8 +45,7 @@ class EnvironmentTwoSource : public ofx::piMapper::FboSource{
     //choose your fbo settings
     ofFbo::Settings s;
     
-       bool blur1, blur2;
-    // debug font
+    bool blur1, blur2;
     ofTrueTypeFont font;
     
     void drawCellDebug();

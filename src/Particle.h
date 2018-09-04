@@ -17,7 +17,6 @@ public:
     float externalRad; // radius of the bounding circle
     
     Particle();
-	Particle(float x_, float y_);
     
     void setupE1();
     void setupE2();
@@ -33,53 +32,34 @@ public:
 
     void applyForce(ofVec2f force);
     void accelerateTowardsTarget(ofVec2f _target);
-    
-    float damping;
-    ofVec2f friction;
-    float cF;
-    
-    int cellState;
-    float randomOffset;
-    int colIndex;
-    
-    
-    float life;
-    
-    ofVec2f vel;
-    
-    bool rebound;
-    
-    
-    float blurOffset;
-
-
-    int team;
-    float minSize, maxSize;
-    void limitSize();
-    void limitMembraneLife();
-    
-    float membraneRad;
-    float membraneLife;
-    float membraneStep;
-    bool alone;
-    
-    void receiveCells(vector <float> cells_);
-    vector <float> cells;
-    
-    
     void returnFromWall();
     void bounceOffOuterCell(float outer);
     void bounceOffInnerCell(float inner);
-    Timer wallTimer;
-    bool stuckOnWall;
-    float distFromWall;
+    void limitSize();
+    void limitMembraneLife();
+    void receiveCells(vector <float> cells_);
     
-    int noiseSeed;
+    vector <float> cells;
+    ofVec2f vel;
+    ofVec2f friction;
     
-    void collectStuckParticles();
+    float cF;
+    float life;
+    float minSize, maxSize;
+    float membraneRad;
+    float membraneLife;
+    float membraneStep;
     float minMembraneLife, maxMembraneLife;
+    float distFromWall;
+    float blurOffset;
+    float damping;
+
+    int cellState;
+    int colIndex;
+    int noiseSeed;
+    int team;
     
-    void noisyMovement();
-    
-    
+    bool alone;
+    bool rebound;
+    bool stuckOnWall;
 };

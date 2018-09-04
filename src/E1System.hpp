@@ -24,7 +24,6 @@ public:
     E1System();
     void setupParticles() override;
     void particleInteractions() override;
-    void outputConditions() override;
     void impactEffect() override;
     void alterSize(Particle& cur_);
     void seedWithRandomValues() override;
@@ -34,7 +33,5 @@ public:
     
     float maxRad, minRad;
     float region;
-    
-    
     bool colourExchange;
 };

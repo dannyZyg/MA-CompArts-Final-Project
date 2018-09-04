@@ -21,27 +21,24 @@ class Timer{
 public:
     Timer();
     
-    
     void run();
     void reset();
     void setup();
-    void setup(int interval);
     
     float startTime;
-    float endTime; // when do want to stop the timer
+    float endTime; // how long the timer should run for
+    float activeStoneTime; //used for the stepping stones. The time that each stone uses to fade in/out
 
-    float timer;
-    float pct;
-    
-    
-    float intervalLength;
-    bool complete;
-    bool active;
-    bool begin;
-
-    
-    float activeStoneTime;
-    
+    float timer; // time since startTime
+    float pct; // percentage of the timer completed
     bool reached; // used as a trigger when we hit the timer
+
+    
+//    bool complete;
+//    bool active;
+//    bool begin;
+
+    
+    
     
 };

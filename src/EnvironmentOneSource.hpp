@@ -12,8 +12,6 @@
 
 #include <stdio.h>
 #include "FboSource.h"
-//#include "EnvironmentOneSystem.h"
-//#include "ParticleSystem.h"
 #include "E1System.hpp"
 #include "ofxFboBlur.h"
 #include "ofxBlur.h"
@@ -61,5 +59,5 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     
     bool test;
     
-    void newRules();
+//    void newRules();
 };

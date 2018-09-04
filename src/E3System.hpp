@@ -22,11 +22,9 @@ public:
     E3System();
     void setupParticles() override;
     void particleInteractions() override;
-    void outputConditions() override;
     void impactEffect() override;
     void seedWithRandomValues() override;
     void presetSelector(string preset) override;
     void drawTeamLines();
-//    void seedWithRandomValues() override;
     
 };

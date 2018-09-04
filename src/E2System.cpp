@@ -14,7 +14,6 @@ E2System::E2System(){
     particleRepulsion = 0.5;
     centerAttraction = 0;
     particleAttraction = 0;
-//    drawLines = true;
     cellWallsActive = true;
     lineAlpha = 0;
     outputThreshold = 80;
@@ -56,15 +55,6 @@ void E2System::setupParticles(){
         float seed = ofRandom(1000);
         noiseSeed.push_back(seed);
     }
-    
-    
-    glowTimer.setup();
-    glow = false;
-    
-    outputTimer = Timer();
-    outputTimer.setup();
-
-    
 }
 
 void E2System::updateColours(){
@@ -88,33 +78,11 @@ void E2System::updateColours(){
     }
 }
 
-//void E2System::update() {
-//    int n = particles.size();
-//    for(int i = 0; i < n; i++) {
-//
-//    }
-//}
-
 void E2System::particleInteractions(){
-//    int numOutside = 0;
-    outputCondition = 0;
-    
+        
     for(int i = 0; i < particles.size(); i++) {
         Particle& cur = particles[i];
         
-        float d = ofDist(cur.x, cur.y, origin.x, origin.y);
-        if (d >= externalRad - 50) {
-//            ofSetColor(255);
-//            cur.col = ofColor(255, 0, 0);
-//            ofDrawLine(cur.x, cur.y, origin.x, origin.y);
-            outputCondition ++;
-        }
-//
-        
-        
-//        cout << "out cond " << cells[1] << endl;
-        
-//        particles[i].updatePosition();
         particles[i].receiveCells(cells);
         if(pingFromWalls) particles[i].returnFromWall();
         
@@ -122,13 +90,10 @@ void E2System::particleInteractions(){
         
         addAttractionForce(cur, particleNeighborhood, particleAttraction);
         addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-        // forces on this particle
-        //        cur.bounceOffWalls();
         
+        // forces on this particle
         cur.addDampingForce();
         
-        //        if(ofGetElapsedTimeMillis() % 1000 == 0) state = !state;
-        //        cout<<state<<endl;
         if(cellWallsActive){
             allocateCellState(cur);
             cellWallRebound(cur);
@@ -137,70 +102,15 @@ void E2System::particleInteractions(){
             cur.bounceOffWalls(true);
         }
     }
-//    cout << "Num Outside " << numOutside << endl;
-
-}
-
-void E2System::outputConditions(){
+    
     // TRIGGER FOR OUTPUT
     
-    // run the timer for the glow effect
-    glowTimer.run();
-    
-//    cout << "cells" << cells[1] << endl;
-    
-    //    cout <<"trigger " <<trigger << endl;
-    //    cout <<"sequenceTrigger " << sequenceTrigger <<endl;
-    
-//    if(cells[1] < outputThreshold) trigger = true;
-    
-    
+    // if size of the inner cell exceeds 100, send out a signal
     if(cells[1] > 100) trigger = true;
     else(trigger = false);
-    
-    //    if(outputTimer.reached) trigger = true;
-    //    else if(!outputTimer.reached) trigger = false;
-    
-//        cout<<"trig "<<trigger << endl;
-    
-    // if these conditions are met, do this once only!
-    
-    
-    
-    
-    if(trigger ){//&& !sequenceActive) {
-//        sequenceActive = true;
-//        sequenceActive = true;
-//        sequenceTrigger = true;
-//        ofSetColor(0, 255, 0);
-//        ofDrawCircle(origin, 50);
-        
-//        destination = ofRandom(2);
-//        randomPath = ofRandom(3);
 
-
-    }
-    
-//    cout<< "e2 seq active = " << sequenceActive << endl;
-    
-//    // if the timer is active, glow
-//    if(!glowTimer.reached){
-//        glow = true;
-//        
-//    }
-//    // if not, don't glow
-//    if (glowTimer.reached){
-//        glow = false;
-//    }
-    
-    // reset the cluster tally
-    outputCondition = 0;
-    
-    
-    
-    
-    
 }
+
 
 
 void E2System::impactEffect(){
@@ -209,15 +119,11 @@ void E2System::impactEffect(){
     target.x = ofMap(sin(ofGetFrameNum() * 0.01), -1, 1, origin.x - externalRad/2, origin.x + externalRad/2, true);
     target.y = ofMap(sin(ofGetFrameNum() * 0.01 + 654), -1, 1, origin.y - externalRad/2, origin.y + externalRad/2, true);
     
-//    ofDrawCircle(target, 50);
     
     if(impact){
         addRepulsionForce(target.x, target.y, 250, 1);
-
     }
-    else{
 
-    }
 }
 
 
@@ -253,6 +159,7 @@ void E2System::cellWallRebound(Particle& particle){
 
 void E2System::allocateCellState(Particle& particle){
     
+    // allocate particles to cells based on their position
     float d = ofDist(particle.x, particle.y, origin.x, origin.y);
     if(d > 0 && d < cells[1]){
         particle.cellState = 0;
@@ -268,7 +175,6 @@ void E2System::allocateCellState(Particle& particle){
 
 void E2System::presetSelector(string preset){
     
-    // cell walls active. Outside cells retreat from outer wall.
     if(preset == "p1"){
         particleRepulsion = 0.5;
         centerAttraction = 0;
@@ -320,8 +226,6 @@ void E2System::seedWithRandomValues(){
             particles[i].maxSpeed = ofRandom(3);
             particles[i].damping = ofRandom(0.04, 0.08);
         }
-        
-        
         
         int r1 = ofRandom(2);
         int r2 = ofRandom(2);

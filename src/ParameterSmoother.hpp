@@ -5,7 +5,7 @@
 //  Created by Danny on 23/4/18.
 //
 
-// Parameter Smoother class - original code from https://www.youtube.com/watch?v=BdJRSqgEqPQ, adapted to accept ofPoint
+// Parameter Smoother class - original code from https://www.youtube.com/watch?v=BdJRSqgEqPQ
 
 #pragma once
 
@@ -25,7 +25,6 @@ public:
 
     inline float process(float input){
             z1 = (input * b ) + (z1 * a);
-//            z2 = (input.y * b ) + (z2 * a);
             float result(z1);
             return result;
     }

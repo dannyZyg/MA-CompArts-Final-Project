@@ -11,14 +11,12 @@ Particle::Particle(){
     vel = ofVec2f(0,0);
     
     damping = .04;
-    randomOffset = ofRandom(-5, 10);
     mass = 1;
     acceleration = ofVec2f(0,0);
     maxSpeed = 5;
     blurOffset = 5;
     colIndex = ofRandom(5);
     team = ofRandom(2);
-    
     
     minSize = 4;
     maxSize = 50;
@@ -45,7 +43,6 @@ void Particle::setupE1(){
     minMembraneLife = 20;
     maxMembraneLife = 80;
     
-    
     vel = ofVec2f(ofRandom(-2, 2), ofRandom(-2, 2));
     if(vel.x == 0 && vel.y == 0) vel = ofVec2f(ofRandom(-0.5, 0.5), ofRandom(-0.5, 0.5));
 }
@@ -55,9 +52,6 @@ void Particle::setupE2(){
 
     xv = ofRandom(-3, 3);
     yv = ofRandom(-3, 3);
-    wallTimer = Timer();
-    wallTimer.setup();
-    wallTimer.endTime = 3000;
     stuckOnWall = false;
     damping = .04;
     
@@ -92,37 +86,21 @@ void Particle::setupStoneParticle(){
 }
 
 void Particle::updatePosition() {
-    //     f = ma, m = 1, f = a, v = int(a)
-    
-    
-//    noisyMovement();
-//
+
     xv += xf;// apply forces
     yv += yf;// apply forces
-//
-////    acceleration.x += xf;// apply forces
-////    acceleration.y += yf;// apply forces
-//
-    x += xv;//
-    y += yv;//
-//
+
+    x += xv;
+    y += yv;
 
     xv += acceleration.x;
     yv += acceleration.y;
-//
-//
-//    //
-//    //    vel.x += xf;
-//    //    vel.y += yf;
-//    //
-//
-//
+
     x += vel.x;
     y += vel.y;
     
     vel.limit(maxSpeed);
-//
-//
+
 //     Add friction
     friction.x = xv;
     friction.y = yv;
@@ -155,8 +133,6 @@ void Particle::bounceOffWalls(bool rebound_) {
         ofVec2f newOrigin = origin + offset;
         ofVec2f ret = origin - out;
         
-        
-        
         if(rebound) ret = ret.normalize();
         
         if(rebound) applyForce(ret);
@@ -170,10 +146,6 @@ void Particle::bounceOffWalls(bool rebound_) {
         vel.x *= -1;
         vel.y *= -1;
         
-        if(collision && rebound){
-//            xv *= 0.9;
-//            yv *= 0.9;
-        }
     }
 }
 
@@ -189,7 +161,6 @@ void Particle::draw() {
 
 
 void Particle::displayParticle(){
-//    collectStuckParticles();
     ofSetColor(col, life);
     ofDrawCircle(x, y, r);
     
@@ -208,7 +179,6 @@ void Particle::applyForce(ofVec2f force){
     ofVec2f f = ofPoint(force);
     f /= mass;
     acceleration += f;
-//    yv += f.y;
 }
 
 
@@ -220,11 +190,10 @@ void Particle::limitSize(){
 void Particle::limitMembraneLife(){
     if(membraneLife < minMembraneLife) membraneLife = minMembraneLife;
     if(membraneLife > maxMembraneLife) membraneLife = maxMembraneLife;
-    
 }
 
 
-// Function that reverses velocity when hitting an outer cell wall
+// Function that reverses velocity when hitting an outer cell wall (used for environment 2)
 void Particle::bounceOffOuterCell(float outer){
     bool collision = false;
     
@@ -234,7 +203,6 @@ void Particle::bounceOffOuterCell(float outer){
         ofVec2f posAtEdge = ofVec2f(x, y);
         ofVec2f ret = origin - posAtEdge;
         ret = ret.normalize();
-//        applyForce(ret);
         
         x += ret.x;
         y += ret.y;
@@ -252,7 +220,7 @@ void Particle::bounceOffOuterCell(float outer){
     }
 }
 
-// Function that reverses velocity when hitting an inner cell wall
+// Function that reverses velocity when hitting an inner cell wall (used for environment 2)
 void Particle::bounceOffInnerCell(float inner){
     bool collision = false;
     
@@ -263,7 +231,6 @@ void Particle::bounceOffInnerCell(float inner){
         ofVec2f ret = origin - posAtEdge;
         ret *= -1;
         ret = ret.normalize();
-//        applyForce(ret);
         
         x += ret.x;
         y += ret.y;
@@ -281,87 +248,22 @@ void Particle::bounceOffInnerCell(float inner){
     }
 }
 
+// for environment two, this function will retrieve the cell wall locations coming from the env 2 source class
 void Particle::receiveCells(vector <float> cells_){
     cells = cells_;
 }
 
+// particles will accelerate towards the origin if they reach the edge of the wakk
 void Particle::returnFromWall(){
     float distFromOrigin = ofDist(origin.x, origin.y, x, y);
-    //    distFromWall = ofDist(externalRad, distFromOrigin);
     bool trigger;
     
     if(distFromOrigin > (externalRad - 50)){
-        //        trigger = true;
         stuckOnWall = true;
     }
     else stuckOnWall = false;
-    
-    //    if(distFromOrigin < (externalRad - 10)){
-    //        trigger = false;
-    //    }
-    //
-    //    if(trigger == true){
-    //        wallTimer.run();
-    //    }
-    //
-    //    if(wallTimer.reached) stuckOnWall = true;
-    //    else if(!wallTimer.reached) stuckOnWall - false;
-    
-    
+
     if(stuckOnWall){
-//        ofSetColor(255);
-//                ofDrawLine(origin.x, origin.y, x, y);
-        //        ofPoint cent = ofPoint(origin)
-        //        applyForce(- origin);
         accelerateTowardsTarget(origin);
-        
-        
     }
 }
-
-
-void Particle::collectStuckParticles(){
-    
-    bool collision = false;
-    
-    int d = ofDist(x, y, origin.x, origin.y);
-    if ((d >= externalRad )){
-        
-        collision = true;
-        
-        ofVec2f out = ofVec2f(x, y);
-        ofVec2f ret = origin - out;
-        
-//        ret.normalize();
-//        ret *= 10;
-        applyForce(origin);
-        
-//        if(rebound) ret = ret.normalize();
-        
-//        if(rebound) applyForce(ret);
-        
-//        x += ret.x;
-//        y += ret.y;
-        
-        xv *= -1;
-        yv *= -1;
-        
-        vel.x *= -1;
-        vel.y *= -1;
-        
-        if(collision){
-//            addDampingForce();
-        }
-    }
-}
-
-
-void Particle::noisyMovement(){
-    
-    float xNoised = ofSignedNoise(ofGetFrameNum() * 0.001 + noiseSeed) * 0.5;
-    float yNoised = ofSignedNoise(ofGetFrameNum() * 0.001 + noiseSeed + 500) * 0.5;
-
-    xv += xNoised;
-    yv += yNoised;
-}
-

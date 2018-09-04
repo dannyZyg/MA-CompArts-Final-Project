@@ -11,13 +11,9 @@
 
 #include <stdio.h>
 #include "FboSource.h"
-//#include "EnvironmentThreeSystem.h"
 #include "ofxBlur.h"
 #include "ofxFboBlur.h"
-
 #include "E3System.hpp"
-
-
 
 #endif /* EnvironmentThreeSource_hpp */
 
