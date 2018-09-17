@@ -807,7 +807,6 @@ void ofApp::serialUpdate(){
             val = bytesReturned[0];
             val <<= 8;                                          // shift values into correct range
             val += bytesReturned[1];
-//            incomingTrigger = bytesReturned[2];
             
             bSendSerialMessage = false;                         // get ready to wait a few frames before asking again
         }
