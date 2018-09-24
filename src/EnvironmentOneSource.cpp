@@ -63,13 +63,13 @@ void EnvironmentOneSource::update(){
     gpuBlur.numBlurOverlays = 4;
     gpuBlur.blurOverlayGain = 165;
     
-    if(active){
-        enviro.impact = true;
-    }
-    
-    if(!active){
-        enviro.impact = false;
-    }
+//    if(active){
+//        enviro.impact = true;
+//    }
+//    
+//    if(!active){
+//        enviro.impact = false;
+//    }
 }
 
 void EnvironmentOneSource::draw(){

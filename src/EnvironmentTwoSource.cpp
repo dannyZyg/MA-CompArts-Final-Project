@@ -88,13 +88,13 @@ void EnvironmentTwoSource::update(){
     enviro.updateColours();
 
     
-    if(active){
-        enviro.impact = true;
-    }
-    
-    if(!active){
-        enviro.impact = false;
-    }
+//    if(active){
+//        enviro.impact = true;
+//    }
+//    
+//    if(!active){
+//        enviro.impact = false;
+//    }
 }
 
 void EnvironmentTwoSource::draw(){
