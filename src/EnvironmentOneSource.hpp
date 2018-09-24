@@ -59,5 +59,4 @@ class EnvironmentOneSource : public ofx::piMapper::FboSource{
     
     bool test;
     
-//    void newRules();
 };

@@ -20,7 +20,7 @@ E1System::E1System(){
     impact = false;
     colourExchange = true;
     maxRad = 20;
-    outputThreshold = 75;
+    outputThreshold = 10; //75;
     outputCondition = 0;
 }
 

@@ -60,21 +60,21 @@ void SmallStones_13_16::setup(){
 void MediumStones_1_4::setup(){
     name = "Medium Stones 1-4";
     setupParticleSystems();
-    labelOffset = 1;
+    labelOffset = 17;
     sizeInitial = "M";
 }
 
 void MediumStones_5_8::setup(){
     name = "Medium Stones 5-8";
     setupParticleSystems();
-    labelOffset = 5;
+    labelOffset = 21;
     sizeInitial = "M";
 }
 
 void LargeStones_1_4::setup(){
     name = "Large Stones 1-4";
     setupParticleSystems();
-    labelOffset = 1;
+    labelOffset = 25;
     sizeInitial = "L";
 }
 
