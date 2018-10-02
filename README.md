@@ -1,5 +1,6 @@
 # Nexus
 
+
 Nexus aims to explore emergence, ecologies and networks. It is a projection mapping work utilising ofxPiMapper to project onto real world geometry. It consists of three unique environments which have their own rule systems for their agents (particles). When certain conditions are met within an environment, they communicate with another environment and can impact the destination environment's rules.
 
 The conditions for communication are largely based on an environment's unique qualities, and are described in their relevant classes.
@@ -16,7 +17,7 @@ Particle --> Particle System (or derived class) --> FBO source --> ofApp
 
 Each of the three environments exists as its own derived particle system class. Each of the stones is a derived 'stone system' class.
 
-The various sequence paths are contained in multidimensional arrays which are found in the ofApp.h
+The various sequence paths are contained in multidimensional arrays which are found in the `ofApp.h`
 
 
 
@@ -24,12 +25,7 @@ The various sequence paths are contained in multidimensional arrays which are fo
 
 The following addons are needed to compile the code:
 
-ofxBlur
-ofxColorPalette
-ofxFboBlur
-ofxGui
-ofxPiMapper
-ofxXmlSettings
+ofxBlur, ofxColorPalette, ofxFboBlur, ofxGui, ofxPiMapper, ofxXmlSettings
 
 
 # Acknowledgments
