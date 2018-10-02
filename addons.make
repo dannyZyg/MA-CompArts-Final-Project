@@ -2,6 +2,5 @@ ofxBlur
 ofxColorPalette
 ofxFboBlur
 ofxGui
-ofxJSON
 ofxPiMapper
 ofxXmlSettings
